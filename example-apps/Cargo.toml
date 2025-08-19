@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["debugger", "helloworld", "messaging", "constrained-decoding", "kvs", "hierarchical-attention", "windowed-attention", "watermarking", "jacobi-decoding", "prefix-tree", "speculative-decoding", "parallel-generation", "helloworld-plain", "openai-compat", "http-server", "text-completion",  "tree-of-thought", "graph-of-thought", "recursion-of-thought", "skeleton-of-thought", "beam-search", "agent-react", "agent-react-bench", "agent-codeact", "agent-swarm", "attention-sink", "bench-spawn-time", "bench-execution-latency", "output-validation", "prefix-caching"]
+members = ["typego_s0", "debugger", "helloworld", "messaging", "constrained-decoding", "kvs", "hierarchical-attention", "windowed-attention", "watermarking", "jacobi-decoding", "prefix-tree", "speculative-decoding", "parallel-generation", "helloworld-plain", "openai-compat", "http-server", "text-completion",  "tree-of-thought", "graph-of-thought", "recursion-of-thought", "skeleton-of-thought", "beam-search", "agent-react", "agent-react-bench", "agent-codeact", "agent-swarm", "attention-sink", "bench-spawn-time", "bench-execution-latency", "output-validation", "prefix-caching"]
 
 [workspace.dependencies]
 wit-bindgen = "0.43.0"
