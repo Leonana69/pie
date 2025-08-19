@@ -1,49 +1,77 @@
-# This is an auto generated Dockerfile for ros:ros-base
-# generated from docker_images_ros2/create_ros_image.Dockerfile.em
-FROM ros:humble-ros-core-jammy
+FROM pytorch/pytorch:2.7.1-cuda12.6-cudnn9-devel
 
-# install bootstrap tools
-RUN apt-get update && apt-get install --no-install-recommends -y \
+# -------- Install System Dependencies --------
+RUN apt-get update && apt-get install -y \
     build-essential \
+    curl \
     git \
-    python3-colcon-common-extensions \
-    python3-colcon-mixin \
-    python3-rosdep \
-    python3-vcstool \
+    unzip \
+    pkg-config \
+    libssl-dev \
+    python3-build \
     && rm -rf /var/lib/apt/lists/*
 
-# bootstrap rosdep
-RUN rosdep init && \
-  rosdep update --rosdistro $ROS_DISTRO
+# -------- Install Rust --------
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && . "$HOME/.cargo/env" \
+    && rustc --version \
+    && cargo --version \
+    && rustup target add wasm32-wasip2
 
-# setup colcon mixin and metadata
-RUN colcon mixin add default \
-      https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml && \
-    colcon mixin update && \
-    colcon metadata add default \
-      https://raw.githubusercontent.com/colcon/colcon-metadata-repository/master/index.yaml && \
-    colcon metadata update
+# Ensure Rust is in PATH for subsequent layers
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-# install ros2 packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-humble-ros-base=0.10.0-1* \
-    && rm -rf /var/lib/apt/lists/*
+# -------- Install Protobuf --------
+RUN curl -LO https://github.com/protocolbuffers/protobuf/releases/download/v21.3/protoc-21.3-linux-x86_64.zip \
+    && apt-get update && apt-get install -y unzip \
+    && unzip protoc-21.3-linux-x86_64.zip -d /usr/local \
+    && rm protoc-21.3-linux-x86_64.zip
 
-# install gstreamer
-RUN apt-get update && apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-libav
+# Install Python dependencies including protoc plugins
+RUN pip install grpcio-tools quart uvicorn
 
-# install slam_toolbox
-RUN apt-get update && apt-get install -y ros-humble-slam-toolbox
+# link protoc-gen-mypy
+RUN ln -s /opt/conda/bin/protoc-gen-mypy /usr/local/bin/protoc-gen-pyi
 
-# install nav2
-RUN apt-get update && apt-get install -y ros-humble-navigation2 ros-humble-nav2-bringup
+# -------- Build FlashInfer --------
+WORKDIR /tmp
 
-# source the setup files
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
+RUN pip install --upgrade pip setuptools wheel build uv
+# Clone flashinfer with submodules
+RUN git clone https://github.com/flashinfer-ai/flashinfer.git --recursive
 
-COPY ../src /workspace/src
+WORKDIR /tmp/flashinfer
+# Set CUDA arch (can override via --build-arg TORCH_CUDA_ARCH_LIST=8.9 etc.)
+ARG TORCH_CUDA_ARCH_LIST=8.9
+ENV TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST}
+
+# Build AOT kernels and wheel
+RUN python -m flashinfer.aot \
+    && python -m build --no-isolation --wheel \
+    && pip install dist/flashinfer_*.whl
+
+# Cleanup source to reduce image size
 WORKDIR /workspace
+RUN rm -rf /tmp/flashinfer
 
-RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && cd /workspace && colcon build"
-RUN chmod +x /workspace/src/typego_sdk/scripts/*.sh
-CMD ["bash", "-c", "/workspace/src/typego_sdk/scripts/run.sh"]
+# Clone the pie repository
+RUN git clone https://github.com/Leonana69/pie.git /workspace
+
+# -------- Install Backend --------
+RUN cd /workspace/backend/backend-python \
+    && chmod +x build_proto.sh \
+    && ./build_proto.sh \
+    && pip install -e .
+
+# -------- Compile Frontend --------
+RUN cd /workspace/pie-cli \
+    && cargo install --path .
+
+# -------- Compile Examples --------
+RUN cd /workspace/example-apps \
+    && cargo build --target wasm32-wasip2 --release
+
+# -------- Install lib for client --------
+RUN pip install blake3 fastapi
+
+# CMD ["python", "./run.py"]

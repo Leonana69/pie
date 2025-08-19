@@ -8,10 +8,13 @@ import uvicorn
 
 from pie import PieClient, Instance  # Assuming these are defined elsewhere
 
+PREFIX = ""
+
 # ------------------------------
 # PIE Runner
 # ------------------------------
 async def run_inferlet(prompt: str, max_tokens: int, server_uri: str, verbose: bool = False):
+    global PREFIX
     program_name = "typego_s0"  # fixed program name
     program_path = Path(f"../../example-apps/target/wasm32-wasip2/release/{program_name}.wasm")
 
@@ -32,6 +35,11 @@ async def run_inferlet(prompt: str, max_tokens: int, server_uri: str, verbose: b
             "--prompt", prompt,
             "--max-tokens", str(max_tokens),
         ]
+
+        if PREFIX:  # only add if not empty string
+            instance_args.extend(["--prefix", PREFIX])
+
+        print(f'Prefix: {PREFIX}')
 
         instance = await client.launch_instance(program_hash, arguments=instance_args)
 
@@ -58,11 +66,16 @@ app = FastAPI()
 
 @app.post("/generate")
 async def generate(request: Request):
+    global PREFIX
     data = await request.json()
     prompt = data.get("prompt", "Tell me about the number")
     max_tokens = data.get("max_tokens", 64)
     verbose = data.get("verbose", False)
     server_uri = data.get("server_uri", "ws://127.0.0.1:8080")
+    prefix = data.get("prefix", "")
+
+    if prefix:
+        PREFIX = prefix
 
     try:
         result = await run_inferlet(prompt, max_tokens, server_uri, verbose)
