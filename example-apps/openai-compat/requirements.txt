@@ -1,4 +1,0 @@
-aiohttp ~= 3.11
-matplotlib ~= 3.9
-numpy ~= 2.0
-psutil ~= 7.0

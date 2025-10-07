@@ -1,0 +1,23 @@
+# Configuration for PIE with Metal acceleration on Apple Silicon
+# This config uses pie-metal backend with MPS device
+
+host = "127.0.0.1"
+port = 8080
+enable_auth = false
+auth_secret = "metal-secret"
+verbose = true
+log = "pie_metal.log"
+
+# Metal-accelerated backend configuration for LLaMA 3
+[[backend]]
+backend_type = "python"
+exec_path = "../backend/backend-python/server.py"
+model = "llama-3.2-1b-instruct"   # LLaMA 3.2 1B model
+device = "mps"                    # Use MPS device for Metal acceleration
+dtype = "float16"                 # Use float16 for Metal (native support in custom kernels)
+kv_page_size = 16
+max_dist_size = 32
+max_num_kv_pages = 10240
+max_num_embeds = 128
+max_num_adapters = 32
+max_adapter_rank = 8

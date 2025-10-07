@@ -1,0 +1,36 @@
+# Include package metadata and documentation
+include README.md
+include LICENSE
+include pyproject.toml
+include setup.py
+
+# Include Metal kernels and bindings source files
+recursive-include src/pie_metal/_internal/metal/kernels *.metal
+recursive-include src/pie_metal/_internal/metal/bindings *.mm *.h *.cpp
+include src/pie_metal/_internal/metal/CMakeLists.txt
+
+# Include any cmake files
+recursive-include src/pie_metal/_internal/metal *.cmake
+recursive-include src/pie_metal/_internal/metal/cmake *
+
+# Include compiled metallib files if they exist
+recursive-include src/pie_metal/_internal/metal/build/lib *.metallib
+
+# Include test files
+recursive-include tests *.py
+
+# Include benchmark files
+recursive-include benchmarks *.py
+
+# Exclude build artifacts and cache
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude *.dylib
+
+# Exclude IDE and editor files
+global-exclude .vscode
+global-exclude .idea
+global-exclude *.swp
+global-exclude *.swo

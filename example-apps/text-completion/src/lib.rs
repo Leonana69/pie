@@ -1,105 +1,25 @@
-use futures::future::join_all;
-use inferlet::traits::Tokenize;
-use pico_args::Arguments;
-use std::ffi::OsString;
+use inferlet::stop_condition::{StopCondition, ends_with_any, max_len};
+use inferlet::{Args, Result, Sampler};
 use std::time::Instant;
 
-/// Defines the command-line interface and help message.
-const HELP: &str = r#"
-Usage: program [OPTIONS]
-
-A simple inferlet to run a chat model.
-
-Options:
-  -p, --prompt <STRING>    The prompt to send to the model
-                           (default: "Explain the LLM decoding process ELI5.")
-  -n, --max-tokens <INT>   The maximum number of new tokens to generate
-                           (default: 256)
-  --output                 Send the final output back to the user.
-  -h, --help               Print help information
-"#;
-
 #[inferlet::main]
-async fn main() -> Result<(), String> {
-    // 1. Get arguments from the inferlet environment and prepare the parser.
-    let mut args = Arguments::from_vec(
-        inferlet::get_arguments()
-            .into_iter()
-            .map(OsString::from)
-            .collect(),
-    );
+async fn main(mut args: Args) -> Result<String> {
+    let prompt: String = args.value_from_str(["-p", "--prompt"])?;
+    let max_num_outputs: usize = args.value_from_str(["-n", "--max-tokens"]).unwrap_or(256);
 
-    // 2. Handle the --help flag.
-    if args.contains(["-h", "--help"]) {
-        println!("{}", HELP);
-        return Ok(());
-    }
-
-    // 3. Parse arguments, falling back to defaults if they are not provided.
-    let prompt = args
-        .opt_value_from_str(["-p", "--prompt"])
-        .map_err(|e| e.to_string())?
-        .unwrap_or_else(|| "Explain the LLM decoding process ELI5.".to_string());
-
-    let max_num_outputs: u32 = args
-        .opt_value_from_str(["-n", "--max-tokens"])
-        .map_err(|e| e.to_string())?
-        .unwrap_or(256);
-
-    let model_name: String = args
-        .value_from_str(["-m", "--model"])
-        .map_err(|e| e.to_string())?;
-
-    // Check for the presence of the --output flag.
-    let send_output = args.contains("--output");
-
-    // Ensure no unknown arguments were passed.
-    let remaining = args.finish();
-    if !remaining.is_empty() {
-        return Err(format!(
-            "Unknown arguments found: {:?}. Use --help for usage.",
-            remaining
-        ));
-    }
-
-    // --- Main logic starts here ---
     let start = Instant::now();
 
     let model = inferlet::get_auto_model();
     let tokenizer = model.get_tokenizer();
-
-    // Fallback to the original single-prompt logic.
     let mut ctx = model.create_context();
 
-    if model_name == "llama-3.2" {
-        ctx.fill("<|begin_of_text|>");
-        ctx.fill("<|start_header_id|>system<|end_header_id|>\n\nYou are a helpful, respectful and honest assistant.<|eot_id|>");
-        ctx.fill(&format!(
-            "<|start_header_id|>user<|end_header_id|>\n\n{}<|eot_id|>",
-            prompt
-        ));
-        ctx.fill("<|start_header_id|>assistant<|end_header_id|>\n\n");
-    } else if model_name == "qwen-3" {
-        ctx.fill(
-            "<|im_start|>system\nYou are a helpful, respectful and honest assistant.<|im_end|>\n",
-        );
-        ctx.fill(&format!("<|im_start|>user\n{}<|im_end|>\n", prompt));
-        ctx.fill("<|im_start|>assistant\n<think>\n\n</think>\n\n");
-    } else {
-        return Err(format!("Model {} is not supported.", model_name));
-    }
+    ctx.fill_system("You are a helpful, respectful and honest assistant.");
+    ctx.fill_user(&prompt);
 
-    let end_token = if model_name == "llama-3.2" {
-        "<|eot_id|>"
-    } else if model_name == "qwen-3" {
-        "<|im_end|>"
-    } else {
-        return Err(format!("Model {} is not supported.", model_name));
-    };
+    let sampler = Sampler::top_p(0.6, 0.95);
+    let stop_cond = max_len(max_num_outputs).or(ends_with_any(model.eos_tokens()));
 
-    let final_text = ctx
-        .generate_until(end_token, max_num_outputs as usize)
-        .await;
+    let final_text = ctx.generate(sampler, stop_cond).await;
 
     let token_ids = tokenizer.tokenize(&final_text);
     println!(
@@ -116,10 +36,5 @@ async fn main() -> Result<(), String> {
         );
     }
 
-    // Send back the output to the user only if the --output flag was provided.
-    if send_output {
-        inferlet::send(&final_text);
-    }
-
-    Ok(())
+    Ok(final_text)
 }

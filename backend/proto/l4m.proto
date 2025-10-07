@@ -16,7 +16,7 @@ enum ObjectKind {
   OBJECT_KIND_EMB = 2;
 
   // Distribution.
-  OBJECT_KIND_DIST = 3;
+  OBJECT_KIND_ADAPTER = 3;
 }
 
 // -----------------------------------------------------------------------------
@@ -188,6 +188,46 @@ message BatchDebugQueryRequest {
   repeated DebugQueryRequest items = 1;
 }
 
+message InitializeAdapter {
+  uint32 adapter = 1;
+  uint32 rank = 2;
+  float alpha = 3;
+  uint32 population_size = 4;
+  float mu_fraction = 5;
+  float initial_sigma = 6;
+}
+
+
+message UpdateAdapter {
+  uint32 adapter = 1;
+  repeated float scores = 2;
+  repeated int64 seeds = 3;
+  float max_sigma = 4;
+}
+
+message ForwardWithAdapter {
+  uint32 adapter = 1;
+
+  int64 seed = 2;
+
+  repeated uint32 kv_page_ids = 3;
+
+  uint32 kv_page_last_len = 4;
+
+  repeated uint32 token_ids = 5;
+
+  repeated uint32 position_ids = 6;
+
+  repeated BrleBuffer mask = 7;
+
+  repeated uint32 output_indices = 8;
+
+}
+
+message BatchForwardWithAdapter {
+  repeated ForwardWithAdapter items = 1;
+}
+
 // The response containing decoded tokens.
 message SampleTopKResponse {
   // The decoded token IDs.
@@ -211,7 +251,7 @@ message GetInfoResponse {
   uint32 kv_page_size = 3;
   uint32 num_available_kv_pages = 4;
   uint32 num_available_embeddings = 5;
-  uint32 num_available_distributions = 6;
+  uint32 num_available_adapters = 6;
   Tokenizer tokenizer = 7;
 }
 
@@ -245,6 +285,8 @@ message BatchDebugQueryResponse {
 }
 
 
+
+
 message Tokenizer {
   map<uint32, bytes> merge_table = 1;
   map<string, uint32> special_tokens = 2;
@@ -268,7 +310,10 @@ message Request {
     BatchDecodeTokenDistribution decode_token_distribution = 9;
     BatchSampleTopKRequest sample_top_k_request = 10;
     BatchDebugQueryRequest debug_query_request = 11;
-    GetInfoRequest get_info = 12;
+    InitializeAdapter initialize_adapter = 12;
+    UpdateAdapter update_adapter = 13;
+    BatchForwardWithAdapter forward_with_adapter = 14;
+    GetInfoRequest get_info = 15;
   }
 }
 

@@ -1,0 +1,153 @@
+name: Lint Python (PR changed files)
+
+on:
+  pull_request:
+    paths:
+      - 'backend/backend-python/**/*.py'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout (full history for reliable diffs)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute changed Python files under backend/backend-python
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          # PR base/head SHAs (avoid github.sha merge commit semantics)
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          # Ensure both sides exist locally (robust for forks)
+          git fetch --no-tags --prune --depth=1 origin "${{ github.event.pull_request.base.ref }}":pr_base || true
+          git fetch --no-tags --prune --depth=1 origin "pull/${{ github.event.pull_request.number }}/head":pr_head || true
+
+          LEFT=$(git rev-parse --verify pr_base 2>/dev/null || echo "$BASE_SHA")
+          RIGHT=$(git rev-parse --verify pr_head 2>/dev/null || echo "$HEAD_SHA")
+
+          FILES=$(git diff --name-only --diff-filter=ACMRT "$LEFT" "$RIGHT" -- \
+                    'backend/backend-python' \
+                  | grep -E '\.py$' || true)
+
+          FILES="${FILES//$'\n'/ }"
+          echo "files=${FILES}" >> "$GITHUB_OUTPUT"
+
+      - name: Install uv (provides uvx)
+        run: pipx install uv
+
+      - name: Sync backend-python dependencies and install pie-metal
+        run: |
+          uv --project backend/backend-python sync
+          uv pip install --python backend/backend-python/.venv -e ./pie-metal
+
+      - name: Run Black on changed files (no build)
+        shell: bash
+        run: |
+          FILES="${{ steps.changes.outputs.files }}"
+          if [ -z "$FILES" ]; then
+            echo "No Python files changed under backend/backend-python."
+            exit 0
+          fi
+          echo "Linting with Black: $FILES"
+          uvx black --check $FILES
+
+      - name: Run Pylint on predefined files + changed files outside those dirs
+        shell: bash
+        env:
+          PYTHONPATH: backend/backend-python
+        run: |
+          set -euo pipefail
+          # allow globs that don't match to disappear
+          shopt -s nullglob
+
+          # Predefined targets (expand if files exist)
+          PREDEF=(backend/backend-python/config/*.py backend/backend-python/model/*.py)
+
+          # Changed files space-separated from previous step
+          CHANGED_STR="${{ steps.changes.outputs.files }}"
+          CHANGED_LIST=()
+          if [ -n "$CHANGED_STR" ]; then
+            # split on whitespace into array
+            read -r -a CHANGED_LIST <<< "$CHANGED_STR"
+          fi
+
+          # Keep only changed files outside the predefined dirs
+          CHANGED_OUTSIDE=()
+          for f in "${CHANGED_LIST[@]:-}"; do
+            case "$f" in
+              backend/backend-python/config/*|backend/backend-python/model/*)
+                # skip - these are covered by PREDEF
+                ;;
+              *)
+                CHANGED_OUTSIDE+=("$f")
+                ;;
+            esac
+          done
+
+          # Combine -> final targets
+          TARGETS=()
+          # append existing expanded PREDEF files (if any)
+          for p in "${PREDEF[@]}"; do
+            # PREDEF entries are already expanded due to nullglob
+            TARGETS+=("$p")
+          done
+          # append changed files outside predefined dirs
+          for c in "${CHANGED_OUTSIDE[@]}"; do
+            TARGETS+=("$c")
+          done
+
+          if [ "${#TARGETS[@]}" -eq 0 ]; then
+            echo "No files to run pylint on (no predefined files present and no changed files outside them)."
+            exit 0
+          fi
+
+          echo "Running pylint on the following files:"
+          printf '  %s\n' "${TARGETS[@]}"
+
+          # run pylint via uv (as in your script)
+          uv run --project backend/backend-python --with pylint --with torch pylint --disable=R "${TARGETS[@]}"
+
+      - name: Run Pyright on predefined files + changed files outside those dirs
+        shell: bash
+        env:
+          PYTHONPATH: backend/backend-python
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          PREDEF=(backend/backend-python/config/*.py backend/backend-python/model/*.py)
+          CHANGED_STR="${{ steps.changes.outputs.files }}"
+          CHANGED_LIST=()
+          if [ -n "$CHANGED_STR" ]; then
+            read -r -a CHANGED_LIST <<< "$CHANGED_STR"
+          fi
+
+          CHANGED_OUTSIDE=()
+          for f in "${CHANGED_LIST[@]:-}"; do
+            case "$f" in
+              backend/backend-python/config/*|backend/backend-python/model/*) ;;
+              *) CHANGED_OUTSIDE+=("$f") ;;
+            esac
+          done
+
+          TARGETS=()
+          for p in "${PREDEF[@]}"; do TARGETS+=("$p"); done
+          for c in "${CHANGED_OUTSIDE[@]}"; do TARGETS+=("$c"); done
+
+          if [ "${#TARGETS[@]}" -eq 0 ]; then
+            echo "No files to run pyright on."
+            exit 0
+          fi
+
+          echo "Running pyright on the following files:"
+          printf '  %s\n' "${TARGETS[@]}"
+
+          uv run --project backend/backend-python --with pyright --with torch pyright "${TARGETS[@]}"

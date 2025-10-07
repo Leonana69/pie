@@ -1,0 +1,5 @@
+package inferlet:image;
+
+world imports {
+    import image;
+}

@@ -1,540 +1,520 @@
-import random
-import msgpack
-import torch
-from websockets.sync.client import connect
-import zmq
-import time
-import fire
+"""Shared server utilities for PIE backends.
+
+This module hosts the transport loop, registration logic, and configuration
+helpers that are agnostic to the underlying compute backend. Individual
+backends provide their own handler classes and model loading routines while
+reusing this shared infrastructure.
+"""
+
+from __future__ import annotations
+
+import enum
 import os
-import tomli
+import random
+import signal
+import struct
+import sys
+import queue
+import threading
+import time
+import traceback
 from pathlib import Path
+from typing import Any, Dict, Type
+
+import msgpack
+import msgspec
+import torch
+import zmq
 from platformdirs import user_cache_dir
-import handshake_pb2
-import l4m_pb2
-import l4m_vision_pb2
-import ping_pb2
-from config import parse_model_metadata
-from driver import Driver
-from l4ma import L4maForCausalLM, create_fusion_map
-from qwen3 import Qwen3ForCausalLM, create_fusion_map as create_qwen3_fusion_map
-import ztensor
-from tqdm import tqdm
-import threading  # Import the threading module
+from websockets.sync.client import connect
+
+# Note: profiler.save_profiling_json is imported at shutdown time (line 188)
+
+from message import (
+    DownloadAdapterRequest,
+    EmbedImageRequest,
+    ForwardPassRequest,
+    HandshakeRequest,
+    HeartbeatRequest,
+    InitializeAdapterRequest,
+    QueryRequest,
+    UpdateAdapterRequest,
+    UploadAdapterRequest,
+)
 
 
-def main(config: str = None,
-         host: str = 'localhost',
-         port: int = 10123,
-         controller_host: str = 'localhost',
-         controller_port: int = 9123,
-         auth_token: str = None,
-         model: str = None,
-         version: str = None,
-         cache_dir: str = None,
-         kv_page_size: int = 32,
-         dist_size: int = 32,
-         max_num_kv_pages: int = 1000,
-         max_num_embeds: int = 50000,
-         device: str = 'cuda:0',
-         dtype: str = 'bfloat16'):
-    """
-    Runs the application with the specified configuration.
+class HandlerId(enum.Enum):
+    """Enumeration of handler message types."""
 
-    Args:
-        config (str, optional): Path to a TOML configuration file.
-        host (str, optional): The hostname. Defaults to 'localhost'.
-        port (int, optional): The port number. Defaults to 10123.
-        controller_host (str, optional): The controller hostname. Defaults to 'localhost'.
-        controller_port (int, optional): The controller port number. Defaults to 9123.
-        auth_token (str, optional): The authentication token. Defaults to None.
-        model (str, optional): The model to use. Defaults to None.
-        version (str, optional): The version of the model. Defaults to None.
-        cache_dir (str, optional): The directory for caching. Defaults to a system-appropriate cache directory.
-        kv_page_size (int, optional): The KV page size. Defaults to 32.
-        dist_size (int, optional): The distribution size. Defaults to 32.
-        max_num_kv_pages (int, optional): The maximum number of KV pages. Defaults to 1000.
-        max_num_embeds (int, optional): The maximum number of embeddings. Defaults to 50000.
-        device (str, optional): The device to use. Defaults to 'cuda:0'.
-        dtype (str, optional): The data type. Defaults to 'bfloat16'.
-    """
-    config_from_file = {}
-    if config:
-        try:
-            with open(config, "rb") as f:
-                config_from_file = tomli.load(f)
-        except FileNotFoundError:
-            print(f"Warning: Config file not found at '{config}'")
-        except tomli.TOMLDecodeError as e:
-            print(f"Error decoding TOML file '{config}': {e}")
+    HANDSHAKE = 0
+    HEARTBEAT = 1
+    QUERY = 2
+    FORWARD_PASS = 3
+    EMBED_IMAGE = 4
+    INITIALIZE_ADAPTER = 5
+    UPDATE_ADAPTER = 6
+    UPLOAD_HANDLER = 7
+    DOWNLOAD_HANDLER = 8
 
-    # Prioritize CLI arguments over config file values
-    final_config = {
-        'host': host if host != 'localhost' else config_from_file.get('host', 'localhost'),
-        'port': port if port != 10123 else config_from_file.get('port', 10123),
-        'controller_host': controller_host if controller_host != 'localhost' else config_from_file.get('controller_host', 'localhost'),
-        'controller_port': controller_port if controller_port != 9123 else config_from_file.get('controller_port', 9123),
-        'auth_token': auth_token if auth_token is not None else config_from_file.get('auth_token'),
-        'model': model if model is not None else config_from_file.get('model'),
-        'kv_page_size': kv_page_size if kv_page_size != 32 else config_from_file.get('kv_page_size', 32),
-        'dist_size': dist_size if dist_size != 32 else config_from_file.get('dist_size', 32),
-        'max_num_kv_pages': max_num_kv_pages if max_num_kv_pages != 1000 else config_from_file.get('max_num_kv_pages', 1000),
-        'max_num_embeds': max_num_embeds if max_num_embeds != 50000 else config_from_file.get('max_num_embeds', 50000),
-        'device': device if device != 'cuda:0' else config_from_file.get('device', 'cuda:0'),
-        'dtype': dtype if dtype != 'bfloat16' else config_from_file.get('dtype', 'bfloat16'),
-    }
 
-    # Special handling for cache-dir
-    if cache_dir:
-        final_config['cache_dir'] = cache_dir
-    elif 'cache_dir' in config_from_file:
-        final_config['cache_dir'] = config_from_file['cache_dir']
-    elif os.environ.get('PIE_HOME'):
-        final_config['cache_dir'] = os.environ.get('PIE_HOME')
-    else:
-        final_config['cache_dir'] = str(Path(user_cache_dir('pie')))
+def resolve_cache_dir(cache_dir: str | None) -> str:
+    """Resolve the cache directory using CLI arg > env var > default."""
+
+    return cache_dir or os.environ.get("PIE_HOME") or str(Path(user_cache_dir("pie")))
+
+
+def build_config(**kwargs: Any) -> Dict[str, Any]:
+    """Normalize server configuration dictionary and resolve cache directory."""
+    config = {k: v for k, v in kwargs.items() if v is not None}
+
+    # Resolve the cache directory
+    config["cache_dir"] = resolve_cache_dir(config.get("cache_dir"))
+
+    # Check that either `max_num_kv_pages` or `gpu_mem_headroom` is set
+    if "max_num_kv_pages" not in config and "gpu_mem_headroom" not in config:
+        terminate(
+            "Config must contain either 'max_num_kv_pages' or 'gpu_mem_headroom'."
+        )
+
+    # Check that if `gpu_mem_headroom` is set, then CUDA must be available
+    if "gpu_mem_headroom" in config:
+        if not torch.cuda.is_available():
+            terminate("'gpu_mem_headroom' is set but CUDA is not available.")
+        if "cuda" not in config["device"]:
+            terminate("'gpu_mem_headroom' is set but device is not a CUDA device.")
+
+    return config
+
+
+def print_config(config: Dict[str, Any]) -> None:
+    """Utility to print configuration in a consistent format."""
 
     print("--- Configuration ---")
-    for key, value in final_config.items():
+    for key, value in config.items():
         print(f"{key}: {value}")
     print("----------------------")
 
-    model, model_metadata = load_model(final_config)
 
-    start_service(final_config, model, model_metadata)
+def start_service(
+    *,
+    config: Dict[str, Any],
+    handler_cls: Type,
+    register_with_controller: bool = True,
+) -> None:
+    """Spin up the backend service using the provided handler implementation."""
 
-
-def load_model(config: dict):
-    model_name = config.get('model')
-    if not model_name:
-        raise ValueError("Model name must be specified in config or arguments.")
-
-    cache_dir = config.get('cache_dir')
-
-    # Define the path to the model directory and metadata file
-    model_path = os.path.join(cache_dir, "models")
-    metadata_path = os.path.join(model_path, f"{model_name}.toml")
-
-    # Read the metadata file
-    if not os.path.exists(metadata_path):
-        raise FileNotFoundError(f"Metadata file not found at: {metadata_path}")
-
-    metadata = parse_model_metadata(metadata_path)
-
-    metadata.architecture.device = config.get('device', 'cuda:0')
-    metadata.architecture.dtype = getattr(torch, config.get('dtype', 'bfloat16'))
-
-    # 1. Map fused tensor names to their original sources
-    # Choose the appropriate model based on architecture type
-    if metadata.architecture.type.lower() == 'qwen3':
-        model = Qwen3ForCausalLM(metadata.architecture)
-        fusion_map = create_qwen3_fusion_map(model)
-    else:
-        # Default to L4MA for backward compatibility
-        model = L4maForCausalLM(metadata.architecture)
-        fusion_map = create_fusion_map(model)
-
-    # 2. Create a reverse map for fast lookups (original source -> fused target)
-    source_to_fusion_target = {
-        source: target
-        for target, details in fusion_map.items()
-        for source in details["sources"]
-    }
-
-    # 3. Buffer to hold source tensors until they are all collected
-    pending_fusion_tensors = {}
-    # ===================================================================
-
-    model_state_keys = set(model.state_dict().keys())
-    loaded_keys = set()
-
-    # print(f"Found {len(metadata.parameters)} parameter file(s) to load.")
-
-    try:
-        for param_file in metadata.parameters:
-            weights_path = os.path.join(model_path, model_name, param_file)
-            # ... (existing file existence check) ...
-
-            # print(f"Loading weights from ztensor file: {param_file}")
-            with ztensor.Reader(weights_path) as reader:
-                tensors_in_file = reader.get_tensor_names()
-
-                for name in tqdm(tensors_in_file, desc=f"Loading {param_file}", unit="tensors"):
-                    # Check if this tensor from the file is part of a planned fusion
-                    if name in source_to_fusion_target:
-                        tensor_data = reader.read_tensor(name, to="torch")
-                        pending_fusion_tensors[name] = tensor_data
-                        continue  # Skip direct loading, we'll fuse it later
-
-                    # This is a standard, non-fused tensor
-                    if name in model_state_keys and name not in loaded_keys:
-                        param = model.state_dict()[name]
-                        tensor_data = reader.read_tensor(name, to="torch")
-                        if tensor_data.shape != param.shape:
-                            print(f"    Warning: Shape mismatch for tensor '{name}'. Skipping.")
-                            continue
-                        with torch.no_grad():
-                            param.copy_(tensor_data, non_blocking=True)
-                        loaded_keys.add(name)
-
-        # ================= ELEGANT FUSION HANDLING: PROCESSING =================
-        # print("\nProcessing fused tensors...")
-        for target_name, details in fusion_map.items():
-            source_names = details["sources"]
-
-            # Check if all required source tensors have been collected
-            if all(s in pending_fusion_tensors for s in source_names):
-                # Collect tensors in the correct order
-                tensors_to_fuse = [pending_fusion_tensors[s] for s in source_names]
-
-                # Concatenate them along the specified dimension
-                fused_tensor = torch.cat(tensors_to_fuse, dim=details["dim"])
-
-                # Load the newly created fused tensor into the model
-                param = model.state_dict()[target_name]
-                if fused_tensor.shape != param.shape:
-                    print(f"    Warning: Shape mismatch for fused tensor '{target_name}'. ZT: {fused_tensor.shape}, Model: {param.shape}. Skipping.")
-                    continue
-
-                with torch.no_grad():
-                    param.copy_(fused_tensor, non_blocking=True)
-
-                loaded_keys.add(target_name)
-        # ========================================================================
-
-        # L4ma models often reuse the embed_tokens for the lm_head, so we need to copy it explicitly
-        if "lm_head.weight" in model_state_keys and "lm_head.weight" not in loaded_keys:
-            model.state_dict()["lm_head.weight"].copy_(model.model.embed_tokens.weight, non_blocking=True)
-            loaded_keys.add("lm_head.weight")
-
-        # After trying all files, check if any keys are missing
-        missing_keys = model_state_keys - loaded_keys
-        if missing_keys:
-            print("\nWarning: Some model weights were not found in any parameter file:")
-            for key in sorted(list(missing_keys)):
-                print(f"  - {key}")
-        else:
-            print("\nSuccessfully loaded all expected model weights.")
-
-        # Move the entire model to the specified device
-        model.eval()  # Set the model to evaluation mode
-
-        return model, metadata
-
-
-    except ztensor.ZTensorError as e:
-        print(f"Fatal Error: Failed to read a ztensor file. Error: {e}")
-    except Exception as e:
-        print(f"An unexpected fatal error occurred: {e}")
-
-
-def start_service(config, model, model_metadata):
-    """
-    Initializes and starts the service, including the ZMQ server and registration threads.
-    """
-    if config.get("controller_host") in ["127.0.0.1", "localhost"]:
+    if config["controller_host"] in ["127.0.0.1", "localhost"]:
         unique_id = random.randint(1000, 9999)
         endpoint = f"ipc:///tmp/pie-service-{unique_id}"
         real_endpoint = endpoint
     else:
-        endpoint = f"tcp://{config.get('host')}:{config.get('port')}"
-        real_endpoint = f"tcp://*:{config.get('port')}"
+        endpoint = f"tcp://{config['host']}:{config['port']}"
+        real_endpoint = f"tcp://*:{config['port']}"
 
-    engine = Driver(model=model,
-                    kv_page_size=config.get("kv_page_size"),
-                    dist_size=config.get("dist_size"),
-                    max_num_kv_pages=config.get("max_num_kv_pages"),
-                    max_num_embeds=config.get("max_num_embeds"),
-                    dtype=getattr(torch, config.get('dtype', 'bfloat16')),
-                    device=config.get("device"))
-
-    # ===================================================================
-    # RUN THE TEST ROUTINE AT STARTUP
-    # run_test_routine(engine)
-    # ===================================================================
+    handler = handler_cls(
+        config=config,
+    )
 
     context = zmq.Context()
-    router = context.socket(zmq.ROUTER)
-    router.bind(real_endpoint)
+    socket = context.socket(zmq.ROUTER)
+    socket.bind(real_endpoint)
 
-    # print(f"Server listening on {endpoint}")
+    heartbeat_request_queue = queue.Queue()
+    work_request_queue = queue.Queue()
+    response_queue = queue.Queue()
 
-    # Create and start the ZMQ server thread
-    zmq_thread = threading.Thread(
-        target=run_zmq_server,
-        args=(router, engine, config, model_metadata),
-        daemon=True  # Daemonize thread to exit when the main thread exits
-    )
-    zmq_thread.start()
+    # Thread Structure:
+    #
+    # +-----------------------------+
+    # |     zmq_listen_thread       |  <-- Receives requests (ZMQ socket)
+    # +-----------------------------+
+    #   |                         |
+    #   | (heartbeat req queue)   | (work req queue)
+    #   v                         v
+    # +------------------+    +---------------+
+    # | heartbeat_thread |    | worker_thread |
+    # +------------------+    +---------------+
+    #           |                |
+    #           +-------+--------+
+    #                   | (response queue)
+    #                   v
+    # +-----------------------------+
+    # |    zmq_response_thread      |  --> Sends responses (ZMQ socket)
+    # +-----------------------------+
 
-    # Create and start the registration thread
-    register_thread = threading.Thread(
-        target=register,
-        args=(config, endpoint),
-        daemon=True
-    )
-    register_thread.start()
+    threading.Thread(
+        target=heartbeat_thread,
+        args=(heartbeat_request_queue, response_queue, handler),
+        daemon=True,
+    ).start()
+    threading.Thread(
+        target=worker_thread,
+        args=(work_request_queue, response_queue, handler),
+        daemon=True,
+    ).start()
+    threading.Thread(
+        target=zmq_response_thread, args=(response_queue, socket), daemon=True
+    ).start()
+    threading.Thread(
+        target=zmq_listen_thread,
+        args=(heartbeat_request_queue, work_request_queue, socket),
+        daemon=True,
+    ).start()
 
-    # Keep the main thread alive to allow daemon threads to run, and handle shutdown
+    if register_with_controller:
+        threading.Thread(
+            target=register_thread,
+            args=(config, endpoint),
+            daemon=True,
+        ).start()
+
+    # Setup shutdown flag and signal handlers
+    shutdown_event = threading.Event()
+
+    def shutdown_handler(signum, _frame):
+        if not shutdown_event.is_set():
+            print(f"\nReceived signal {signum}, shutting down server...")
+            shutdown_event.set()
+
+    signal.signal(signal.SIGTERM, shutdown_handler)
+    signal.signal(signal.SIGINT, shutdown_handler)
+
     try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\nShutting down server...")
+        # Block until shutdown signal
+        shutdown_event.wait()
     finally:
-        # Cleanly close ZMQ resources
-        router.close()
+        # Save profiling results before shutdown (JSON only, no stdout report)
+        from profiler import (  # pylint: disable=import-outside-toplevel
+            save_profiling_json,
+        )
+
+        try:
+            json_path = save_profiling_json(output_dir=".")
+            print(f"📁 Profiling results saved to: {json_path}")
+        except (OSError, ValueError, RuntimeError) as e:
+            print(f"⚠️  Failed to save profiling results: {e}")
+        socket.close()
         context.term()
         print("Server shutdown complete.")
 
 
-def register(config, endpoint):
-    """
-    Registers the service with the controller. Runs in a separate thread.
-    """
-    # Notify the controller.
+def register_thread(config: Dict[str, Any], endpoint: str) -> None:
+    """Register this service with the controller."""
+
+    controller_addr = f"ws://{config['controller_host']}:{config['controller_port']}"
     try:
-        auth_token = config.get("auth_token")
-        with connect(f"ws://{config.get('controller_host')}:{config.get('controller_port')}") as websocket:
-            # Do authentication
-            websocket.send(msgpack.packb({
-                "type": "authenticate",
-                "corr_id": 0,
-                "token": auth_token,
-            }, use_bin_type=True))
+        with connect(controller_addr) as websocket:
+            auth_msg = msgpack.packb(
+                {
+                    "type": "authenticate",
+                    "corr_id": 0,
+                    "token": config["auth_token"],
+                },
+                use_bin_type=True,
+            )
+            if auth_msg is not None:
+                websocket.send(auth_msg)
+            auth_response = msgpack.unpackb(websocket.recv(), raw=False)
+            if not auth_response.get("successful"):
+                print(
+                    f"Authentication failed: {auth_response.get('result', 'Unknown error')}"
+                )
+                sys.exit(1)
 
-            message = msgpack.unpackb(websocket.recv(), raw=False)
+            reg_msg = msgpack.packb(
+                {
+                    "type": "attach_remote_service",
+                    "corr_id": 0,
+                    "endpoint": endpoint,
+                    "service_name": config["model"],
+                    "service_type": "model",
+                },
+                use_bin_type=True,
+            )
+            if reg_msg is not None:
+                websocket.send(reg_msg)
+            reg_response = msgpack.unpackb(websocket.recv(), raw=False)
+            if not reg_response.get("successful"):
+                print(
+                    f"Controller registration failed: {reg_response.get('result', 'Unknown error')}"
+                )
+                sys.exit(1)
 
-            if not message.get("successful"):
-                print(f"Authentication failed: {message.get('result', 'Unknown error')}")
-                exit(1)
+            print(f"Registered with controller at {controller_addr}")
 
-            # Register the service
-            websocket.send(msgpack.packb({
-                "type": "attach_remote_service",
-                "corr_id": 0,
-                "endpoint": endpoint,
-                "service_name": "example_service",
-                "service_type": "l4m",
-            }, use_bin_type=True))
-
-            message = msgpack.unpackb(websocket.recv(), raw=False)
-            if not message.get("successful"):
-                print(f"Controller could not attack the backend: {message.get('result', 'Unknown error')}")
-                exit(1)
-
-            print(f"Registered with the controller at {config.get('controller_host')}:{config.get('controller_port')}")
-
-    except ConnectionRefusedError:
-        print(f"Failed to connect to the controller at {config.get('controller_host')}:{config.get('controller_port')}.")
-        print("Please ensure the controller is running and accessible.")
-    except Exception as e:
-        print(f"An error occurred during registration: {e}")
+    except (ConnectionRefusedError, TimeoutError) as exc:
+        print(f"Failed to connect to the controller at {controller_addr}.")
+        print(f"Error: {exc}")
+        print("Please ensure the controller is running and accessible. Terminating.")
+        os._exit(1)
+    except (OSError, ValueError, RuntimeError) as exc:
+        print(f"An unexpected error occurred during registration: {exc}. Terminating.")
+        os._exit(1)
 
 
-def run_zmq_server(router, engine, config, model_metadata):
-    """
-    This function runs the ZMQ server loop in a dedicated thread.
-    It listens for incoming client requests and processes them.
-    """
-    connected_clients = {}
-    protocols = ["l4m", "l4m-vision", "ping"]
-    idle_start = time.time()
+def heartbeat_thread(
+    heartbeat_request_queue: queue.Queue, response_queue: queue.Queue, handler: Any
+) -> None:
+    """Heartbeat thread that responds to heartbeat requests to the controller. And if no
+    heartbeat is received for the timeout period, terminates the program."""
 
-    while True:
-        try:
-            # ROUTER sockets receive multipart messages.
-            # Expected format: [client_identity, empty_frame, payload]
-            frames = router.recv_multipart()
-            # print(f"Idle time: {(time.time() - idle_start) * 1000}ms")
+    heartbeat_timeout = 15
+    last_heartbeat_time = time.monotonic()
 
-            client_identity = frames[0]
-            start = time.time()
+    try:
+        while True:
+            time.sleep(1)
 
-            # print("received", frames)
+            if time.monotonic() - last_heartbeat_time > heartbeat_timeout:
+                print(
+                    f"[!] Heartbeat timeout after {heartbeat_timeout}s, exiting",
+                    file=sys.stderr,
+                )
+                os._exit(1)
 
-            # Check if the client has already established a protocol
-            if client_identity in connected_clients:
-                if len(frames) != 3:
-                    print("Invalid message format.")
-                    continue
+            if heartbeat_request_queue.empty():
+                continue
 
-                protocol_raw = frames[1]  # Should be a single byte
-                protocol_idx = int.from_bytes(protocol_raw, byteorder="little")
+            while not heartbeat_request_queue.empty():
+                client_identity, corr_id_bytes, handler_id_bytes, reqs = (
+                    heartbeat_request_queue.get()
+                )
+                resps = handler.heartbeat(reqs)
+                response_queue.put(
+                    (client_identity, corr_id_bytes, handler_id_bytes, resps)
+                )
 
-                if protocol_idx >= len(protocols):
-                    print("Invalid protocol:", protocol_idx)
-                    continue
+            last_heartbeat_time = time.monotonic()
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        terminate(f"Unhandled error occurred in the heartbeat thread: {exc}")
 
-                protocol = protocols[protocol_idx]
-                payload = frames[2]
 
-                if protocol == "l4m":
-                    request = l4m_pb2.Request()
-                    request.ParseFromString(payload)
-                    command = request.WhichOneof("command")
-                    response = None
+def worker_thread(
+    work_request_queue: queue.Queue, response_queue: queue.Queue, handler: Any
+) -> None:
+    """Worker thread that processes incoming requests from the controller."""
 
-                    if command == "allocate":
-                        engine.allocate(request.allocate)
-                    elif command == "deallocate":
-                        engine.deallocate(request.deallocate)
-                    elif command == "embed_text":
-                        engine.embed_text(request.embed_text)
-                    elif command == "fill_block":
-                        res = engine.fill_block(request.fill_block)
-                        response = l4m_pb2.Response(correlation_id=request.correlation_id, batch_sync=res)
-                    elif command == "forward_text":
-                        res = engine.forward_text(request.forward_text)
-                        response = l4m_pb2.Response(correlation_id=request.correlation_id, forward_text=res)
-                    elif command == "mask_block":
-                        engine.mask_block(request.mask_block)
-                    elif command == "copy_block":
-                        engine.copy_block(request.copy_block)
-                    elif command == "decode_token_distribution":
-                        engine.decode_token_distribution(request.decode_token_distribution)
-                    elif command == "sample_top_k_request":
-                        res = engine.sample_top_k_request(request.sample_top_k_request)
-                        response = l4m_pb2.Response(correlation_id=request.correlation_id, sample_top_k=res)
-                    elif command == "debug_query_request":
-                        res = engine.debug_query_request(request.debug_query_request)
-                        response = l4m_pb2.Response(correlation_id=request.correlation_id, debug_query=res)
-                    elif command == "get_info":
-                        print("Getting info from the engine.")
-                        response = l4m_pb2.Response(correlation_id=request.correlation_id, get_info=l4m_pb2.GetInfoResponse(
-                            version="0.1",
-                            model_name=f"{config.get('model')}-{config.get('version', '')}",
-                            kv_page_size=config.get("kv_page_size"),
-                            num_available_kv_pages=config.get("max_num_kv_pages"),
-                            num_available_embeddings=config.get("max_num_embeds"),
-                            num_available_distributions=0,
-                            tokenizer=l4m_pb2.Tokenizer(
-                                merge_table=model_metadata.tokenizer.merge_table,
-                                special_tokens=model_metadata.tokenizer.special_tokens,
-                                split_regex=model_metadata.tokenizer.split_regex,
-                                escape_non_printable=model_metadata.tokenizer.escape_non_printable,
-                            )
-                        ))
-                    else:
-                        print("No valid command found in request.")
+    try:
+        while True:
+            client_identity, corr_id_bytes, handler_id_bytes, handler_id, reqs = (
+                work_request_queue.get()
+            )
 
-                    if response is not None:
-                        reply_payload = response.SerializeToString()
-                        router.send_multipart([client_identity, protocol_raw, reply_payload])
+            resps = []
+            match handler_id:
+                case HandlerId.HANDSHAKE.value:
+                    resps = handler.handshake(reqs)
+                case HandlerId.QUERY.value:
+                    resps = handler.query(reqs)
+                case HandlerId.FORWARD_PASS.value:
+                    resps = handler.forward_pass(reqs)
+                case HandlerId.EMBED_IMAGE.value:
+                    handler.embed_image(reqs)
+                case HandlerId.INITIALIZE_ADAPTER.value:
+                    handler.initialize_adapter(reqs)
+                case HandlerId.UPDATE_ADAPTER.value:
+                    handler.update_adapter(reqs)
+                case HandlerId.UPLOAD_HANDLER.value:
+                    handler.upload_handler(reqs)
+                case HandlerId.DOWNLOAD_HANDLER.value:
+                    resps = handler.download_handler(reqs)
+                case HandlerId.HEARTBEAT.value:
+                    raise RuntimeError(
+                        "Heartbeat should not be handled by the worker thread"
+                    )
+                case _:
+                    print(f"[!] Unknown handler ID: {handler_id}", file=sys.stderr)
 
-                elif protocol == "l4m-vision":
-                    request = l4m_vision_pb2.Request()
-                    request.ParseFromString(payload)
-                elif protocol == "ping":
-                    ping = ping_pb2.Ping()
-                    ping.ParseFromString(payload)
-                    pong = ping_pb2.Pong(
-                        correlation_id=ping.correlation_id,
-                        message="Pong:" + ping.message
-                    ).SerializeToString()
-                    router.send_multipart([client_identity, protocol_raw, pong])
+            if resps:
+                response_queue.put(
+                    (client_identity, corr_id_bytes, handler_id_bytes, resps)
+                )
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        terminate(f"Unhandled error occurred in the worker thread: {exc}")
+
+
+def zmq_response_thread(response_queue: queue.Queue, socket: zmq.Socket) -> None:
+    """Thread that sends responses to the controller."""
+
+    msgpack_encoder = msgspec.msgpack.Encoder()
+    try:
+        while True:
+            client_identity, corr_id_bytes, handler_id_bytes, resps = (
+                response_queue.get()
+            )
+            response_msg = [client_identity, corr_id_bytes, handler_id_bytes] + [
+                msgpack_encoder.encode(r) for r in resps
+            ]
+            socket.send_multipart(response_msg)
+    except zmq.error.ZMQError as exc:
+        # Terminate the thread if the context is terminated or the socket is not valid
+        # This is a normal shutdown scenario initiated by `start_service`
+        if exc.errno in {zmq.ETERM, zmq.ENOTSOCK}:
+            return
+        terminate(f"Unhandled error occurred in the ZMQ response thread: {exc}")
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        terminate(f"Unhandled error occurred in the ZMQ response thread: {exc}")
+
+
+def zmq_listen_thread(
+    heartbeat_request_queue: queue.Queue,
+    work_request_queue: queue.Queue,
+    socket: zmq.Socket,
+) -> None:
+    """Thread that listens for incoming requests from the controller and
+    dispatches them to the appropriate handler."""
+
+    decoders = {
+        HandlerId.HANDSHAKE.value: msgspec.msgpack.Decoder(HandshakeRequest),
+        HandlerId.HEARTBEAT.value: msgspec.msgpack.Decoder(HeartbeatRequest),
+        HandlerId.QUERY.value: msgspec.msgpack.Decoder(QueryRequest),
+        HandlerId.FORWARD_PASS.value: msgspec.msgpack.Decoder(ForwardPassRequest),
+        HandlerId.EMBED_IMAGE.value: msgspec.msgpack.Decoder(EmbedImageRequest),
+        HandlerId.INITIALIZE_ADAPTER.value: msgspec.msgpack.Decoder(
+            InitializeAdapterRequest
+        ),
+        HandlerId.UPDATE_ADAPTER.value: msgspec.msgpack.Decoder(UpdateAdapterRequest),
+        HandlerId.UPLOAD_HANDLER.value: msgspec.msgpack.Decoder(UploadAdapterRequest),
+        HandlerId.DOWNLOAD_HANDLER.value: msgspec.msgpack.Decoder(
+            DownloadAdapterRequest
+        ),
+    }
+
+    try:
+        while True:
+            # Block until a message is received
+            message = socket.recv_multipart()
+
+            if len(message) < 3:
+                print(f"[!] Received invalid message: {message}", file=sys.stderr)
+                continue
+
+            client_identity, corr_id_bytes, handler_id_bytes = message[:3]
+            try:
+                # corr_id extracted but not used
+                _ = struct.unpack(">I", corr_id_bytes)[0]
+                handler_id = struct.unpack(">I", handler_id_bytes)[0]
+                reqs = [decoders[handler_id].decode(m) for m in message[3:]]
+            except (struct.error, KeyError, msgspec.DecodeError) as exc:
+                print(
+                    f"[!] Error decoding request header or payload: {exc}",
+                    file=sys.stderr,
+                )
+                continue
+
+            if not reqs:
+                print("[!] Received empty request body", file=sys.stderr)
+                continue
+
+            # Dispatch the heartbeat request to the heartbeat thread and all other requests
+            # to the worker thread
+            if handler_id == HandlerId.HEARTBEAT.value:
+                heartbeat_request_queue.put(
+                    (client_identity, corr_id_bytes, handler_id_bytes, reqs)
+                )
             else:
-                # Handle handshake for new clients
-                payload = frames[1]
-                try:
-                    hs = handshake_pb2.Request()
-                    hs.ParseFromString(payload)
-                except:
-                    print("Invalid handshake message.")
-                    router.send_multipart([client_identity, b"\x00"])
-                    continue
-
-                response = handshake_pb2.Response(protocols=protocols)
-                payload = response.SerializeToString()
-                connected_clients.update({client_identity: True})
-                router.send_multipart([client_identity, payload])
-
-            idle_start = time.time()
-        except zmq.ZMQError as e:
-            # This can happen if the context is terminated, which is expected on shutdown
-            if e.errno == zmq.ETERM:
-                print("ZMQ server thread exiting.")
-                break
-            else:
-                raise
+                work_request_queue.put(
+                    (client_identity, corr_id_bytes, handler_id_bytes, handler_id, reqs)
+                )
+    except zmq.error.ZMQError as exc:
+        # Terminate the thread if the context is terminated or the socket is not valid
+        # This is a normal shutdown scenario initiated by `start_service`
+        if exc.errno in {zmq.ETERM, zmq.ENOTSOCK}:
+            return
+        terminate(f"Unhandled error occurred in the ZMQ listen loop: {exc}")
+    except Exception as exc:  # pylint: disable=broad-exception-caught
+        terminate(f"Unhandled error occurred in the ZMQ listen loop: {exc}")
 
 
-def run_test_routine(engine: Driver):
+def terminate(msg: str) -> None:
+    """Terminate the program with a message."""
+    print(f"\n[!!!] {msg} Terminating.", file=sys.stderr)
+    traceback.print_exc()
+    os._exit(1)
+
+
+# Main entry point for the server
+def main(
+    model: str,
+    host: str = "localhost",
+    port: int = 10123,
+    controller_host: str = "localhost",
+    controller_port: int = 9123,
+    auth_token: str | None = None,
+    cache_dir: str | None = None,
+    kv_page_size: int = 16,
+    max_dist_size: int = 64,
+    max_num_embeds: int = 128,
+    max_batch_tokens: int = 10240,
+    max_num_adapters: int = 48,
+    max_adapter_rank: int = 8,
+    max_num_kv_pages: int | None = None,
+    gpu_mem_headroom: float | None = None,
+    device: str | None = None,
+    dtype: str = "bfloat16",
+):
     """
-    Runs a simple test routine to verify the fill_block functionality,
-    adhering to the correct protobuf message signatures.
+    Runs the application with configuration provided as command-line arguments.
+
+    Args:
+        model: Name of the model to load (required).
+        host: Hostname for the ZMQ service to bind to.
+        port: Port for the ZMQ service to bind to.
+        controller_host: Hostname of the controller to register with.
+        controller_port: Port of the controller to register with.
+        auth_token: Authentication token for connecting to the controller.
+        cache_dir: Directory for model cache. Defaults to PIE_HOME env var,
+                   then the platform-specific user cache dir.
+        kv_page_size: The size of each page in the key-value cache.
+        max_dist_size: Maximum distance for embeddings.
+        max_num_kv_pages: Maximum number of pages in the key-value cache.
+        max_num_embeds: Maximum number of embeddings to store.
+        max_batch_tokens: Maximum number of tokens in a batch.
+        max_num_adapters: Maximum number of adapters that can be loaded.
+        max_adapter_rank: Maximum rank for any loaded adapter.
+        device: The device to run the model on (e.g., 'mps', 'cuda:0', 'cpu').
+                Auto-detects to 'mps' on Apple Silicon, 'cuda:0' otherwise.
+        dtype: The data type for model weights (e.g., 'bfloat16', 'float16').
     """
-    print("\n--- [START] Corrected Python Test Routine for fill_block ---")
+    # Import here to avoid circular imports
+    # pylint: disable=import-outside-toplevel
+    from handler import Handler
+    from platform_detection import is_apple_silicon
 
-    # 1. Define test parameters
-    token_ids = [3513, 5331, 533, 11]
-    block_id = 101
-    embed_id_offset = 201
-    dist_id = 301
-    k_top = 5
+    # Auto-detect device if not specified
+    if device is None:
+        device = "mps" if is_apple_silicon() else "cuda:0"
+        print(f"Auto-detected device: {device}")
 
-    # 2. Allocate a KV block
-    # The engine.allocate method expects a single BatchAllocate object.
-    print("\n[Step 1] Allocating KV Block...")
-    alloc_command = l4m_pb2.Allocate(
-        kind=l4m_pb2.ObjectKind.OBJECT_KIND_KV_BLOCK,
-        object_id_offset=block_id,
-        count=1
+    config = build_config(
+        model=model,
+        host=host,
+        port=port,
+        controller_host=controller_host,
+        controller_port=controller_port,
+        auth_token=auth_token,
+        cache_dir=cache_dir,
+        kv_page_size=kv_page_size,
+        max_dist_size=max_dist_size,
+        max_num_embeds=max_num_embeds,
+        max_batch_tokens=max_batch_tokens,
+        max_num_adapters=max_num_adapters,
+        max_adapter_rank=max_adapter_rank,
+        max_num_kv_pages=max_num_kv_pages,
+        gpu_mem_headroom=gpu_mem_headroom,
+        device=device,
+        dtype=dtype,
     )
-    batch_allocate_request = l4m_pb2.BatchAllocate(items=[alloc_command])
-    engine.allocate(batch_allocate_request)
-    print(f"Allocated block with ID: {block_id}")
 
-    # 3. Create text embeddings
-    # The engine.embed_text method expects a single BatchEmbedText object.
-    print("\n[Step 2] Creating Text Embeddings...")
-    list_of_embed_commands = []
-    input_embed_ids = []
-    for i, token in enumerate(token_ids):
-        embedding_id = embed_id_offset + i
-        input_embed_ids.append(embedding_id)
-        list_of_embed_commands.append(l4m_pb2.EmbedText(
-            embedding_id=embedding_id,
-            token_id=token,
-            position_id=i
-        ))
-    batch_embed_request = l4m_pb2.BatchEmbedText(items=list_of_embed_commands)
-    engine.embed_text(batch_embed_request)
-    print(f"Created {len(list_of_embed_commands)} embeddings.")
+    print_config(config)
 
-    # 4. Call fill_block for a single forward pass
-    # The engine.fill_block method expects a single BatchFillBlock object.
-    print("\n[Step 3] Calling fill_block for a forward pass...")
-    fill_command = l4m_pb2.FillBlock(
-        last_block_len=len(token_ids),
-        context_block_ids=[block_id],
-        input_embedding_ids=input_embed_ids,
-        output_embedding_ids=[dist_id]
+    start_service(
+        config=config,
+        handler_cls=Handler,
     )
-    batch_fill_request = l4m_pb2.BatchFillBlock(items=[fill_command])
-    engine.fill_block(batch_fill_request)
-    print("fill_block completed.")
-
-    # 5. Verify the output by sampling
-    # The engine.sample_top_k_request method expects a BatchSampleTopKRequest.
-    print(f"\n[Step 4] Verifying output with sample_top_k (k={k_top})...")
-    sample_command = l4m_pb2.SampleTopKRequest(
-        distribution_id=dist_id,
-        k=k_top
-    )
-    batch_sample_request = l4m_pb2.BatchSampleTopKRequest(items=[sample_command])
-    response = engine.sample_top_k_request(batch_sample_request)
-
-    # The 'response' is a BatchSampleTopKResponse object which contains a list of results.
-    if response and response.items:
-        result = response.items[0]
-        print(f"Successfully retrieved Top-{len(result.token_ids)} predicted next tokens:")
-        for i in range(len(result.token_ids)):
-            print(f"  - Token ID: {result.token_ids[i]:<6} Probability: {result.probabilities[i]:.4f}")
-    else:
-        print("Test Error: Failed to get sampling results.")
-
-    print("\n--- [END] Corrected Python Test Routine Finished ---\n")
 
 
 if __name__ == "__main__":
+    import fire
+
     fire.Fire(main)

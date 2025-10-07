@@ -1,21 +1,20 @@
+use crate::instance::{InstanceId, InstanceState};
+use crate::model::request::QueryResponse;
+use crate::service::{Service, ServiceError};
+use crate::{api, model, server, service};
+use bytes::Bytes;
 use dashmap::DashMap;
 use hyper::server::conn::http1;
 use std::net::SocketAddr;
 use std::sync::{Arc, OnceLock};
+use thiserror::Error;
+use tokio::sync::oneshot;
 use uuid::Uuid;
+use wasmtime::component::Resource;
 use wasmtime::{
     Config, Engine, InstanceAllocationStrategy, PoolingAllocationConfig, Store,
     component::Component, component::Linker,
 };
-
-use crate::instance::{Id as InstanceId, InstanceState};
-use crate::{bindings, model, server, service};
-
-use crate::model::cleanup_instance;
-use crate::service::{Service, ServiceError};
-use thiserror::Error;
-use tokio::sync::oneshot;
-use wasmtime::component::Resource;
 use wasmtime_wasi_http::WasiHttpView;
 use wasmtime_wasi_http::bindings::exports::wasi::http::incoming_handler::{
     IncomingRequest, ResponseOutparam,
@@ -28,13 +27,22 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 static SERVICE_ID_RUNTIME: OnceLock<usize> = OnceLock::new();
 
-pub fn trap<T>(instance_id: InstanceId, message: T)
+pub fn trap(instance_id: InstanceId, cause: TerminationCause) {
+    Command::Trap {
+        inst_id: instance_id,
+        cause,
+    }
+    .dispatch()
+    .unwrap();
+}
+
+pub fn trap_exception<T>(instance_id: InstanceId, exception: T)
 where
     T: ToString,
 {
     Command::Trap {
-        instance_id,
-        message: message.to_string(),
+        inst_id: instance_id,
+        cause: TerminationCause::Exception(exception.to_string()),
     }
     .dispatch()
     .unwrap();
@@ -98,18 +106,18 @@ pub enum Command {
     },
 
     Trap {
-        instance_id: InstanceId,
-        message: String,
+        inst_id: InstanceId,
+        cause: TerminationCause,
     },
 
     Warn {
-        instance_id: InstanceId,
+        inst_id: InstanceId,
         message: String,
     },
 
     DebugQuery {
         query: String,
-        event: oneshot::Sender<String>,
+        event: oneshot::Sender<QueryResponse>,
     },
 }
 
@@ -142,6 +150,15 @@ pub struct Runtime {
 
     /// Running server instances
     running_server_instances: DashMap<InstanceId, InstanceHandle>,
+}
+
+#[derive(Debug, Clone)]
+pub enum TerminationCause {
+    Normal,
+    Signal,
+    Exception(String),
+    SystemError(String),
+    OutOfResources(String),
 }
 
 pub struct InstanceHandle {
@@ -201,18 +218,12 @@ impl Service for Runtime {
                 event.send(Ok(())).unwrap();
             }
 
-            Command::Trap {
-                instance_id,
-                message,
-            } => {
-                self.terminate_instance(instance_id, message).await;
+            Command::Trap { inst_id, cause } => {
+                self.terminate_instance(inst_id, cause).await;
             }
 
-            Command::Warn {
-                instance_id,
-                message,
-            } => server::Command::Send {
-                inst_id: instance_id.clone(),
+            Command::Warn { inst_id, message } => server::Command::Send {
+                inst_id,
                 message: message.clone(),
             }
             .dispatch()
@@ -221,51 +232,50 @@ impl Service for Runtime {
                 event.send(VERSION.to_string()).unwrap();
             }
 
-            Command::DebugQuery { query, event } => match query.as_str() {
-                "ping" => {
-                    event.send("pong".to_string()).unwrap();
-                }
-                "get_instance_count" => {
-                    let count = self.running_instances.len();
-                    event.send(count.to_string()).unwrap();
-                }
-                "get_server_instance_count" => {
-                    let count = self.running_server_instances.len();
-                    event.send(count.to_string()).unwrap();
-                }
-                // Add the new queries here
-                "list_running_instances" => {
-                    let instances: Vec<String> = self
-                        .running_instances
-                        .iter()
-                        .map(|item| {
-                            format!(
-                                "Instance ID: {}, Program Hash: {}",
-                                item.key(),
-                                item.value().hash
-                            )
-                        })
-                        .collect();
-                    event.send(instances.join("\n")).unwrap();
-                }
-                "list_in_memory_programs" => {
-                    let keys: Vec<String> = self
-                        .programs_in_memory
-                        .iter()
-                        .map(|item| item.key().clone())
-                        .collect();
-                    event.send(keys.join("\n")).unwrap();
-                }
-                "get_cache_dir" => {
-                    event
-                        .send(self.cache_dir.to_string_lossy().to_string())
-                        .unwrap();
-                }
+            Command::DebugQuery { query, event } => {
+                let res = match query.as_str() {
+                    "ping" => {
+                        format!("pong")
+                    }
+                    "get_instance_count" => {
+                        format!("{}", self.running_instances.len())
+                    }
+                    "get_server_instance_count" => {
+                        format!("{}", self.running_server_instances.len())
+                    }
+                    // Add the new queries here
+                    "list_running_instances" => {
+                        let instances: Vec<String> = self
+                            .running_instances
+                            .iter()
+                            .map(|item| {
+                                format!(
+                                    "Instance ID: {}, Program Hash: {}",
+                                    item.key(),
+                                    item.value().hash
+                                )
+                            })
+                            .collect();
 
-                _ => {
-                    event.send(format!("Unknown query: {}", query)).unwrap();
-                }
-            },
+                        format!("{}", instances.join("\n"))
+                    }
+                    "list_in_memory_programs" => {
+                        let keys: Vec<String> = self
+                            .programs_in_memory
+                            .iter()
+                            .map(|item| item.key().clone())
+                            .collect();
+
+                        format!("{}", keys.join("\n"))
+                    }
+
+                    _ => {
+                        format!("Unknown query: {}", query)
+                    }
+                };
+
+                event.send(QueryResponse { value: res }).unwrap();
+            }
         }
     }
 }
@@ -280,7 +290,7 @@ impl Runtime {
 
         // TODO: Adjust settings later: https://docs.wasmtime.dev/api/wasmtime/struct.PoolingAllocationConfig.html
 
-        config.allocation_strategy(InstanceAllocationStrategy::Pooling(pooling_config));
+        //config.allocation_strategy(InstanceAllocationStrategy::Pooling(pooling_config));
 
         let engine = Engine::new(&config).unwrap();
 
@@ -294,7 +304,7 @@ impl Runtime {
             .map_err(|e| RuntimeError::Other(format!("Failed to link WASI: {e}")))
             .unwrap();
 
-        bindings::add_to_linker(&mut linker).unwrap();
+        api::add_to_linker(&mut linker).unwrap();
 
         let cache_dir = cache_dir.as_ref().join("programs");
         // Ensure the cache directory exists
@@ -422,15 +432,24 @@ impl Runtime {
     }
 
     /// Terminate (abort) a running instance
-    pub async fn terminate_instance(&self, instance_id: InstanceId, reason: String) {
+    pub async fn terminate_instance(&self, instance_id: InstanceId, cause: TerminationCause) {
         if let Some((_, handle)) = self.running_instances.remove(&instance_id) {
             handle.join_handle.abort();
 
             model::cleanup_instance(instance_id.clone());
 
+            let (termination_code, message) = match cause {
+                TerminationCause::Normal => (0, "Normal termination".to_string()),
+                TerminationCause::Signal => (1, "Signal termination".to_string()),
+                TerminationCause::Exception(message) => (2, message),
+                TerminationCause::SystemError(message) => (3, message),
+                TerminationCause::OutOfResources(message) => (4, message),
+            };
+
             server::Command::DetachInstance {
                 inst_id: instance_id.clone(),
-                reason,
+                termination_code,
+                message,
             }
             .dispatch()
             .ok();
@@ -566,10 +585,9 @@ impl Runtime {
                 .await
                 .map_err(|e| RuntimeError::Other(format!("Instantiation error: {e}")))?;
 
-            // Attempt to call “run”
+            // Attempt to call "run"
             let (_, run_export) = instance
-                .get_export(&mut store, None, "pie:nbi/run")
-                .or_else(|| instance.get_export(&mut store, None, "pie:inferlet/run"))
+                .get_export(&mut store, None, "inferlet:core/run")
                 .ok_or_else(|| RuntimeError::Other("No 'run' function found".into()))?;
 
             let (_, run_func_export) = instance
@@ -582,8 +600,9 @@ impl Runtime {
 
             return match run_func.call_async(&mut store, ()).await {
                 Ok((Ok(()),)) => {
+                    let return_value = store.data().return_value();
                     //println!("Instance {instance_id} finished normally");
-                    Ok(())
+                    Ok(return_value)
                 }
                 Ok((Err(runtime_err),)) => {
                     //eprintln!("Instance {instance_id} returned an error");
@@ -597,24 +616,29 @@ impl Runtime {
         }
         .await;
 
-        if let Err(err) = result {
-            println!("Instance {instance_id} failed: {err}");
-            server::Command::DetachInstance {
-                inst_id: instance_id.clone(),
-                reason: format!("{err}"),
+        match result {
+            Ok(return_value) => {
+                server::Command::DetachInstance {
+                    inst_id: instance_id.clone(),
+                    termination_code: 0,
+                    message: return_value.unwrap_or("".to_string()),
+                }
+                .dispatch()
+                .ok();
             }
-            .dispatch()
-            .ok();
-        } else {
-            server::Command::DetachInstance {
-                inst_id: instance_id.clone(),
-                reason: format!("instance normally finished"),
+            Err(err) => {
+                println!("Instance {instance_id} failed: {err}");
+                server::Command::DetachInstance {
+                    inst_id: instance_id.clone(),
+                    termination_code: 2,
+                    message: err.to_string(),
+                }
+                .dispatch()
+                .ok();
             }
-            .dispatch()
-            .ok();
         }
 
         // force cleanup of the remaining resources
-        cleanup_instance(instance_id);
+        model::cleanup_instance(instance_id);
     }
 }

@@ -1,4 +1,4 @@
-use crate::core;
+use crate::api;
 use std::collections::{BTreeSet, HashMap};
 use std::fmt;
 
@@ -31,9 +31,9 @@ impl std::error::Error for ResourcePoolError {}
 pub type Result<T> = std::result::Result<T, ResourcePoolError>;
 
 pub trait Allocator {
-    fn allocate(&self, queue: &core::Queue, ids: &[u32]) -> Result<()>;
-    fn deallocate(&self, queue: &core::Queue, ids: &[u32]) -> Result<()>;
-    fn import(&self, queue: &core::Queue, ids: &[u32], name: &str) -> Result<()>;
+    fn allocate(&self, queue: &api::Queue, ids: &[u32]) -> Result<()>;
+    fn deallocate(&self, queue: &api::Queue, ids: &[u32]) -> Result<()>;
+    fn import(&self, queue: &api::Queue, ids: &[u32], name: &str) -> Result<()>;
 }
 
 /// A fast, bounded ID pool that always returns the smallest available ID.
@@ -87,7 +87,7 @@ where
     }
 
     /// Acquires and returns the smallest available ID.
-    pub fn acquire(&mut self, queue: &core::Queue) -> Result<u32> {
+    pub fn acquire(&mut self, queue: &api::Queue) -> Result<u32> {
         if let Some(id) = self.free.pop_first() {
             if self.tight {
                 self.allocator.allocate(queue, &[id])?;
@@ -104,7 +104,7 @@ where
     }
 
     /// Acquires many IDs at once.
-    pub fn acquire_many(&mut self, queue: &core::Queue, count: usize) -> Result<Vec<u32>> {
+    pub fn acquire_many(&mut self, queue: &api::Queue, count: usize) -> Result<Vec<u32>> {
         if self.available() < count {
             return Err(ResourcePoolError::PoolExhausted);
         }
@@ -147,7 +147,7 @@ where
         Ok(result)
     }
 
-    pub fn import(&mut self, queue: &core::Queue, count: usize, name: &str) -> Result<Vec<u32>> {
+    pub fn import(&mut self, queue: &api::Queue, count: usize, name: &str) -> Result<Vec<u32>> {
         // Step 1: Tentatively select IDs without modifying state.
         let ids_from_free: Vec<u32> = self.free.iter().take(count).copied().collect();
         let remaining_count = count.saturating_sub(ids_from_free.len());
@@ -187,7 +187,7 @@ where
     }
 
     /// Releases an ID back into the pool.
-    pub fn release(&mut self, queue: &core::Queue, id: u32) -> Result<()> {
+    pub fn release(&mut self, queue: &api::Queue, id: u32) -> Result<()> {
         if id >= self.next {
             return Err(ResourcePoolError::IdNotAllocated);
         }
@@ -205,7 +205,7 @@ where
     }
 
     /// Releases multiple IDs back into the pool.
-    pub fn release_many(&mut self, queue: &core::Queue, ids: &[u32]) -> Result<()> {
+    pub fn release_many(&mut self, queue: &api::Queue, ids: &[u32]) -> Result<()> {
         for &id in ids {
             if id >= self.next {
                 return Err(ResourcePoolError::IdNotAllocated);
@@ -239,7 +239,7 @@ where
     }
 
     /// If the largest freed IDs are contiguous with `next`, collapses them back into the main pool.
-    fn tail_optimization(&mut self, queue: &core::Queue) -> Result<()> {
+    fn tail_optimization(&mut self, queue: &api::Queue) -> Result<()> {
         let cur_next = self.next;
         while let Some(&last) = self.free.iter().next_back() {
             if last == self.next - 1 {
@@ -297,26 +297,26 @@ where
         }
     }
 
-    pub fn acquire(&mut self, queue: &core::Queue) -> Result<u32> {
+    pub fn acquire(&mut self, queue: &api::Queue) -> Result<u32> {
         let id = self.pool.acquire(queue)?;
         self.increment_rc(id);
         Ok(id)
     }
 
-    pub fn acquire_many(&mut self, queue: &core::Queue, count: usize) -> Result<Vec<u32>> {
+    pub fn acquire_many(&mut self, queue: &api::Queue, count: usize) -> Result<Vec<u32>> {
         let ids = self.pool.acquire_many(queue, count)?;
         self.increment_rc_many(&ids);
         Ok(ids)
     }
 
-    pub fn import(&mut self, queue: &core::Queue, count: usize, name: &str) -> Result<Vec<u32>> {
+    pub fn import(&mut self, queue: &api::Queue, count: usize, name: &str) -> Result<Vec<u32>> {
         let ids = self.pool.import(queue, count, name)?;
         self.increment_rc_many(&ids);
         Ok(ids)
     }
 
     /// Decrements an ID's reference count, releasing it to the pool if the count reaches zero.
-    pub fn release(&mut self, queue: &core::Queue, id: u32) -> Result<()> {
+    pub fn release(&mut self, queue: &api::Queue, id: u32) -> Result<()> {
         use std::collections::hash_map::Entry;
 
         match self.ref_counts.entry(id) {
@@ -334,7 +334,7 @@ where
     }
 
     /// Decrements reference counts for multiple IDs.
-    pub fn release_many(&mut self, queue: &core::Queue, ids: &[u32]) -> Result<()> {
+    pub fn release_many(&mut self, queue: &api::Queue, ids: &[u32]) -> Result<()> {
         let mut to_deallocate = Vec::new();
 
         for &id in ids {

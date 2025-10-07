@@ -1,26 +1,23 @@
 # Sample config.toml
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = 8080
 enable_auth = false
 auth_secret = "hello"
 verbose = true
 log = "pie.log"
-batching_strategy = "adaptive" # Options: "adaptive", "k", "t", "kort" (default: "adaptive")
-batching_strategy_k = 8
-batching_strategy_t = 16 # in milliseconds
+
 
 [[backend]]
-#backend_type = "cxx"
-#exec_path = "../backend/backend-cuda/build/bin/pie_cuda_be"
 backend_type = "python"
 exec_path = "../backend/backend-python/server.py"
-model = "llama-3.2-1b-instruct"
-# model = "qwen-3-0.6b"
+model = "qwen-3-0.6b"
 device = "cuda:0"
 dtype = "bfloat16"
 kv_page_size = 16
-dist_size = 64
-max_num_kv_pages = 2000
-max_num_embeds = 50000
-
-
+max_batch_tokens = 10240
+max_dist_size = 32
+max_num_kv_pages = 10240
+max_num_embeds = 128
+max_num_adapters = 32
+max_adapter_rank = 8
+gpu_mem_headroom = 10.0

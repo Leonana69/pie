@@ -10,15 +10,11 @@
 </div>
 
 
-**PIE** is a high-performance, programmable LLM serving system that empowers you to design and deploy custom inference logic and optimization strategies.
+**Pie** is a high-performance, programmable LLM serving system that empowers you to design and deploy custom inference logic and optimization strategies.
 
 > **Note** 🧪
 >
 > This software is in a **pre-release** stage and under active development. It's recommended for testing and research purposes only.
-
-> **SOSP'25 Artifact**
->
-> Please check out the `sosp25` branch for the artifact and benchmark instructions.
 
 
 
@@ -28,8 +24,7 @@
 
 - **Configure a Backend:**  
   Navigate to a backend directory and follow its `README.md` for setup:
-  - [Python Backend](backend/backend-python/README.md)
-  - [C++ Backend](backend/backend-cuda/README.md)
+    - [Python Backend](backend/backend-python/README.md)
 
 
 - **Add Wasm Target:**  
@@ -52,7 +47,7 @@ Build the **PIE CLI** and the example inferlets.
   cd pie-cli && cargo install --path .
   ```
 
-- **Build the Examples:**  
+- **Build the Examples:**
 
   ```bash
   cd example-apps && cargo build --target wasm32-wasip2 --release
@@ -83,6 +78,6 @@ Download a model, start the engine, and run an inferlet.
    From within the PIE shell, execute a compiled inferlet:
 
    ```bash
-   pie> run ../example-apps/target/wasm32-wasip2/release/text_completion.wasm -- --model "llama-3.2" --prompt "What is the capital of France?"
+   pie> run ../example-apps/target/wasm32-wasip2/release/text_completion.wasm -- --prompt "What is the capital of France?"
    ```
 

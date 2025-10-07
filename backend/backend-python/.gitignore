@@ -1,5 +1,9 @@
 /testing
 
+# Virtual environments
+.venv/
+
+# Generated protobuf files
 handshake_pb2.py
 handshake_pb2.pyi
 l4m_pb2.py
@@ -8,3 +12,9 @@ l4m_vision_pb2.py
 l4m_vision_pb2.pyi
 ping_pb2.py
 ping_pb2.pyi
+
+# Debug framework database files
+debug_framework/*.db
+debug_framework/*.sqlite
+debug_framework/*.sqlite3
+debug_framework/data/

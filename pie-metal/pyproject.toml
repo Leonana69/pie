@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "pybind11>=2.10.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pie-metal"
+version = "0.1.0"
+description = "Metal-accelerated FlashInfer replacement for macOS"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    {name = "PIE Metal Team"},
+]
+keywords = ["metal", "attention", "transformer", "macos", "apple-silicon"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "torch>=2.3.0",
+    "numpy>=2.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "mypy",
+    "ruff",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pie-org/pie"
+"Bug Reports" = "https://github.com/pie-org/pie/issues"
+"Source" = "https://github.com/pie-org/pie"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pie_metal = [
+    "_internal/metal/kernels/*.metal",
+    "_internal/metal/bindings/*.mm",
+    "_internal/metal/bindings/*.h",
+    "_internal/metal/build/lib/*.metallib",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=pie_metal --cov-report=term-missing"

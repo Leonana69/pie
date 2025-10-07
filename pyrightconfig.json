@@ -1,0 +1,8 @@
+// Ignoring FlashInfer for now because the CI environment cannot have it installed
+{
+    "include": ["backend/backend-python"],
+    "extraPaths": ["backend/backend-python/stubs", "backend/common_python"],
+    "stubPath": "backend/backend-python/stubs",
+    "reportMissingImports": "error"
+}
+  

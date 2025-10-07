@@ -21,8 +21,14 @@ Cargo.lock
 .idea/
 
 # VSCode
-.vscode
+# .vscode is not sensitive to security, so we can keep it in the repo. Useful for Pylint configuration.
 *.code-workspace
+.vscode
+
+# Other local ide/environment
+.claude
+.codex
+.kilocode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -208,8 +214,16 @@ bin/
 logs
 *.log
 .plan
+*profiling_result.json
 
 # No MCP files
 .memory-bank
 
 # raw eval data
+cuda-protocol-tests*
+metal-protocol-tests*
+cuda_artifacts.tar*
+tensor_references
+
+# Github Spec-kit
+.spec-kit/

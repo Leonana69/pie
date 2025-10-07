@@ -1,6 +1,7 @@
 use crate::service;
 use crate::service::Service;
 use crate::utils::IdPool;
+use bytes::Bytes;
 use dashmap::DashMap;
 use std::collections::VecDeque;
 use std::sync::{Arc, OnceLock};
@@ -58,6 +59,16 @@ pub enum PushPullCommand {
     Pull {
         topic: String,
         message: oneshot::Sender<String>,
+    },
+
+    PushBlob {
+        topic: String,
+        message: Bytes,
+    },
+
+    PullBlob {
+        topic: String,
+        message: oneshot::Sender<Bytes>,
     },
 }
 
@@ -177,52 +188,114 @@ impl Service for PubSub {
     }
 }
 
-enum PushPullQueue {
+/// A queue for a given topic, holding either waiting messages or pending pull requests.
+enum PushPullStringQueue {
     Messages(VecDeque<String>),
     PendingPulls(VecDeque<oneshot::Sender<String>>),
 }
 
+/// A queue for a given topic, holding either waiting blobs or pending pull requests for blobs.
+enum PushPullBlobQueue {
+    Messages(VecDeque<Bytes>),
+    PendingPulls(VecDeque<oneshot::Sender<Bytes>>),
+}
+
 pub struct PushPull {
-    tx: UnboundedSender<(String, String)>,
-    event_loop_handle: tokio::task::JoinHandle<()>,
-    queue_by_topic: Arc<DashMap<String, PushPullQueue>>,
+    // Fields for String-based messages
+    tx_string: UnboundedSender<(String, String)>,
+    _event_loop_handle_string: tokio::task::JoinHandle<()>,
+    string_queue_by_topic: Arc<DashMap<String, PushPullStringQueue>>,
+
+    // Fields for Blob-based messages (Vec<u8>)
+    tx_blob: UnboundedSender<(String, Bytes)>,
+    _event_loop_handle_blob: tokio::task::JoinHandle<()>,
+    blob_queue_by_topic: Arc<DashMap<String, PushPullBlobQueue>>,
 }
 
 impl PushPull {
     pub fn new() -> Self {
-        let (tx, rx) = mpsc::unbounded_channel();
-        let queue_by_topic = Arc::new(DashMap::new());
-        let event_loop_handle = tokio::spawn(Self::event_loop(rx, Arc::clone(&queue_by_topic)));
+        // --- Setup for String messages ---
+        let (tx_string, rx_string) = mpsc::unbounded_channel();
+        let string_queue_by_topic = Arc::new(DashMap::new());
+        let _event_loop_handle_string = tokio::spawn(Self::event_loop_string(
+            rx_string,
+            Arc::clone(&string_queue_by_topic),
+        ));
+
+        // --- Setup for Blob messages ---
+        let (tx_blob, rx_blob) = mpsc::unbounded_channel();
+        let blob_queue_by_topic = Arc::new(DashMap::new());
+        let _event_loop_handle_blob = tokio::spawn(Self::event_loop_blob(
+            rx_blob,
+            Arc::clone(&blob_queue_by_topic),
+        ));
 
         PushPull {
-            tx,
-            event_loop_handle,
-            queue_by_topic,
+            tx_string,
+            _event_loop_handle_string,
+            string_queue_by_topic,
+            tx_blob,
+            _event_loop_handle_blob,
+            blob_queue_by_topic,
         }
     }
 
-    /// The event loop that listens for broadcast messages and dispatches them to subscribers.
-    async fn event_loop(
+    /// The event loop that listens for pushed string messages and matches them with pulls.
+    async fn event_loop_string(
         mut rx: UnboundedReceiver<(String, String)>,
-        queue_by_topic: Arc<DashMap<String, PushPullQueue>>,
+        queue_by_topic: Arc<DashMap<String, PushPullStringQueue>>,
     ) {
         while let Some((topic, message)) = rx.recv().await {
             let mut queue = queue_by_topic
                 .entry(topic.clone())
-                .or_insert(PushPullQueue::Messages(VecDeque::new()));
+                .or_insert(PushPullStringQueue::Messages(VecDeque::new()));
 
             let remove_queue = match queue.value_mut() {
-                PushPullQueue::Messages(q) => {
+                PushPullStringQueue::Messages(q) => {
                     q.push_back(message);
                     false
                 }
-                PushPullQueue::PendingPulls(q) => {
-                    q.pop_front().unwrap().send(message).unwrap();
+                PushPullStringQueue::PendingPulls(q) => {
+                    if let Some(waiting_pull) = q.pop_front() {
+                        let _ = waiting_pull.send(message);
+                    }
                     q.is_empty()
                 }
             };
 
-            // drop queue ref
+            // Drop the lock on the queue entry before potentially removing the topic.
+            drop(queue);
+
+            if remove_queue {
+                queue_by_topic.remove(&topic);
+            }
+        }
+    }
+
+    /// The event loop that listens for pushed blob messages and matches them with pulls.
+    async fn event_loop_blob(
+        mut rx: UnboundedReceiver<(String, Bytes)>,
+        queue_by_topic: Arc<DashMap<String, PushPullBlobQueue>>,
+    ) {
+        while let Some((topic, message)) = rx.recv().await {
+            let mut queue = queue_by_topic
+                .entry(topic.clone())
+                .or_insert(PushPullBlobQueue::Messages(VecDeque::new()));
+
+            let remove_queue = match queue.value_mut() {
+                PushPullBlobQueue::Messages(q) => {
+                    q.push_back(message);
+                    false
+                }
+                PushPullBlobQueue::PendingPulls(q) => {
+                    if let Some(waiting_pull) = q.pop_front() {
+                        let _ = waiting_pull.send(message);
+                    }
+                    q.is_empty()
+                }
+            };
+
+            // Drop the lock on the queue entry before potentially removing the topic.
             drop(queue);
 
             if remove_queue {
@@ -238,21 +311,22 @@ impl Service for PushPull {
     async fn handle(&mut self, cmd: Self::Command) {
         match cmd {
             PushPullCommand::Push { topic, message } => {
-                self.tx.send((topic, message)).unwrap();
+                self.tx_string.send((topic, message)).unwrap();
             }
             PushPullCommand::Pull { topic, message } => {
                 let mut queue = self
-                    .queue_by_topic
+                    .string_queue_by_topic
                     .entry(topic.clone())
-                    .or_insert(PushPullQueue::PendingPulls(VecDeque::new()));
+                    .or_insert(PushPullStringQueue::PendingPulls(VecDeque::new()));
 
                 let remove_queue = match queue.value_mut() {
-                    PushPullQueue::Messages(q) => {
-                        let sent_msg = q.pop_front().unwrap();
-                        message.send(sent_msg.clone()).unwrap();
+                    PushPullStringQueue::Messages(q) => {
+                        if let Some(sent_msg) = q.pop_front() {
+                            let _ = message.send(sent_msg);
+                        }
                         q.is_empty()
                     }
-                    PushPullQueue::PendingPulls(q) => {
+                    PushPullStringQueue::PendingPulls(q) => {
                         q.push_back(message);
                         false
                     }
@@ -262,7 +336,36 @@ impl Service for PushPull {
                 drop(queue);
 
                 if remove_queue {
-                    self.queue_by_topic.remove(&topic);
+                    self.string_queue_by_topic.remove(&topic);
+                }
+            }
+            PushPullCommand::PushBlob { topic, message } => {
+                self.tx_blob.send((topic, message)).unwrap();
+            }
+            PushPullCommand::PullBlob { topic, message } => {
+                let mut queue = self
+                    .blob_queue_by_topic
+                    .entry(topic.clone())
+                    .or_insert(PushPullBlobQueue::PendingPulls(VecDeque::new()));
+
+                let remove_queue = match queue.value_mut() {
+                    PushPullBlobQueue::Messages(q) => {
+                        if let Some(sent_msg) = q.pop_front() {
+                            let _ = message.send(sent_msg);
+                        }
+                        q.is_empty()
+                    }
+                    PushPullBlobQueue::PendingPulls(q) => {
+                        q.push_back(message);
+                        false
+                    }
+                };
+
+                // To avoid DashMap deadlock.
+                drop(queue);
+
+                if remove_queue {
+                    self.blob_queue_by_topic.remove(&topic);
                 }
             }
         }

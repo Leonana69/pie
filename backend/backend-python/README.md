@@ -1,61 +1,77 @@
+# Python Backend
 
-# PIE Torch Backend
+Pie's Python backend requires manual installation of several dependencies with specific hardware requirements (e.g., CUDA). For this reason, dependencies like `torch` and `triton` are not specified in `pyproject.toml` to allow for system-specific builds.
 
+-----
 
-### Step 1: Install the FlashInfer Library
+## Prerequisites
 
+Before you begin, ensure you have the `uv` installed:
 
-1.  **Determine your GPU's CUDA Compute Capability.**
-    Run the following command to find your GPU's compute capability version. You will need this for the next step.
-
-    ```bash
-    nvidia-smi --query-gpu=compute_cap --format=csv
-    ```
-
-    This will output a version number, for example, `8.6`.
-
-2.  **Clone, Configure, and Build FlashInfer.**
-    The following script clones the FlashInfer repository and builds it. **Important:** Before running, replace `"8.6"` in the `export TORCH_CUDA_ARCH_LIST` line with the compute capability you found in the previous step.
-
-    ```bash
-    # Clone the repository and its submodules
-    git clone [https://github.com/flashinfer-ai/flashinfer.git](https://github.com/flashinfer-ai/flashinfer.git) --recursive
-    cd flashinfer
-
-    # IMPORTANT: Set your target CUDA architecture below
-    export TORCH_CUDA_ARCH_LIST="8.6" # Replace "8.6" with your compute_cap value
-
-    # Build the Ahead-of-Time (AOT) kernels
-    python -m flashinfer.aot
-
-    # Build the wheel package
-    python -m build --no-isolation --wheel
-
-    # Install the compiled wheel
-    pip install dist/flashinfer-*.whl
-
-    # Return to the previous directory
-    cd ..
-    ```
-
-### Step 2: Compile Protobuf Definitions
-
-This step uses the Protocol Buffers compiler (`protoc`) to generate the necessary Python code for data serialization and communication within the backend.
-
-```bash
-# Make the script executable
-chmod +x build_proto.sh
-
-# Run the script
-./build_proto.sh
-````
-
-### Step 3: Install the PIE Torch Backend
-
-Now, you can install the backend package itself. We use an "editable" install (`-e`), which is useful for development as it allows you to make changes to the source code without needing to reinstall the package.
-
-```bash
-pip install -e .
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Once these steps are complete, the PIE Torch backend will be successfully installed.
+-----
+
+## Installation Guide
+
+Follow these steps in order to set up your environment correctly.
+
+### 1\. Create and Activate a Virtual Environment
+
+First, create a new virtual environment using `uv` and activate it.
+
+```sh
+uv venv
+```
+
+### 2\. Install FlashInfer
+
+Next, install the `flashinfer` library.
+
+```sh
+uv pip install flashinfer-python==0.3.1
+```
+
+> **Note:** Depending on your system configuration, you might need to build `flashinfer` from the source. Please refer to the official [FlashInfer repository](https://github.com/flashinfer-ai/flashinfer) for detailed instructions.
+
+### 3\. Install PyTorch with CUDA Support
+
+Install the correct version of PyTorch that matches your system's CUDA toolkit.
+
+1.  Visit the official [PyTorch website](https://pytorch.org/get-started/locally/) to get the precise installation command for your setup (e.g., specific CUDA version, OS).
+2.  Run the command provided by the website. You **must** add the `--force-reinstall` flag to ensure the correct GPU-enabled version of PyTorch overwrites any CPU-only version that `flashinfer` may have installed as a dependency.
+
+For example, a typical command might look like this:
+
+```sh
+# Example command - get the correct one for your system from pytorch.org!
+uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu129 --force-reinstall
+```
+
+### 4\. Install Triton
+
+The final step is to install Triton. The package differs based on your system's architecture.
+
+* **For `x86_64` Systems:**
+
+  You can typically install Triton directly from PyPI.
+
+  ```sh
+  uv pip install triton
+  ```
+
+* **For `aarch64` Systems (e.g., NVIDIA Jetson and GH200):**
+
+  The standard Triton wheel is not available for `aarch64`. You can install the version provided by PyTorch's index.
+
+  ```sh
+  uv pip install pytorch_triton --index-url https://download.pytorch.org/whl --force-reinstall
+  ```
+
+-----
+
+## Docker Support
+
+Official Docker images for the backend are planned and will be available in the future to simplify the setup process. 

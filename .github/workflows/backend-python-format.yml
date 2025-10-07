@@ -1,0 +1,27 @@
+name: Python Black Format Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Install uv and cache its data
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: "3.12"
+
+      # Ensure the requested Python is available to uv/uvx
+      - name: Install Python
+        run: uv python install 3.12
+
+      # Run black format check
+      - name: Run black format check
+        run: ./tests/backend-python-format.sh
