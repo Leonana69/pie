@@ -1,0 +1,18 @@
+[package]
+name = "prior-plan-spec"
+version = "0.1.0"
+description = "A/B benchmark for speculative decoding seeded by a previous similar request's plan"
+authors = ["Pie Team"]
+
+[runtime]
+core = "^0.2.0"
+mcp = "^0.2.0"
+
+[parameters]
+current_request = {type = "string", optional = true, description = "The new request for which the model should produce a plan"}
+previous_plan = {type = "string", optional = true, description = "A plan returned for a similar previous request; used only as speculative draft material"}
+mode = {type = "string", optional = true, description = "'baseline', 'speculated', or 'both' (default: 'both')"}
+system = {type = "string", optional = true, description = "System prompt used for both A/B paths"}
+max_tokens = {type = "int", optional = true, description = "Maximum generated tokens per path (default: 256)"}
+draft_len = {type = "int", optional = true, description = "Maximum previous-plan tokens proposed per verifier pass (default: 8)"}
+match_tokens = {type = "int", optional = true, description = "Minimum generated suffix length required to align with the previous plan (default: 2)"}
