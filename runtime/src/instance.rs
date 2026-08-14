@@ -48,8 +48,13 @@ pub struct InstanceState {
     http_ctx: WasiHttpCtx,
     network_policy: NetworkPolicy,
 
-    /// Per-instance scratch directory, deleted on Drop.
+    /// Scratch directory exposed to the guest as /scratch.
     scratch_dir: PathBuf,
+
+    /// One-shot inferlets get an isolated directory that is removed with the
+    /// instance. HTTP daemons may instead opt into a daemon-scoped directory
+    /// so separately-instantiated request handlers can share durable state.
+    cleanup_scratch_on_drop: bool,
 
     // Dynamic linking support for proxy resources
     /// Maps host rep → guest ResourceAny for dynamic linking
@@ -62,7 +67,9 @@ pub struct InstanceState {
 
 impl Drop for InstanceState {
     fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.scratch_dir);
+        if self.cleanup_scratch_on_drop {
+            let _ = std::fs::remove_dir_all(&self.scratch_dir);
+        }
         // Unregister the process: destroy all contexts and remove process entries.
         context::unregister_process(self.id);
     }
@@ -131,6 +138,7 @@ impl InstanceState {
         output: OutputMode,
         policy: &InstancePolicy,
         py_runtime_dir: Option<&Path>,
+        scratch_namespace: Option<&str>,
     ) -> anyhow::Result<Self> {
         let mut builder = WasiCtx::builder();
 
@@ -161,7 +169,10 @@ impl InstanceState {
             }
         }
 
-        let scratch_dir = policy.fs.base_dir.join(id.to_string());
+        let (scratch_dir, cleanup_scratch_on_drop) = match scratch_namespace {
+            Some(namespace) => (policy.fs.base_dir.join("daemons").join(namespace), false),
+            None => (policy.fs.base_dir.join(id.to_string()), true),
+        };
 
         if policy.fs.allow {
             std::fs::create_dir_all(&scratch_dir).expect("failed to create scratch dir");
@@ -215,6 +226,7 @@ impl InstanceState {
             http_ctx: WasiHttpCtx::new(),
             network_policy: policy.network.clone(),
             scratch_dir,
+            cleanup_scratch_on_drop,
             // Dynamic linking support
             dynamic_resource_map: HashMap::new(),
             guest_resource_map: Vec::new(),

@@ -1,0 +1,18 @@
+[package]
+name = "openai-spec-service"
+version = "0.1.0"
+edition = "2024"
+description = "OpenAI-compatible stateful prior-response speculative decoding service"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+inferlet = { path = "../../sdk/rust/inferlet" }
+wstd = "0.5.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+
+[profile.release]
+lto = true

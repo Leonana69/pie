@@ -1,0 +1,11 @@
+[package]
+name = "openai-spec-service"
+version = "0.1.0"
+description = "OpenAI-compatible chat completion service with a persistent prior-response speculation dictionary"
+authors = ["Pie Team"]
+
+[runtime]
+core = "^0.2.0"
+mcp = "^0.2.0"
+
+[parameters]

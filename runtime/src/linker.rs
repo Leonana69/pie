@@ -68,6 +68,7 @@ pub async fn instantiate(
     program_name: &ProgramName,
     output: OutputMode,
     token_budget: Option<usize>,
+    scratch_namespace: Option<String>,
 ) -> Result<(Store<InstanceState>, WasmInstance)> {
     let (tx, rx) = oneshot::channel();
     SERVICE.send(Message::Instantiate {
@@ -76,6 +77,7 @@ pub async fn instantiate(
         program_name: program_name.clone(),
         output,
         token_budget,
+        scratch_namespace,
         response: tx,
     })?;
     rx.await?
@@ -105,6 +107,7 @@ impl Linker {
         program_name: &ProgramName,
         output: OutputMode,
         token_budget: Option<usize>,
+        scratch_namespace: Option<&str>,
     ) -> Result<(Store<InstanceState>, WasmInstance)> {
         // 1. Get the main component (with snapshot status + python-runtime decl)
         let main = program::get_wasm_component(program_name)
@@ -150,6 +153,7 @@ impl Linker {
             output,
             &self.policy,
             py_runtime_dir_for_state,
+            scratch_namespace,
         )
         .await?;
         let mut store = Store::new(&self.engine, inst_state);
@@ -293,6 +297,7 @@ enum Message {
         program_name: ProgramName,
         output: OutputMode,
         token_budget: Option<usize>,
+        scratch_namespace: Option<String>,
         response: oneshot::Sender<Result<(Store<InstanceState>, WasmInstance)>>,
     },
 }
@@ -302,9 +307,25 @@ impl ServiceHandler for Linker {
 
     async fn handle(&mut self, msg: Message) {
         match msg {
-            Message::Instantiate { process_id, username, program_name, output, token_budget, response } => {
+            Message::Instantiate {
+                process_id,
+                username,
+                program_name,
+                output,
+                token_budget,
+                scratch_namespace,
+                response,
+            } => {
                 let _ = response.send(
-                    self.instantiate(process_id, username, &program_name, output, token_budget).await
+                    self.instantiate(
+                        process_id,
+                        username,
+                        &program_name,
+                        output,
+                        token_budget,
+                        scratch_namespace.as_deref(),
+                    )
+                    .await,
                 );
             }
         }

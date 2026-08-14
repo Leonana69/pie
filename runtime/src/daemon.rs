@@ -5,13 +5,13 @@
 //! Unlike a Process (one-shot execution), a Daemon runs indefinitely.
 
 use std::net::SocketAddr;
-use std::sync::LazyLock;
+use std::sync::{Arc, LazyLock};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::Instant;
 
 use anyhow::{Result, anyhow};
 use hyper::server::conn::http1;
-use tokio::sync::oneshot;
+use tokio::sync::{Mutex, oneshot};
 use tokio::task::JoinHandle;
 use wasmtime::component::Resource;
 use wasmtime_wasi_http::WasiHttpView;
@@ -112,8 +112,13 @@ impl Daemon {
         let daemon_id = NEXT_ID.fetch_add(1, Ordering::SeqCst);
         let addr = SocketAddr::from(([127, 0, 0, 1], port));
 
-        let listener_handle =
-            tokio::spawn(Self::serve(addr, username.clone(), program.clone(), input));
+        let listener_handle = tokio::spawn(Self::serve(
+            addr,
+            username.clone(),
+            program.clone(),
+            input,
+            format!("daemon-{daemon_id}"),
+        ));
 
         Daemon {
             daemon_id,
@@ -126,13 +131,24 @@ impl Daemon {
     }
 
     /// Binds the TCP port and serves HTTP requests indefinitely.
-    async fn serve(addr: SocketAddr, username: String, program: ProgramName, input: String) {
+    async fn serve(
+        addr: SocketAddr,
+        username: String,
+        program: ProgramName,
+        input: String,
+        scratch_namespace: String,
+    ) {
         let result: Result<()> = async {
             let socket = tokio::net::TcpSocket::new_v4()?;
             socket.set_reuseaddr(!cfg!(windows))?;
             socket.bind(addr)?;
             let listener = socket.listen(100)?;
             tracing::info!("Daemon serving HTTP on http://{}/", listener.local_addr()?);
+            // Request handlers use fresh WASM instances, but a stateful HTTP
+            // inferlet may read and update daemon-scoped files. Serialize the
+            // handlers so clear/read/generate/write is one atomic service
+            // operation and dictionary updates cannot race each other.
+            let request_gate = Arc::new(Mutex::new(()));
 
             loop {
                 let (stream, _) = listener.accept().await?;
@@ -140,6 +156,8 @@ impl Daemon {
                 let username = username.clone();
                 let program = program.clone();
                 let input = input.clone();
+                let scratch_namespace = scratch_namespace.clone();
+                let request_gate = Arc::clone(&request_gate);
 
                 tokio::task::spawn(async move {
                     if let Err(e) = http1::Builder::new()
@@ -151,6 +169,8 @@ impl Daemon {
                                     username.clone(),
                                     program.clone(),
                                     input.clone(),
+                                    scratch_namespace.clone(),
+                                    Arc::clone(&request_gate),
                                     req,
                                 )
                             }),
@@ -180,8 +200,11 @@ impl Daemon {
         username: String,
         program: ProgramName,
         _input: String,
+        scratch_namespace: String,
+        request_gate: Arc<Mutex<()>>,
         req: hyper::Request<hyper::body::Incoming>,
     ) -> Result<hyper::Response<HyperOutgoingBody>> {
+        let _request_guard = request_gate.lock().await;
         // Buffer the request body before the WASM handler runs in a spawned
         // task below. hyper's Incoming body uses a zero-capacity channel that
         // requires sender and receiver to poll in the same task; a spawned
@@ -213,7 +236,16 @@ impl Daemon {
         let process_id = uuid::Uuid::new_v4();
         crate::context::register_process(process_id, None).await?;
         let (mut store, instance) =
-            match linker::instantiate(process_id, username, &program, output, None).await {
+            match linker::instantiate(
+                process_id,
+                username,
+                &program,
+                output,
+                None,
+                Some(scratch_namespace),
+            )
+            .await
+            {
                 Ok(pair) => pair,
                 Err(e) => {
                     // No InstanceState was created, so its Drop won't run the

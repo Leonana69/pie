@@ -452,16 +452,15 @@ impl Process {
         let mut wasm_run_us = 0u64;
         let result: Result<String, String> = async {
             let instantiate_start = Instant::now();
-            let output = if capture_outputs { OutputMode::Stream } else { OutputMode::Discard };
-            let (mut store, instance) = linker::instantiate(
-                process_id,
-                username,
-                &program,
-                output,
-                token_budget,
-            )
-            .await
-            .map_err(|e| e.to_string())?;
+            let output = if capture_outputs {
+                OutputMode::Stream
+            } else {
+                OutputMode::Discard
+            };
+            let (mut store, instance) =
+                linker::instantiate(process_id, username, &program, output, token_budget, None)
+                    .await
+                    .map_err(|e| e.to_string())?;
             instantiate_us = duration_us(instantiate_start.elapsed());
 
             // KV admission waits here, after the singleton linker has already

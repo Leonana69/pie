@@ -1324,6 +1324,7 @@ pub(crate) async fn snapshot_from_bytes(
         OutputMode::Discard, // snapshot init only — guest output is noise
         &snapshot_policy,    // deny fs + deny network — snapshot init only
         py_runtime::dir(),
+        None,
     )
     .await?;
     let mut store = Store::new(engine, inst_state);
