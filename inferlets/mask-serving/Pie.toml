@@ -1,0 +1,11 @@
+[package]
+name = "mask-serving"
+version = "0.1.0"
+description = "OpenAI-compatible serving with message-level KV attention masking and page trimming"
+authors = ["Pie Team"]
+
+[runtime]
+core = "^0.2.0"
+mcp = "^0.2.0"
+
+[parameters]
