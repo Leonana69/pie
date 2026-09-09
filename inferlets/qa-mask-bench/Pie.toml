@@ -1,0 +1,16 @@
+[package]
+name = "qa-mask-bench"
+version = "0.1.0"
+description = "Prefix-cache masking experiment: KV-cache strategies vs accuracy/prefill/decode latency"
+authors = ["guojun"]
+repository = "https://github.com/pie-project/pie"
+readme = "README.md"
+
+[runtime]
+core = "^0.2.0"
+mcp = "^0.2.0"
+
+[parameters]
+case = {type = "int", description = "Caching strategy 1..6 (see README)"}
+round = {type = "string", description = "Round payload: {round_id, items:[{info,question,answer}], asks:[[i,j]], sys_extra?}"}
+max_tokens = {type = "int", optional = true, description = "Max generated tokens per answer (default 128)"}

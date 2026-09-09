@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{siunitx}
+
+\lstset{basicstyle=\ttfamily\small, columns=fullflexible, frame=single,
+        framesep=4pt, backgroundcolor=\color{black!3}}
+
+\title{\textbf{qa-mask-bench}: KV-Cache Masking Strategies\\for Batched Multi-Question QA}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Setup}
+Each \textbf{round} has $6$ self-contained \texttt{(info, question, answer)}
+items (fictional facts, so an answer lives in exactly one document). An
+\textbf{ask} poses $2$ of the round's questions at once; their two documents sit
+at random positions among the cached six (random KV access). We sample $5$ asks
+per round over $5$ rounds $=25$ asks $=50$ questions per case, on
+\texttt{Qwen2.5-72B-Instruct-AWQ} (KV page size $16$, greedy). Each
+\texttt{(round, case)} runs once, so the base cache is built once and reused
+across the round's asks. We sweep three input sizes --- \textbf{base},
+\textbf{5$\times$}, \textbf{30$\times$} --- with identical facts/asks, inflating
+the documents and system prompt with neutral filler.
+
+\section{Strategies}
+\begin{tabular}{@{}c l@{}}
+\toprule
+\# & Strategy \\
+\midrule
+1 & all-cached: system $+$ all $6$ infos cached; attend to all. \\
+2 & mask+drop (cascade): infos in page-aligned slots; mask $+$ \texttt{drop} unused per ask. \\
+3 & mask+drop (exclusive): as \#2, each info prefilled attending only to system. \\
+4 & inline: only system cached; the $2$ used infos prefilled inline each ask. \\
+5 & pure-mask (cascade): infos packed contiguously; mask unused, \emph{no drop}. \\
+6 & pure-mask (exclusive): as \#5, exclusive prefill. \\
+\bottomrule
+\end{tabular}
+
+\section{Token counts per part (per ask)}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l r r r r r@{}}
+\toprule
+Dataset & System & Used info ($2$) & Query & Output & Cached base \\
+\midrule
+base       & 93   & 166  & 58 & $\sim$17 & 590   \\
+5$\times$  & 467  & 823  & 58 & $\sim$17 & 2936  \\
+30$\times$ & 2815 & 4874 & 58 & $\sim$17 & 17437 \\
+\bottomrule
+\end{tabular}
+\caption{\emph{Used info} is the two documents an ask needs. \emph{Cached base}
+$=$ system $+$ all $6$ infos (prefilled once per round in cases 1/2/3/5/6;
+case~4 caches only the system). Query/output are independent of document size.}
+\end{table}
+
+\section{Results}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.12}
+\setlength{\tabcolsep}{5pt}
+\textbf{base}\\[2pt]
+\begin{tabular}{@{}l c c r r r r r@{}}
+\toprule
+Case & EM & F1 & Prefill (ms) & Decode (ms) & Reg (ms) & Attend & Resident \\
+\midrule
+1 all-cached (cascade)  & \textbf{1.000} & \textbf{1.000} & 60  & 493 & 664 & 648 & 648 \\
+2 mask+drop (cascade)   & 0.660 & 0.660 & 59  & 495 & 877 & 317 & 340 \\
+3 mask+drop (exclusive) & 0.660 & 0.660 & 59  & 495 & 878 & 317 & 340 \\
+4 inline                & \textbf{1.000} & \textbf{1.000} & 195 & 493 & 94  & 317 & 317 \\
+5 pure-mask (cascade)   & \textbf{1.000} & \textbf{1.000} & 60  & 494 & 661 & 317 & 648 \\
+6 pure-mask (exclusive) & 0.700 & 0.716 & 60  & 497 & 660 & 317 & 648 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.8em}
+\textbf{5$\times$}\\[2pt]
+\begin{tabular}{@{}l c c r r r r r@{}}
+\toprule
+Case & EM & F1 & Prefill (ms) & Decode (ms) & Reg (ms) & Attend & Resident \\
+\midrule
+1 all-cached (cascade)  & \textbf{1.000} & \textbf{1.000} & 65  & 506 & 2521 & 2991 & 2991 \\
+2 mask+drop (cascade)   & 0.640 & 0.648 & 62  & 500 & 2764 & 1348 & 1373 \\
+3 mask+drop (exclusive) & 0.640 & 0.648 & 62  & 500 & 2767 & 1348 & 1373 \\
+4 inline                & \textbf{1.000} & \textbf{1.000} & 714 & 498 & 392  & 1348 & 1348 \\
+5 pure-mask (cascade)   & \textbf{1.000} & \textbf{1.000} & 65  & 508 & 2523 & 1348 & 2991 \\
+6 pure-mask (exclusive) & 0.680 & 0.696 & 66  & 508 & 2529 & 1348 & 2991 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.8em}
+\textbf{30$\times$}\\[2pt]
+\begin{tabular}{@{}l c c r r r r r@{}}
+\toprule
+Case & EM & F1 & Prefill (ms) & Decode (ms) & Reg (ms) & Attend & Resident \\
+\midrule
+1 all-cached (cascade)  & \textbf{1.000} & \textbf{1.000} & 94   & 562 & 15942 & 17491 & 17491 \\
+2 mask+drop (cascade)   & 0.600 & 0.616 & 74   & 527 & 16603 & 7748  & 7770  \\
+3 mask+drop (exclusive) & 0.600 & 0.616 & 74   & 525 & 16601 & 7748  & 7770  \\
+4 inline                & \textbf{1.000} & \textbf{1.000} & \textbf{4233} & 527 & 2252  & 7748  & 7748  \\
+5 pure-mask (cascade)   & \textbf{1.000} & \textbf{1.000} & 94   & 563 & 15968 & 7748  & 17491 \\
+6 pure-mask (exclusive) & 0.700 & 0.708 & 94   & 566 & 16172 & 7748  & 17491 \\
+\bottomrule
+\end{tabular}
+\caption{$50$ questions per case; latency averaged per ask. Prefill $=$ TTFT;
+Reg $=$ once-per-round base build; Attend / Resident $=$ tokens attended /
+physically in the KV at decode.}
+\label{tab:results}
+\end{table}
+
+\section{How the picture changes with input size}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l r r r@{}}
+\toprule
+Metric & base & 5$\times$ & 30$\times$ \\
+\midrule
+Cached base (tokens)                 & 590  & 2936 & 17437 \\
+Decode, full KV (\#1, ms)            & 493  & 506  & 562   \\
+Decode, masked KV (\#2, ms)          & 495  & 500  & 527   \\
+\textbf{Masking decode saving}       & $\sim$0\% & $\sim$1\% & \textbf{$\sim$6\%} \\
+\textbf{Inline prefill (\#4, ms)}    & 195  & 714  & \textbf{4233} \\
+Cached prefill (\#1/5, ms)           & 60   & 65   & 94    \\
+mask+drop accuracy (EM)              & 0.66 & 0.64 & 0.60  \\
+pure-mask accuracy (EM)              & 1.00 & 1.00 & 1.00  \\
+\bottomrule
+\end{tabular}
+\caption{Trend across input sizes. The masking decode saving grows from nil to
+$\sim$6\%; inline prefill explodes ($22\times$); mask+drop accuracy erodes while
+pure-mask stays perfect.}
+\label{tab:trend}
+\end{table}
+
+\section{Findings}
+\begin{itemize}
+  \item \textbf{The masking decode saving appears only at scale.} Decode is
+        weight-bound for small caches (base/5$\times$: all cases
+        $\approx\SI{493}{}$--$\SI{508}{ms}$), so masking buys nothing. By
+        30$\times$ ($\sim$17.5k cached tokens) attention starts to matter: full-KV
+        cases (\#1/\#5, $\sim$17.5k resident) decode in \SI{562}{ms} vs
+        \SI{527}{ms} for the masked-and-dropped cases ($\sim$7.7k resident) ---
+        a $\sim$6\% saving that grows with context length.
+  \item \textbf{Inline prefill becomes prohibitive.} It reprocesses the two used
+        documents every ask, so its TTFT scales with document size:
+        \SI{195}{ms} $\rightarrow$ \SI{714}{ms} $\rightarrow$ \SI{4233}{ms}
+        ($22\times$), versus a flat $\sim$60--94 ms for the cached strategies
+        (which prefill only the question).
+  \item \textbf{``mask+drop'' corrupts multi-token answers, worse at scale} (EM
+        $0.66\rightarrow0.64\rightarrow0.60$). RoPE is baked into the keys before
+        they enter the cache, so the page-aligned padding required for dropping
+        inserts positional gaps that scramble word boundaries (names break, numbers
+        survive); larger documents mean larger gaps:
+\begin{lstlisting}
+gold:    'Doran Drummel'   'Karsil Hallow'
+case 2:  'Dorandrummel'    'Kars Silhallow'   (mask+drop)  BAD
+case 5:  'Doran Drummel'   'Karsil Hallow'    (pure-mask)  OK
+\end{lstlisting}
+  \item \textbf{A real accuracy/decode tension emerges at scale.} Pure masking
+        (\#5) keeps positions contiguous, so accuracy stays $1.000$ --- but it does
+        \emph{not} drop the masked pages, so its decode (\SI{563}{ms}) matches the
+        full-KV case. The $\sim$6\% decode saving requires dropping, which is exactly
+        what corrupts the answers. With keys pre-rotated at prefill, you cannot have
+        both cheaply.
+  \item Cascade prefill beats exclusive ($1.00$ vs $0.70$ under pure masking) at
+        all sizes. Base-cache build (Reg) scales with total cached tokens but is
+        amortized over the round's asks.
+\end{itemize}
+
+\section{Analytical estimate: how long must the prompt be to save 50\% decode?}
+
+The three input sizes let us fit a simple model for per-token decode latency as a
+function of the resident KV length $N$:
+\begin{equation}
+  d(N) = W + \alpha N,
+\end{equation}
+where $W$ is the fixed, KV-independent (weight-bound) cost and $\alpha$ is the
+per-token attention cost added by each resident KV token. Fitting the three
+full-KV (\#1) measurements $(N, d)$ in $\mu$s --- $(648,\,31659)$,
+$(2991,\,32433)$, $(17491,\,36054)$ --- gives
+\begin{equation}
+  W \approx \SI{31572}{\micro s/token}, \qquad
+  \alpha \approx \SI{0.257}{\micro s/token} \text{ per KV token},
+\end{equation}
+which reproduces all three points to within $0.3\%$ (and the masked-case decode
+to within $\sim$1\%). The KV-attention share of a decode step is
+$\alpha N/(W+\alpha N)$: just $\sim$0.5\% at $N{=}648$ (base), but $\sim$13\% at
+$N{=}17.5\mathrm{k}$ (30$\times$).
+
+\paragraph{Saving from masking.} An ask caches $n{=}6$ documents of $I$ tokens
+plus an $s$-token system prompt and attends to only $k{=}2$, so masking drops
+$\Delta N=(n-k)\,I$ tokens. The fractional decode saving is
+\begin{equation}
+  \sigma(N) \;=\; \frac{d(N_{\text{full}})-d(N_{\text{keep}})}{d(N_{\text{full}})}
+  \;=\; \frac{\alpha\,\Delta N}{W+\alpha N_{\text{full}}},
+  \qquad N_{\text{full}}=s+nI .
+\end{equation}
+This formula predicts $0.3\%$ / $1.3\%$ / $6.9\%$ at base / 5$\times$ / 30$\times$,
+matching the measured $\sim$0\% / $\sim$1\% / $\sim$6\%. As $I$ grows the system
+prompt becomes negligible and $\Delta N\to\tfrac{n-k}{n}N_{\text{full}}=\tfrac23
+N_{\text{full}}$, so the \emph{maximum} achievable saving is capped at
+$\tfrac23\approx 67\%$ (you can only drop the $4$ of $6$ unused documents).
+
+\paragraph{Solving $\sigma=0.5$.} In the large-$I$ limit
+$\sigma=\tfrac23\alpha N/(W+\alpha N)$. Setting this to $0.5$ gives
+\begin{equation}
+  N^\star \;=\; \frac{3W}{\alpha}\;\approx\;\frac{3\times 31572}{0.257}
+  \;\approx\; 3.7\times 10^{5}\ \text{tokens}.
+\end{equation}
+So the cached prompt (system $+$ all documents) would need to be on the order of
+\textbf{$\sim$370k tokens} --- about $21\times$ the 30$\times$ cache here, or
+$\sim$$150$ documents of the current $\sim$2.4k-token size --- for masking to halve
+decode latency. At that point each decode step would cost $\approx\SI{126}{ms}$
+(\,$\sim$4$\times$ today's\,), with attention making up $\sim$75\% of it.
+
+\paragraph{Caveats.} (i) This is a $\sim$20$\times$ extrapolation beyond the
+measured range and well past the model's native context window. (ii) It assumes
+$\alpha$ is constant; if attention becomes memory-bandwidth-bound at very long
+context, $\alpha$ rises and the $50\%$ crossover arrives \emph{sooner} (smaller
+$N^\star$). (iii) Realising the saving requires \texttt{drop}, which --- as shown
+above --- corrupts answers via baked-RoPE position gaps; a gap-free drop would be
+needed to reach $50\%$ savings without the accuracy hit.
+
+\section*{Conclusion}
+\textbf{Input size does change the trade-off. For small caches, pure masking
+(\#5) strictly dominates --- full accuracy at the same latency as caching
+everything. As inputs grow to $\sim$30$\times$, two things sharpen: inline prefill
+becomes prohibitively expensive ($22\times$), and a genuine decode-vs-accuracy
+tension appears --- mask+drop saves $\sim$6\% decode but its baked-RoPE position
+gaps drag accuracy to EM $0.60$, while pure masking holds EM $1.000$ at the cost
+of keeping the full KV resident. The practical recommendation: cache everything
+or pure-mask (\#1/\#5) when accuracy matters; only reach for mask+drop in very
+long-context, latency-critical settings that can tolerate the corruption ---
+ideally after the runtime gains gap-free dropping (e.g.\ position renumbering).}
+
+\paragraph{Reproduce.}
+\begin{lstlisting}
+cd sdk/examples/qa-mask-bench
+make prepare                                            # base (scale 1)
+python prepare.py --scale 11 --out rounds_large.json    # ~5x  tokens
+python prepare.py --scale 74 --out rounds_30x.json      # ~30x tokens
+make run CASES=1,2,3,4,5,6                               # base
+python run.py --model <M> --cases 1,2,3,4,5,6 --rounds-json rounds_large.json \
+    --output results_large.jsonl
+python run.py --model <M> --cases 1,2,3,4,5,6 --rounds-json rounds_30x.json \
+    --output results_30x.jsonl
+python eval.py --results results.jsonl        # base
+python eval.py --results results_large.jsonl  # 5x
+python eval.py --results results_30x.jsonl    # 30x
+\end{lstlisting}
+
+\end{document}
