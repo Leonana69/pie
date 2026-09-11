@@ -1,0 +1,30 @@
+[model] compute backend: CUDA0
+[model] rust_storage_program(version=3, source_tensors=339, contracts=339/339, tensors=339, buffers=339, instrs=1017, schedule=1017, optimizer_passes=1, optimizer_rewrites=0, persistent_bytes=6154186752, read_bytes=6154186752, write_bytes=6154186752) (planner=rust)
+╭─ Pie Engine ───────────────────────────────────────────────────────────╮
+│ Host         127.0.0.1:18082                                             │
+│ Model        default (/workspace/models/Qwen2.5-7B-Instruct-Q5_K_M.gguf) │
+│ Driver       portable                                                    │
+│ Device       auto                                                        │
+╰──────────────────────────────────────────────────────────────────────────╯
+
+✓ Server ready at ws://127.0.0.1:18082
+[forward] plan failed: plan: request 0 token at position 480 exceeds seq_len 266
+[forward] plan failed: plan: request 0 token at position 160 exceeds seq_len 153
+[forward] plan failed: plan: request 0 token at position 454 exceeds seq_len 304
+[forward] plan failed: plan: request 0 token at position 178 exceeds seq_len 178
+[forward] plan failed: plan: request 0 token at position 480 exceeds seq_len 263
+[forward] plan failed: plan: request 0 token at position 160 exceeds seq_len 154
+[forward] plan failed: plan: request 0 token at position 445 exceeds seq_len 324
+[forward] plan failed: plan: request 0 token at position 180 exceeds seq_len 180
+[forward] plan failed: plan: request 0 token at position 480 exceeds seq_len 263
+[forward] plan failed: plan: request 0 token at position 160 exceeds seq_len 153
+[forward] plan failed: plan: request 0 token at position 441 exceeds seq_len 256
+[forward] plan failed: plan: request 0 token at position 175 exceeds seq_len 175
+[forward] plan failed: plan: request 0 token at position 480 exceeds seq_len 261
+[forward] plan failed: plan: request 0 token at position 160 exceeds seq_len 156
+[forward] plan failed: plan: request 0 token at position 442 exceeds seq_len 287
+[forward] plan failed: plan: request 0 token at position 182 exceeds seq_len 182
+[forward] plan failed: plan: request 0 token at position 480 exceeds seq_len 262
+[forward] plan failed: plan: request 0 token at position 160 exceeds seq_len 152
+[forward] plan failed: plan: request 0 token at position 449 exceeds seq_len 327
+[forward] plan failed: plan: request 0 token at position 174 exceeds seq_len 174
