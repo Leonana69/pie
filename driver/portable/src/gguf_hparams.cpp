@@ -59,6 +59,13 @@ bool get_bool(const GgufMeta& m, const std::string& arch, const char* key,
     return kv ? kv->bool_value : dflt;
 }
 
+const std::vector<std::int32_t>* get_i32_array(
+        const GgufMeta& m, const std::string& arch, const char* key) {
+    const auto* kv = find_kv(m, arch, key);
+    if (kv == nullptr || kv->i32_array_value.empty()) return nullptr;
+    return &kv->i32_array_value;
+}
+
 }  // namespace
 
 Hparams parse_gguf_hparams(const GgufMeta& meta) {
@@ -126,6 +133,24 @@ Hparams parse_gguf_hparams(const GgufMeta& meta) {
     // for a GGUF the same facts live under the `qwen35.*` kv namespace.
     // Without them `model.cpp::build_qwen3_5_` throws "layer_types missing".
     if (h.arch == PieArch::Qwen3_5) {
+        // Recent Qwen3.5-family GGUFs can append one or more NextN/MTP
+        // predictor blocks and include them in `<arch>.block_count`. They are
+        // auxiliary draft-model layers rather than layers in the primary
+        // transformer. Pie does not execute those predictors through the
+        // portable path, so exclude them from the main model depth; otherwise
+        // the regular layer loop tries to load a linear-attention block from
+        // an MTP block (for example Qwen3.8-27B's blk.64).
+        const std::int32_t nextn_predict_layers = static_cast<std::int32_t>(
+            get_num(meta, a, "nextn_predict_layers", 0));
+        if (nextn_predict_layers < 0 ||
+            nextn_predict_layers >= h.num_hidden_layers) {
+            throw std::runtime_error(
+                "gguf: invalid nextn_predict_layers " +
+                std::to_string(nextn_predict_layers) + " for block_count " +
+                std::to_string(h.num_hidden_layers));
+        }
+        h.num_hidden_layers -= nextn_predict_layers;
+
         // Linear-attention dims. The GGUF `ssm.*` keys carry the same
         // quantities the HF config exposes as `linear_*`:
         //   group_count    -> num K heads        (ssm_n_group)
@@ -147,6 +172,31 @@ Hparams parse_gguf_hparams(const GgufMeta& meta) {
         // A GGUF always carries the converter's tiled V-head order; the
         // graph must expand Q/K with a tiled broadcast to match.
         h.qwen35_linear_v_tiled = true;
+
+        // Qwen3.5-family GGUF uses interleaved multimodal RoPE. The three
+        // section lengths are stored as an INT32 array and dimension_count
+        // records the actually rotated prefix of each attention head.
+        const auto* mrope_sections =
+            get_i32_array(meta, a, "rope.dimension_sections");
+        if (mrope_sections == nullptr || mrope_sections->size() < 3) {
+            throw std::runtime_error(
+                "gguf: qwen3_5 missing rope.dimension_sections");
+        }
+        for (std::size_t i = 0; i < 3; ++i) {
+            h.qwen35_mrope_section[i] = (*mrope_sections)[i];
+        }
+        h.qwen35_mrope_interleaved = true;
+        const auto rope_dimension_count = static_cast<std::int32_t>(
+            get_num(meta, a, "rope.dimension_count", h.head_dim));
+        if (rope_dimension_count <= 0 || rope_dimension_count > h.head_dim) {
+            throw std::runtime_error(
+                "gguf: invalid qwen3_5 rope.dimension_count " +
+                std::to_string(rope_dimension_count) + " for head_dim " +
+                std::to_string(h.head_dim));
+        }
+        h.qwen35_partial_rotary_factor =
+            static_cast<float>(rope_dimension_count) /
+            static_cast<float>(h.head_dim);
 
         // qwen35moe shared expert (always-active dense path alongside the
         // routed experts). The generic MoE block above already read

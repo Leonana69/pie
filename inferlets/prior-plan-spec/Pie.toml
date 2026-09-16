@@ -16,3 +16,5 @@ system = {type = "string", optional = true, description = "System prompt used fo
 max_tokens = {type = "int", optional = true, description = "Maximum generated tokens per path (default: 256)"}
 draft_len = {type = "int", optional = true, description = "Maximum previous-plan tokens proposed per verifier pass (default: 8)"}
 match_tokens = {type = "int", optional = true, description = "Minimum generated suffix length required to align with the previous plan (default: 2)"}
+
+raw_request = {type = "bool", optional = true, description = "Use current_request verbatim as user message (default false)"}

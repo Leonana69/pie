@@ -1,0 +1,20 @@
+[package]
+name = "openai-plan-mask-service"
+version = "0.1.0"
+edition = "2024"
+description = "OpenAI-compatible cached prior-plan and example-masking service"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+inferlet = { path = "../../sdk/rust/inferlet" }
+wstd = "=0.5.6"
+# Match the native host's wasi:http@0.2.4 interface.
+wasip2 = "=1.0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+
+[profile.release]
+lto = true

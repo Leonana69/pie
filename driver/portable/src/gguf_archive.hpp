@@ -39,8 +39,14 @@ struct GgufMeta {
     std::size_t  tokens_count = 0;
     // All KV pairs as (key, type-erased) — used by the hparams parser.
     // Type is one of gguf_type's underlying values.
-    struct KV { std::string key; std::int32_t type; std::string str_value;
-                double num_value = 0.0; bool bool_value = false; };
+    struct KV {
+        std::string key;
+        std::int32_t type;
+        std::string str_value;
+        double num_value = 0.0;
+        bool bool_value = false;
+        std::vector<std::int32_t> i32_array_value;
+    };
     std::unordered_map<std::string, KV> kv;
 };
 

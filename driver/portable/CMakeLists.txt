@@ -141,6 +141,15 @@ target_include_directories(test_kv_cache_quant PRIVATE
 target_link_libraries(test_kv_cache_quant PRIVATE ggml)
 add_test(NAME portable_kv_cache_quant COMMAND test_kv_cache_quant)
 
+add_executable(test_gguf_hparams
+  tests/test_gguf_hparams.cpp
+  src/gguf_hparams.cpp
+)
+target_include_directories(test_gguf_hparams PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(test_gguf_hparams PRIVATE pie_driver_portable_lib)
+add_test(NAME portable_gguf_hparams COMMAND test_gguf_hparams)
+
 # ── CUDA paged-attention (FlashInfer) ─────────────────────────────────────
 #
 # When the ggml CUDA backend is enabled, register an out-of-tree paged-

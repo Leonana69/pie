@@ -20,6 +20,13 @@ use serde::{Deserialize, Serialize};
 struct Input {
     #[serde(default = "default_current_request")]
     current_request: String,
+    /// Preserve dataset wording instead of adding the software-planning wrapper.
+    #[serde(default)]
+    raw_request: bool,
+    #[serde(default = "default_prefill_chunk_size")]
+    prefill_chunk_size: usize,
+    #[serde(default)]
+    disable_thinking: bool,
     #[serde(default = "default_previous_plan")]
     previous_plan: String,
     #[serde(default = "default_mode")]
@@ -59,6 +66,10 @@ fn default_system() -> String {
         .into()
 }
 
+fn default_prefill_chunk_size() -> usize {
+    512
+}
+
 fn default_max_tokens() -> usize {
     256
 }
@@ -91,6 +102,10 @@ struct RunMetrics {
     verifier_steps: usize,
     prefill_ms: u128,
     decode_ms: u128,
+    bootstrap_ms: f64,
+    decode_after_first_ms: f64,
+    decode_accounted_tokens: usize,
+    finish_reason: String,
     total_ms: u128,
     decode_tokens_per_second: f64,
     average_tokens_per_step: f64,
@@ -127,6 +142,9 @@ async fn main(input: Input) -> Result<Output> {
             "unknown mode '{}': expected 'baseline', 'speculated', or 'both'",
             input.mode
         ));
+    }
+    if input.prefill_chunk_size == 0 || input.prefill_chunk_size > 512 {
+        return Err("prefill_chunk_size must be in 1..=512".into());
     }
     if input.max_tokens == 0 {
         return Err("max_tokens must be greater than zero".into());
@@ -190,22 +208,33 @@ async fn run_once(
     use_previous_plan: bool,
 ) -> Result<RunMetrics> {
     let mut ctx = Context::new(model)?;
-    ctx.system(&input.system);
-    ctx.user(&format!(
-        "Create an implementation plan for this request:\n\n{}",
-        input.current_request
-    ));
-    ctx.cue();
-
-    // Keep prefill separate from decode. Both A/B paths use the same split so
-    // custom verification kernel shapes are the only intentional difference.
+    let request = if input.raw_request {
+        input.current_request.clone()
+    } else {
+        format!(
+            "Create an implementation plan for this request:\n\n{}",
+            input.current_request
+        )
+    };
+    let mut prefix = chat::system_user(model, &input.system, &request);
+    // Leave the last cue token for bootstrap, without duplicating it.
+    let mut cue = chat::cue(model);
+    if input.disable_thinking {
+        cue.extend(model.tokenizer().encode("<think>\n\n</think>\n\n"));
+    }
+    let (&trigger, cue_prefix) = cue
+        .split_last()
+        .ok_or("chat template produced an empty cue")?;
+    prefix.extend_from_slice(cue_prefix);
     let prefill_start = Instant::now();
-    ctx.flush().await?;
+    for chunk in prefix.chunks(input.prefill_chunk_size) {
+        let mut pass = ctx.forward();
+        pass.input(chunk);
+        pass.execute().await?;
+    }
     let prefill_elapsed = prefill_start.elapsed();
 
     let decode_start = Instant::now();
-    let cue = chat::cue(model);
-    let trigger = *cue.last().ok_or("chat template produced an empty cue")?;
     let first_token = {
         let mut pass = ctx.forward();
         pass.input(&[trigger]);
@@ -216,6 +245,8 @@ async fn run_once(
             .ok_or("bootstrap decode produced no token")?
     };
 
+    let bootstrap_elapsed = decode_start.elapsed();
+    let after_first_start = Instant::now();
     let stop_tokens = chat::stop_tokens(model);
     let first_is_stop = stop_tokens.contains(&first_token);
     let mut token_ids = if first_is_stop {
@@ -259,6 +290,7 @@ async fn run_once(
         }
     }
 
+    let decode_after_first = after_first_start.elapsed();
     let decode_elapsed = decode_start.elapsed();
     let total_elapsed = prefill_elapsed + decode_elapsed;
     let stats = spec_stats.lock().unwrap();
@@ -275,6 +307,19 @@ async fn run_once(
         verifier_steps,
         prefill_ms: prefill_elapsed.as_millis(),
         decode_ms: decode_elapsed.as_millis(),
+        bootstrap_ms: bootstrap_elapsed.as_secs_f64() * 1000.,
+        decode_after_first_ms: decode_after_first.as_secs_f64() * 1000.,
+        decode_accounted_tokens: if generated_tokens < input.max_tokens {
+            generated_tokens
+        } else {
+            generated_tokens.saturating_sub(1)
+        },
+        finish_reason: if generated_tokens < input.max_tokens {
+            "stop"
+        } else {
+            "length"
+        }
+        .into(),
         total_ms: total_elapsed.as_millis(),
         decode_tokens_per_second: throughput(generated_tokens, decode_elapsed),
         average_tokens_per_step: generated_tokens as f64 / verifier_steps.max(1) as f64,

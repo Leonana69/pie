@@ -223,7 +223,22 @@ GGUFArchive::GGUFArchive(const std::filesystem::path& gguf_file) {
             case GGUF_TYPE_FLOAT64: kv.num_value = gguf_get_val_f64(gctx_, i); break;
             case GGUF_TYPE_BOOL:    kv.bool_value = gguf_get_val_bool(gctx_, i); break;
             case GGUF_TYPE_STRING:  kv.str_value = gguf_get_val_str(gctx_, i); break;
-            case GGUF_TYPE_ARRAY:   /* arrays handled on demand (tokens, etc.) */ break;
+            case GGUF_TYPE_ARRAY: {
+                // Keep the compact INT32 arrays used by model hparams (for
+                // example qwen35.rope.dimension_sections). Do not retain
+                // tokenizer-sized arrays here; tokens_count is captured
+                // separately below.
+                if (gguf_get_arr_type(gctx_, i) == GGUF_TYPE_INT32 &&
+                    key.find(".rope.dimension_sections") != std::string::npos) {
+                    const auto n = gguf_get_arr_n(gctx_, i);
+                    const auto* values = static_cast<const std::int32_t*>(
+                        gguf_get_arr_data(gctx_, i));
+                    if (values != nullptr) {
+                        kv.i32_array_value.assign(values, values + n);
+                    }
+                }
+                break;
+            }
             default: break;
         }
         meta_.kv.emplace(key, std::move(kv));
