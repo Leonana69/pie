@@ -35,6 +35,13 @@ impl Run<'_> {
                 gate_add,
             } => {
                 #[cfg(feature = "cuda")]
+                if norm.is_none() && self.flashinfer_experts(select, glu, down, sum)? {
+                    return match gate_add {
+                        Some(gate_add) => self.linear(gate_add),
+                        None => Ok(()),
+                    };
+                }
+                #[cfg(feature = "cuda")]
                 if self.moe_experts(select, glu, down, norm.as_deref(), sum, gate_add.as_deref())? {
                     return Ok(());
                 }
@@ -1158,6 +1165,87 @@ impl Run<'_> {
         })
     }
 
+    /// Optional FlashInfer body; PIE retains routing and the shared-expert gate.
+    #[cfg(feature = "cuda")]
+    fn flashinfer_experts(
+        &mut self,
+        select: &Linear,
+        glu: &Linear,
+        down: &Linear,
+        sum: &Linear,
+    ) -> Result<bool, kernels_cuda::Error> {
+        if !linear::flashinfer::enabled() {
+            return Ok(false);
+        }
+        let (
+            Linear::MoeMatmulSelectActQuant {
+                x,
+                bank: up,
+                routes,
+                quant: ActQuant::E4m3 { gran: 128 },
+                input_scales: None,
+                y: packed,
+            },
+            Linear::MlpSwiglu {
+                packed: reads,
+                intermediate,
+                y: hidden,
+            },
+            Linear::MoeMatmulSelectActQuant {
+                x: dx,
+                bank: down,
+                routes: dr,
+                quant: ActQuant::E4m3 { gran: 128 },
+                input_scales: None,
+                y: routed,
+            },
+            Linear::MoeWeightedSum {
+                routed: sr,
+                weights,
+                y,
+            },
+        ) = (select, glu, down, sum)
+        else {
+            return Ok(false);
+        };
+        if packed != reads || hidden != dx || routes != dr || routed != sr {
+            return Ok(false);
+        }
+        if !self.flashinfer_up(*up) || self.scales_in_atoms(*down) {
+            return Ok(false);
+        }
+        let (up, us, ub, ut) = self.planes(*up);
+        let (down, ds, db, dt) = self.planes(*down);
+        if up.dtype != Dtype::E4m3
+            || down.dtype != Dtype::E4m3
+            || ub.is_some()
+            || db.is_some()
+            || ut.streams()
+            || dt.streams()
+            || crate::device::alloc::is_host_pointer(up.ptr)
+            || crate::device::alloc::is_host_pointer(down.ptr)
+        {
+            return Ok(false);
+        }
+        let x = self.tensor(*x);
+        let routes = self.tensor(*routes);
+        let weights = self.tensor(*weights);
+        let mut y = self.tensor(*y);
+        linear::flashinfer::experts(
+            self.ctx(),
+            x,
+            up,
+            us,
+            down,
+            ds,
+            routes,
+            weights,
+            *intermediate,
+            &mut y,
+        )?;
+        Ok(true)
+    }
+
     /// A routed MLP whose rows stay laid out by expert from the gate-up select
     /// to the weighted sum (`linear::moe::experts`); false when it does not
     /// take this one.
@@ -1421,6 +1509,14 @@ impl Run<'_> {
         y: ValueId,
     ) -> Result<(), kernels_cuda::Error> {
         const OP: &str = "linear.moe_matmul_select_act_quant";
+        if self.flashinfer_up(bank) {
+            return Err(kernels_cuda::Error::Backend {
+                op: OP,
+                detail:
+                    "FlashInfer gate/up weights require fuse.moe_experts and a supported fused body"
+                        .into(),
+            });
+        }
         let (codes, scales, biases, seat) = self.planes(bank);
         per_tensor_e4m3_is_a_table(OP, codes)?;
         if seat.streams() || crate::device::alloc::is_host_pointer(codes.ptr) {

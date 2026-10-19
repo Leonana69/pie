@@ -26,6 +26,8 @@ pub enum WeightRow {
         /// The scales lie in the tcgen05 GEMM's atoms, laid there at load
         /// for a low-precision product, not row-major.
         atoms: bool,
+        /// FP8 gate/up halves reordered to FlashInfer [up, gate].
+        flashinfer_up: bool,
         /// An mxfp4 bank in the matrix core's lane order (ROCm:
         /// `linear::moe::mxfp4_lanes`), which only routed selects read.
         lanes: bool,
@@ -1685,6 +1687,7 @@ impl<'c> Run<'c> {
                 seat,
                 repacked: false,
                 atoms: false,
+                flashinfer_up: false,
                 lanes: false,
             }) => Some((codes, scales, biases, seat)),
             _ => None,
@@ -1717,6 +1720,7 @@ impl<'c> Run<'c> {
                 seat,
                 repacked: true,
                 atoms: false,
+                flashinfer_up: false,
                 lanes: _,
             }) => Some((codes, scales, biases, seat)),
             _ => None,
@@ -1766,6 +1770,7 @@ impl<'c> Run<'c> {
                 seat,
                 repacked: _,
                 atoms: _,
+                flashinfer_up: _,
                 lanes: _,
             }) => (codes, scales, biases, seat),
             Some(WeightRow::Dense(_) | WeightRow::Streamed { .. } | WeightRow::Ordered(_)) => {
@@ -1776,6 +1781,20 @@ impl<'c> Run<'c> {
             }
             None => panic!("value {at} is weight {row}, which the shell has not bound"),
         }
+    }
+
+    #[cfg(feature = "cuda")]
+    pub(crate) fn flashinfer_up(&self, id: ValueId) -> bool {
+        let Def::Weight(w) = &self.values[id.0 as usize].def else {
+            return false;
+        };
+        matches!(
+            self.weights.0.get(*w as usize).copied().flatten(),
+            Some(WeightRow::Planes {
+                flashinfer_up: true,
+                ..
+            })
+        )
     }
 
     /// Whether weight `id`'s scales were laid into tcgen05 atoms at load.

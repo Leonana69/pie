@@ -3094,6 +3094,7 @@ name = "kernels-cuda"
 version = "0.5.4"
 dependencies = [
  "cudarc",
+ "libloading 0.9.0",
  "pie-dtype",
  "pie-profile",
  "tracing",

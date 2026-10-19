@@ -16,9 +16,10 @@ path = "src/lib.rs"
 [features]
 default = []
 
-cuda = ["dep:cudarc", "cudarc/cuda-13000"]
+cuda = ["dep:libloading", "dep:cudarc", "cudarc/cuda-13000"]
 
 [dependencies]
+libloading = { version = "0.9", optional = true }
 dtype = { package = "pie-dtype", path = "../dtype" }
 profile = { package = "pie-profile", path = "../profile" }
 

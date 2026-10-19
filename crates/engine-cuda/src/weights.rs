@@ -940,6 +940,7 @@ impl Weights {
                 Some(pairing) => WeightRow::Planes {
                     repacked: place.dtype == Dtype::U4g64tiled,
                     atoms: false,
+                    flashinfer_up: false,
                     lanes: false,
                     codes: {
                         let mut codes = packed(experts.as_ref(), &store, &places, at)?;
@@ -1687,6 +1688,36 @@ fn lay_tile_banks(
     held: &mut Vec<Buffer>,
     stream: *mut core::ffi::c_void,
 ) -> Result<()> {
+    // Experimental Qwen backend: preserve original factors and reorder only its
+    // gate/up banks. Mark the layout so unfused dispatch cannot misread it.
+    if kernels_cuda::linear::flashinfer::enabled() {
+        for (at, _) in act_quant_banks(trace) {
+            let p = &trace.params[at];
+            if !p.name.ends_with("experts_gate_up")
+                || !matches!(p.dtype, Dtype::E4m3 | Dtype::E4m3tile128)
+            {
+                continue;
+            }
+            let Some(Some(WeightRow::Planes {
+                codes,
+                scales,
+                seat,
+                flashinfer_up,
+                ..
+            })) = table.get_mut(at)
+            else {
+                continue;
+            };
+            if seat.streams() || crate::device::alloc::is_host_pointer(codes.ptr) {
+                continue;
+            }
+            let ctx = unsafe { kernels_cuda::Ctx::on(stream.cast()) };
+            kernels_cuda::linear::flashinfer::swap_gate_up(&ctx, *codes, *scales)?;
+            *flashinfer_up = true;
+        }
+        crate::device::ctx::sync(stream)?;
+        return Ok(());
+    }
     for (at, _) in act_quant_banks(trace) {
         if !matches!(trace.params[at].dtype, Dtype::E4m3 | Dtype::E4m3tile128) {
             continue;

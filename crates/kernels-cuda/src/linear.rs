@@ -40,3 +40,6 @@ pub mod act_quant;
 
 #[cfg(feature = "cuda")]
 pub mod fp8_compute;
+
+#[cfg(feature = "cuda")]
+pub mod flashinfer;

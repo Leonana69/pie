@@ -63,4 +63,5 @@ static STRICT_KERNELS: extern "C" fn() = {
 
 mod the_fp8_experts_preserve_block_factors;
 
+mod the_flashinfer_fp8_body_preserves_windows;
 mod the_scaled_silu_projection_preserves_rounding;
