@@ -1,0 +1,2918 @@
+{
+  "notice": "Historical 2026-10-18 experiments on PIE base 6818175 plus local patches. NOT measurements of the 2026-10-19 port.",
+  "files": {
+    "pie-matched-throughput-results.json": {
+      "sha256": "014b18b8bb4c20c8174474ee97f899140e3d5b51ca65af4c1c2d21df1bb98134",
+      "results": [
+        {
+          "prompt_tokens": 128,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 384.1425080318004,
+          "decode_tokens_s_median": 57.851530286410444,
+          "aggregate_output_tokens_s": 53.3688140150418,
+          "raw": [
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 390.43975505046546,
+              "latency_s": 4.80003346002195,
+              "output_tokens_s": 53.332961557903246,
+              "decode_tokens_s": 57.851530286410444,
+              "guest_ttft_us": 384648
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 384.1425080318004,
+              "latency_s": 4.792495746980421,
+              "output_tokens_s": 53.4168444826052,
+              "decode_tokens_s": 57.860338303725484,
+              "guest_ttft_us": 378405
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 383.9916830183938,
+              "latency_s": 4.791090021026321,
+              "output_tokens_s": 53.43251720934292,
+              "decode_tokens_s": 57.86801961340078,
+              "guest_ttft_us": 378694
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 380.74359600432217,
+              "latency_s": 4.796973788994364,
+              "output_tokens_s": 53.36697911240156,
+              "decode_tokens_s": 57.751391808542586,
+              "guest_ttft_us": 376130
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 389.3291089916602,
+              "latency_s": 4.803451290936209,
+              "output_tokens_s": 53.2950132091596,
+              "decode_tokens_s": 57.78366340268279,
+              "guest_ttft_us": 384933
+            }
+          ]
+        },
+        {
+          "prompt_tokens": 1024,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 2959.7267949720845,
+          "decode_tokens_s_median": 46.42468059819748,
+          "aggregate_output_tokens_s": 30.33233677270219,
+          "raw": [
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 2979.7470370540395,
+              "latency_s": 8.472178249969147,
+              "output_tokens_s": 30.21655027158243,
+              "decode_tokens_s": 46.44097324981729,
+              "guest_ttft_us": 2973086
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 2915.038001956418,
+              "latency_s": 8.41065969900228,
+              "output_tokens_s": 30.437564847662085,
+              "decode_tokens_s": 46.40904128202519,
+              "guest_ttft_us": 2909879
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 2959.7267949720845,
+              "latency_s": 8.454975537024438,
+              "output_tokens_s": 30.278029649994014,
+              "decode_tokens_s": 46.41356892496892,
+              "guest_ttft_us": 2938318
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 2961.4281080430374,
+              "latency_s": 8.454888310050592,
+              "output_tokens_s": 30.278342020873858,
+              "decode_tokens_s": 46.42468059819748,
+              "guest_ttft_us": 2954619
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 2913.122556055896,
+              "latency_s": 8.406486799009144,
+              "output_tokens_s": 30.452673764999453,
+              "decode_tokens_s": 46.42905912877236,
+              "guest_ttft_us": 2906097
+            }
+          ]
+        }
+      ]
+    },
+    "pie-optimized-throughput-results.json": {
+      "sha256": "df219f7c7d7abf869a22a26cbf21276e37b24014d50e6eeadfa4168d6cf320d0",
+      "results": [
+        {
+          "prompt_tokens": 128,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 81.28444687463343,
+          "decode_tokens_s_median": 85.65172396767,
+          "aggregate_output_tokens_s": 83.56445392898125,
+          "raw": [
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 81.5552941057831,
+              "latency_s": 3.0594965601339936,
+              "output_tokens_s": 83.67389698545313,
+              "decode_tokens_s": 85.6584277815475,
+              "guest_ttft_us": 77019
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 81.084662117064,
+              "latency_s": 3.0594708090648055,
+              "output_tokens_s": 83.67460125506216,
+              "decode_tokens_s": 85.64887588369487,
+              "guest_ttft_us": 76353
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 101.15546709857881,
+              "latency_s": 3.0797348481137305,
+              "output_tokens_s": 83.12403912200244,
+              "decode_tokens_s": 85.65782353211883,
+              "guest_ttft_us": 96508
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 80.8674928266555,
+              "latency_s": 3.0593343239743263,
+              "output_tokens_s": 83.67833420292392,
+              "decode_tokens_s": 85.64525132347103,
+              "guest_ttft_us": 76425
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 81.28444687463343,
+              "latency_s": 3.0594811330083758,
+              "output_tokens_s": 83.6743189026553,
+              "decode_tokens_s": 85.65172396767,
+              "guest_ttft_us": 76301
+            }
+          ]
+        },
+        {
+          "prompt_tokens": 1024,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 577.7827422134578,
+          "decode_tokens_s_median": 61.182242465946686,
+          "aggregate_output_tokens_s": 53.85102789952966,
+          "raw": [
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 579.3983428739011,
+              "latency_s": 4.747955919941887,
+              "output_tokens_s": 53.91793949155562,
+              "decode_tokens_s": 61.17852878353813,
+              "guest_ttft_us": 573812
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 616.6530218906701,
+              "latency_s": 4.785458856960759,
+              "output_tokens_s": 53.49539253223993,
+              "decode_tokens_s": 61.182242465946686,
+              "guest_ttft_us": 610245
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 577.5410339701921,
+              "latency_s": 4.746302101993933,
+              "output_tokens_s": 53.93672684519044,
+              "decode_tokens_s": 61.18086262617053,
+              "guest_ttft_us": 571367
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 577.7827422134578,
+              "latency_s": 4.746167232049629,
+              "output_tokens_s": 53.938259543679536,
+              "decode_tokens_s": 61.18588319302971,
+              "guest_ttft_us": 571650
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 575.7074679713696,
+              "latency_s": 4.743392909877002,
+              "output_tokens_s": 53.96980702714719,
+              "decode_tokens_s": 61.19669048297868,
+              "guest_ttft_us": 569908
+            }
+          ]
+        }
+      ]
+    },
+    "pie-v2-fresh-throughput-results.json": {
+      "sha256": "4e7c12b0be478a67e43b72b138440333dbc229fe2033d115661ce6bfff7aec9c",
+      "results": [
+        {
+          "prompt_tokens": 128,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 79.57673096098006,
+          "decode_tokens_s_median": 102.90183165260342,
+          "aggregate_output_tokens_s": 100.04959501029334,
+          "raw": [
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 78.77859612926841,
+              "latency_s": 2.5580231230705976,
+              "output_tokens_s": 100.07728143313378,
+              "decode_tokens_s": 102.90747931559666,
+              "guest_ttft_us": 73502
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 79.57673096098006,
+              "latency_s": 2.5582472030073404,
+              "output_tokens_s": 100.06851554418193,
+              "decode_tokens_s": 102.90357571766165,
+              "guest_ttft_us": 73803
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 80.10855899192393,
+              "latency_s": 2.559383192099631,
+              "output_tokens_s": 100.02409986524383,
+              "decode_tokens_s": 102.8920327672792,
+              "guest_ttft_us": 73982
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 79.84738913364708,
+              "latency_s": 2.5594603822100908,
+              "output_tokens_s": 100.02108326402158,
+              "decode_tokens_s": 102.89170063437778,
+              "guest_ttft_us": 73667
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 79.28538718260825,
+              "latency_s": 2.5585410851053894,
+              "output_tokens_s": 100.05702135889487,
+              "decode_tokens_s": 102.90183165260342,
+              "guest_ttft_us": 73718
+            }
+          ]
+        },
+        {
+          "prompt_tokens": 1024,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 572.4071690347046,
+          "decode_tokens_s_median": 99.78786274355576,
+          "aggregate_output_tokens_s": 81.32934566684492,
+          "raw": [
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 571.6358611825854,
+              "latency_s": 3.128308979095891,
+              "output_tokens_s": 81.83334885097771,
+              "decode_tokens_s": 99.78786274355576,
+              "guest_ttft_us": 565132
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 652.3885109927505,
+              "latency_s": 3.208686136873439,
+              "output_tokens_s": 79.78343442760276,
+              "decode_tokens_s": 99.79649342517219,
+              "guest_ttft_us": 645691
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 588.7571249622852,
+              "latency_s": 3.14568097400479,
+              "output_tokens_s": 81.38142491737949,
+              "decode_tokens_s": 99.78618364414446,
+              "guest_ttft_us": 582407
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 572.4071690347046,
+              "latency_s": 3.1290978668257594,
+              "output_tokens_s": 81.81271756120982,
+              "decode_tokens_s": 99.79938367031606,
+              "guest_ttft_us": 566480
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 570.2510050032288,
+              "latency_s": 3.126702598063275,
+              "output_tokens_s": 81.8753917173223,
+              "decode_tokens_s": 99.78454364810727,
+              "guest_ttft_us": 563317
+            }
+          ]
+        }
+      ]
+    },
+    "pie-v3-throughput-results.json": {
+      "sha256": "52db33a73f774291122fc57669f0618f8d1aa8145e3e3e2a5204ca5d3be6bfe5",
+      "results": [
+        {
+          "prompt_tokens": 128,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 74.89802595227957,
+          "decode_tokens_s_median": 113.62269245678995,
+          "aggregate_output_tokens_s": 110.34751684977813,
+          "raw": [
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 75.62579796649516,
+              "latency_s": 2.3199602940585464,
+              "output_tokens_s": 110.3467161294182,
+              "decode_tokens_s": 113.65788975184695,
+              "guest_ttft_us": 70814
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 73.72964010573924,
+              "latency_s": 2.319732021074742,
+              "output_tokens_s": 110.35757478632988,
+              "decode_tokens_s": 113.59035043291289,
+              "guest_ttft_us": 69917
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 74.89802595227957,
+              "latency_s": 2.31967368000187,
+              "output_tokens_s": 110.36035034022271,
+              "decode_tokens_s": 113.63631299629546,
+              "guest_ttft_us": 70115
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 75.23918803781271,
+              "latency_s": 2.3203377318568528,
+              "output_tokens_s": 110.32876657793076,
+              "decode_tokens_s": 113.62269245678995,
+              "guest_ttft_us": 70526
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 74.01361898519099,
+              "latency_s": 2.3200135710649192,
+              "output_tokens_s": 110.34418211721596,
+              "decode_tokens_s": 113.59126122381889,
+              "guest_ttft_us": 69894
+            }
+          ]
+        },
+        {
+          "prompt_tokens": 1024,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 557.5961610302329,
+          "decode_tokens_s_median": 109.83936746308105,
+          "aggregate_output_tokens_s": 88.69896961185157,
+          "raw": [
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 588.0054659210145,
+              "latency_s": 2.910093178972602,
+              "output_tokens_s": 87.9696917781787,
+              "decode_tokens_s": 109.85043970330905,
+              "guest_ttft_us": 583799
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 557.5961610302329,
+              "latency_s": 2.8799893569666892,
+              "output_tokens_s": 88.88921737878525,
+              "decode_tokens_s": 109.85441489815418,
+              "guest_ttft_us": 552922
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 560.49875007011,
+              "latency_s": 2.8825147170573473,
+              "output_tokens_s": 88.81134187628396,
+              "decode_tokens_s": 109.83846853300172,
+              "guest_ttft_us": 554423
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 556.3088802155107,
+              "latency_s": 2.8790377581026405,
+              "output_tokens_s": 88.91859763892452,
+              "decode_tokens_s": 109.83936746308105,
+              "guest_ttft_us": 551610
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 556.5228147897869,
+              "latency_s": 2.879197788890451,
+              "output_tokens_s": 88.91365538963339,
+              "decode_tokens_s": 109.8358664499239,
+              "guest_ttft_us": 551662
+            }
+          ]
+        }
+      ]
+    },
+    "vllm-deep-throughput-results.json": {
+      "sha256": "86a9ddcaa8869698fdece641f687a795edd672a44e83ec93281f6116141de113",
+      "results": [
+        {
+          "prompt_tokens": 128,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 296.0092988796532,
+          "ttft_p95_ms": 305.65038905479014,
+          "decode_tokens_s_median": 187.06626156082143,
+          "aggregate_output_tokens_s": 155.63959234837083,
+          "raw": [
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 273.34851305931807,
+              "latency_s": 1.6689253791701049,
+              "decode_tokens_s": 182.73484689561502,
+              "end_to_end_tokens_s": 153.3921187820269
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 296.0092988796532,
+              "latency_s": 1.5894687259569764,
+              "decode_tokens_s": 197.1675506681487,
+              "end_to_end_tokens_s": 161.06010506489787
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 303.8079831749201,
+              "latency_s": 1.6670762931462377,
+              "decode_tokens_s": 187.06626156082143,
+              "end_to_end_tokens_s": 153.56225809969177
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 286.905077053234,
+              "latency_s": 1.69789202301763,
+              "decode_tokens_s": 180.73913413251117,
+              "end_to_end_tokens_s": 150.7751944938267
+            },
+            {
+              "prompt_tokens": 128,
+              "output_tokens": 256,
+              "ttft_ms": 305.65038905479014,
+              "latency_s": 1.5854394119232893,
+              "decode_tokens_s": 199.2941981203403,
+              "end_to_end_tokens_s": 161.46943117141737
+            }
+          ]
+        },
+        {
+          "prompt_tokens": 1024,
+          "output_tokens": 256,
+          "concurrency": 1,
+          "requests": 5,
+          "ttft_median_ms": 298.03325491957366,
+          "ttft_p95_ms": 314.72216616384685,
+          "decode_tokens_s_median": 182.48165256704215,
+          "aggregate_output_tokens_s": 145.09824441564044,
+          "raw": [
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 286.175976973027,
+              "latency_s": 1.655096777016297,
+              "decode_tokens_s": 186.2931035607012,
+              "end_to_end_tokens_s": 154.67373482625015
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 298.03325491957366,
+              "latency_s": 1.5876972239930183,
+              "decode_tokens_s": 197.76827895983197,
+              "end_to_end_tokens_s": 161.2398107972794
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 289.67973007820547,
+              "latency_s": 1.6873629100155085,
+              "decode_tokens_s": 182.48165256704215,
+              "end_to_end_tokens_s": 151.71602888773174
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 301.60233890637755,
+              "latency_s": 1.7183519559912384,
+              "decode_tokens_s": 180.01918685064973,
+              "end_to_end_tokens_s": 148.9799567006198
+            },
+            {
+              "prompt_tokens": 1024,
+              "output_tokens": 256,
+              "ttft_ms": 314.72216616384685,
+              "latency_s": 2.132948230020702,
+              "decode_tokens_s": 140.2645512124929,
+              "end_to_end_tokens_s": 120.02166597241572
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pie_binary_sha256": "4cd09aac6159428eba62785af8bea935d9376be3d8b4a9abf4b222acd19b5631",
+  "vllm_version": "0.31.0",
+  "vllm_source_commit": "db9527a46873454610df6dbedf79a36d6bf1a7f6",
+  "software": {
+    "pie": "CUDA 12.8, cuBLAS 12.8.4",
+    "vllm": "PyTorch 2.13.0+cu130, CUDA 13.0, cuBLAS 13.1.1.3"
+  },
+  "dense_calls_per_token": {
+    "hc_down_up_inject": 290,
+    "moe_router_shared_expert_and_gate": 192,
+    "gdn": 108,
+    "qsa_including_indexer": 60,
+    "ple": 2,
+    "lm_head": 1,
+    "total": 653
+  },
+  "profiles": {
+    "pie": {
+      "decode": {
+        "phase": "decode",
+        "trace": "/workspace/qwen-benchmark/deep-traces/pie-decode/pie-deep.30394.timeline.json",
+        "timeline": {
+          "kernel_records": 948663,
+          "window_ns": 4750872302,
+          "kernel_union_ns": 4115274591,
+          "non_kernel_ns": 635597711,
+          "gaps_over_5us_ns": 211767657,
+          "gaps_over_5us_count": 1071,
+          "max_gap_ns": 10904722,
+          "correlation_ids": 3023
+        },
+        "summed_kernel_ms": 4115.30453,
+        "estimated_model_passes": 503.0,
+        "kernels": [
+          {
+            "calls": 254518,
+            "total_ns": "1055722847",
+            "max_ns": "9024",
+            "kernel": "void pie::linear::gemv_splitk_bf16_kernel<4, 2>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, float)",
+            "total_ms": 1055.722847,
+            "max_us": 9.024
+          },
+          {
+            "calls": 73941,
+            "total_ns": "677461666",
+            "max_ns": "177312",
+            "kernel": "void pie::linear::gemv_bf16_kernel<4, 2>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, float)",
+            "total_ms": 677.461666,
+            "max_us": 177.312
+          },
+          {
+            "calls": 48288,
+            "total_ns": "414974815",
+            "max_ns": "10208",
+            "kernel": "void pie::linear::fp8_expert_stream<pie::bf16>(unsigned char const*, float const*, int const*, unsigned char const*, unsigned char const*, pie::bf16 const*, pie::bf16*, int, int, int, int, int, pie::linear::Fp8ExpertBases const*, unsigned int*, unsigned int const*)",
+            "total_ms": 414.974815,
+            "max_us": 10.208
+          },
+          {
+            "calls": 24144,
+            "total_ns": "247593111",
+            "max_ns": "11456",
+            "kernel": "void pie::linear::moe_topk_softmax<pie::bf16>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, int*, float*, int, int, int, unsigned int const*)",
+            "total_ms": 247.593111,
+            "max_us": 11.456
+          },
+          {
+            "calls": 6036,
+            "total_ns": "243794874",
+            "max_ns": "46816",
+            "kernel": "void pie::attn::sdpa_selected::sdpa_paged_selected_kernel<pie::bf16, true, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, int const*, pie::bf16*, int, int, int, int, int, float, int, int, int, float*, int, unsigned int const*)",
+            "total_ms": 243.794874,
+            "max_us": 46.816
+          },
+          {
+            "calls": 50300,
+            "total_ns": "243370429",
+            "max_ns": "5664",
+            "kernel": "void pie::elemwise::rmsnorm_grouped_plus_one<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, float, unsigned int const*)",
+            "total_ms": 243.370429,
+            "max_us": 5.664
+          },
+          {
+            "calls": 48791,
+            "total_ns": "120916967",
+            "max_ns": "2976",
+            "kernel": "void pie::elemwise::hc_mix<pie::bf16, 256, 4>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 120.916967,
+            "max_us": 2.976
+          },
+          {
+            "calls": 48288,
+            "total_ns": "108489460",
+            "max_ns": "3072",
+            "kernel": "void pie::elemwise::hc_inject<pie::bf16, 256, 4>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 108.48946,
+            "max_us": 3.072
+          },
+          {
+            "calls": 24144,
+            "total_ns": "97512240",
+            "max_ns": "4672",
+            "kernel": "void pie::linear::moe_weighted_sum<pie::bf16>(pie::bf16*, pie::bf16 const*, float const*, int, int, unsigned int const*)",
+            "total_ms": 97.51224,
+            "max_us": 4.672
+          },
+          {
+            "calls": 18108,
+            "total_ns": "91998786",
+            "max_ns": "5760",
+            "kernel": "void pie::attn::ssm_gdn_decode_step<16>(pie::bf16 const*, float const*, pie::bf16*, int const*, long long, float*, int, int, int, int, int, float, bool, unsigned char const*, unsigned int const*)",
+            "total_ms": 91.998786,
+            "max_us": 5.76
+          },
+          {
+            "calls": 48288,
+            "total_ns": "91022579",
+            "max_ns": "2400",
+            "kernel": "void pie::linear::fp8_quantize_128<pie::bf16>(pie::bf16 const*, unsigned char*, float*, int, int, int, unsigned int const*)",
+            "total_ms": 91.022579,
+            "max_us": 2.4
+          },
+          {
+            "calls": 48288,
+            "total_ns": "84602903",
+            "max_ns": "2496",
+            "kernel": "void pie::linear::mlp_swiglu<pie::bf16>(pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 84.602903,
+            "max_us": 2.496
+          },
+          {
+            "calls": 18108,
+            "total_ns": "73065964",
+            "max_ns": "5280",
+            "kernel": "void pie::attn::ssm_causal_conv1d_update_batched_vec8<pie::bf16, true, false>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int const*, long long, pie::bf16*, int, int, int, bool, unsigned char const*, unsigned int const*)",
+            "total_ms": 73.065964,
+            "max_us": 5.28
+          },
+          {
+            "calls": 48791,
+            "total_ns": "68258586",
+            "max_ns": "2080",
+            "kernel": "void pie::elemwise::silu_scaled<pie::bf16>(pie::bf16*, float, unsigned long, int, unsigned int const*)",
+            "total_ms": 68.258586,
+            "max_us": 2.08
+          },
+          {
+            "calls": 24144,
+            "total_ns": "56743362",
+            "max_ns": "3008",
+            "kernel": "void pie::elemwise::rmsnorm_plus_one<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, int, float, int, unsigned int const*)",
+            "total_ms": 56.743362,
+            "max_us": 3.008
+          },
+          {
+            "calls": 24144,
+            "total_ns": "55720672",
+            "max_ns": "2784",
+            "kernel": "void pie::linear::moe_sigmoid_gate_add<pie::bf16>(pie::bf16*, pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, int, int, unsigned int const*)",
+            "total_ms": 55.720672,
+            "max_us": 2.784
+          },
+          {
+            "calls": 18108,
+            "total_ns": "48855441",
+            "max_ns": "4512",
+            "kernel": "void pie::elemwise::rope_partial<pie::bf16>(pie::bf16*, pie::bf16*, int const*, int, int, int, int, int, int, float, unsigned int const*)",
+            "total_ms": 48.855441,
+            "max_us": 4.512
+          },
+          {
+            "calls": 18108,
+            "total_ns": "48530255",
+            "max_ns": "3456",
+            "kernel": "void pie::elemwise::rmsnorm_gated_f32_in<pie::bf16, 256>(float const*, pie::bf16 const*, float const*, pie::bf16*, int, float, int, int, unsigned int const*)",
+            "total_ms": 48.530255,
+            "max_us": 3.456
+          },
+          {
+            "calls": 24144,
+            "total_ns": "45479502",
+            "max_ns": "2592",
+            "kernel": "void pie::layout::split_rows_vec8<pie::bf16>(pie::bf16 const*, pie::bf16*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 45.479502,
+            "max_us": 2.592
+          },
+          {
+            "calls": 6036,
+            "total_ns": "44113372",
+            "max_ns": "7808",
+            "kernel": "void pie::attn::sdpa_selected::merge_selected_splits<pie::bf16>(float const*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 44.113372,
+            "max_us": 7.808
+          },
+          {
+            "calls": 18108,
+            "total_ns": "39826243",
+            "max_ns": "3424",
+            "kernel": "void pie::attn::ssm_gdn_prep_ba_gates<pie::bf16>(pie::bf16 const*, float const*, pie::bf16 const*, float*, int, int, unsigned int const*)",
+            "total_ms": 39.826243,
+            "max_us": 3.424
+          },
+          {
+            "calls": 504,
+            "total_ns": "27293570",
+            "max_ns": "55392",
+            "kernel": "ptir_fused_de5c3e3a4d225d5d_r0",
+            "total_ms": 27.29357,
+            "max_us": 55.392
+          },
+          {
+            "calls": 6036,
+            "total_ns": "17929049",
+            "max_ns": "3392",
+            "kernel": "void pie::attn::kv_append_explicit<false>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, unsigned int const*, unsigned int const*, unsigned char const*, int, int, int, int, unsigned int const*)",
+            "total_ms": 17.929049,
+            "max_us": 3.392
+          },
+          {
+            "calls": 6036,
+            "total_ns": "16303532",
+            "max_ns": "3264",
+            "kernel": "pie::attn::mla_kv_append(pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned char const*, int, int, int, int)",
+            "total_ms": 16.303532,
+            "max_us": 3.264
+          },
+          {
+            "calls": 6036,
+            "total_ns": "13711151",
+            "max_ns": "2848",
+            "kernel": "void pie::layout::split_q_gate<pie::bf16>(pie::bf16 const*, pie::bf16*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 13.711151,
+            "max_us": 2.848
+          },
+          {
+            "calls": 6036,
+            "total_ns": "12033155",
+            "max_ns": "4448",
+            "kernel": "void pie::attn::index_block_mean_paged<pie::bf16>(pie::bf16 const*, pie::bf16*, int const*, int const*, unsigned int const*, unsigned int const*, int, int, int)",
+            "total_ms": 12.033155,
+            "max_us": 4.448
+          },
+          {
+            "calls": 6036,
+            "total_ns": "10455554",
+            "max_ns": "2145",
+            "kernel": "void pie::linear::gate_sigmoid_mul<pie::bf16>(pie::bf16*, pie::bf16 const*, int, int, int, unsigned int const*)",
+            "total_ms": 10.455554,
+            "max_us": 2.145
+          },
+          {
+            "calls": 6036,
+            "total_ns": "9848529",
+            "max_ns": "2112",
+            "kernel": "void pie::attn::index_topk_paged<pie::bf16>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, float*, int*, int, int, int, int, int, int, int, unsigned int const*)",
+            "total_ms": 9.848529,
+            "max_us": 2.112
+          },
+          {
+            "calls": 504,
+            "total_ns": "9470478",
+            "max_ns": "20575",
+            "kernel": "pie::channel::pull_validate(pie::channel::Ticket const*, pie::channel::PullLane const*, unsigned int)",
+            "total_ms": 9.470478,
+            "max_us": 20.575
+          },
+          {
+            "calls": 6036,
+            "total_ns": "8860764",
+            "max_ns": "1889",
+            "kernel": "void pie::attn::pool_boundary_decode<int>(int const*, int*, int*, int*, int, int, unsigned char const*)",
+            "total_ms": 8.860764,
+            "max_us": 1.889
+          },
+          {
+            "calls": 6036,
+            "total_ns": "7107438",
+            "max_ns": "2080",
+            "kernel": "void pie::attn::pool_store_entries<pie::bf16>(pie::bf16 const*, pie::bf16*, int const*, int const*, unsigned int const*, unsigned int const*, int, int)",
+            "total_ms": 7.107438,
+            "max_us": 2.08
+          },
+          {
+            "calls": 504,
+            "total_ns": "4393399",
+            "max_ns": "9344",
+            "kernel": "pie::channel::scatter_publish(pie::channel::Ticket const*, pie::channel::PublishLane const*, unsigned int)",
+            "total_ms": 4.393399,
+            "max_us": 9.344
+          },
+          {
+            "calls": 503,
+            "total_ns": "3717904",
+            "max_ns": "7840",
+            "kernel": "void pie::attn::ssm_causal_conv1d_update_batched<pie::bf16, true, false>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int const*, long long, pie::bf16*, int, int, int, int, bool, unsigned char const*, unsigned int const*)",
+            "total_ms": 3.717904,
+            "max_us": 7.84
+          },
+          {
+            "calls": 503,
+            "total_ns": "3312531",
+            "max_ns": "7136",
+            "kernel": "pie::attn::ple_ngram_ids_update(int const*, int*, int const*, long long, int*, int, pie::attn::PleHash, long long const*, unsigned int const*)",
+            "total_ms": 3.312531,
+            "max_us": 7.136
+          },
+          {
+            "calls": 503,
+            "total_ns": "2037640",
+            "max_ns": "4416",
+            "kernel": "void pie::elemwise::ple_gate<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 2.03764,
+            "max_us": 4.416
+          },
+          {
+            "calls": 504,
+            "total_ns": "1983741",
+            "max_ns": "4351",
+            "kernel": "pie::channel::settle(pie::channel::Ticket const*, pie::channel::SettleLane const*, unsigned int)",
+            "total_ms": 1.983741,
+            "max_us": 4.351
+          },
+          {
+            "calls": 1006,
+            "total_ns": "1756601",
+            "max_ns": "2112",
+            "kernel": "void pie::elemwise::residual_add<pie::bf16>(pie::bf16*, pie::bf16 const*, unsigned long, int, unsigned int const*)",
+            "total_ms": 1.756601,
+            "max_us": 2.112
+          },
+          {
+            "calls": 504,
+            "total_ns": "1755062",
+            "max_ns": "4416",
+            "kernel": "pie::channel::commit_bump(pie::channel::BumpLane const*, unsigned int)",
+            "total_ms": 1.755062,
+            "max_us": 4.416
+          },
+          {
+            "calls": 503,
+            "total_ns": "1481887",
+            "max_ns": "3329",
+            "kernel": "void pie::layout::embed_concat_fp8<pie::bf16>(int const*, unsigned char const*, pie::bf16*, int, int, int, int, unsigned int const*)",
+            "total_ms": 1.481887,
+            "max_us": 3.329
+          },
+          {
+            "calls": 503,
+            "total_ns": "1293053",
+            "max_ns": "2976",
+            "kernel": "void pie::layout::embed<true>(int const*, pie::bf16 const*, pie::bf16*, int, int, int, int, unsigned int const*)",
+            "total_ms": 1.293053,
+            "max_us": 2.976
+          },
+          {
+            "calls": 503,
+            "total_ns": "927354",
+            "max_ns": "2145",
+            "kernel": "void pie::elemwise::scale<pie::bf16>(pie::bf16*, pie::bf16 const*, unsigned long, int, unsigned int const*)",
+            "total_ms": 0.927354,
+            "max_us": 2.145
+          },
+          {
+            "calls": 503,
+            "total_ns": "795088",
+            "max_ns": "1600",
+            "kernel": "void pie::elemwise::hc_expand<pie::bf16>(pie::bf16 const*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 0.795088,
+            "max_us": 1.6
+          },
+          {
+            "calls": 503,
+            "total_ns": "782976",
+            "max_ns": "1824",
+            "kernel": "void pie::layout::gather_rows<int4>(int4 const*, int4*, int const*, int)",
+            "total_ms": 0.782976,
+            "max_us": 1.824
+          }
+        ],
+        "kernels_per_token": 1886.0099403578529,
+        "summed_kernel_ms_per_token": 8.181519940357854,
+        "kernel_union_ms_per_token": 8.181460419483102,
+        "profiled_window_ms_per_token": 9.445074159045726
+      },
+      "prefill": {
+        "phase": "prefill",
+        "trace": "/workspace/qwen-benchmark/deep-traces/pie-prefill/pie-deep.30394.timeline.json",
+        "timeline": {
+          "kernel_records": 18368,
+          "window_ns": 786103089,
+          "kernel_union_ns": 497834725,
+          "non_kernel_ns": 288268364,
+          "gaps_over_5us_ns": 280774505,
+          "gaps_over_5us_count": 783,
+          "max_gap_ns": 246669143,
+          "correlation_ids": 48
+        },
+        "summed_kernel_ms": 497.835878,
+        "estimated_model_passes": 8.0,
+        "kernels": [
+          {
+            "calls": 768,
+            "total_ns": "163464943",
+            "max_ns": "344832",
+            "kernel": "void pie::linear::fp8_expert_grouped<pie::bf16>(unsigned char const*, float const*, int const*, int const*, int const*, unsigned char const*, unsigned char const*, pie::bf16*, int, int, int, int, int, int, int, pie::linear::Fp8ExpertBases const*, unsigned int*, unsigned int const*)",
+            "total_ms": 163.464943,
+            "max_us": 344.832
+          },
+          {
+            "calls": 96,
+            "total_ns": "153912835",
+            "max_ns": "2965915",
+            "kernel": "void pie::attn::sdpa_selected::sdpa_paged_selected_kernel<pie::bf16, false, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, int const*, pie::bf16*, int, int, int, int, int, float, int, int, int, float*, int, unsigned int const*)",
+            "total_ms": 153.912835,
+            "max_us": 2965.915
+          },
+          {
+            "calls": 768,
+            "total_ns": "28067079",
+            "max_ns": "39008",
+            "kernel": "pie::linear::moe_route_order(int const*, int*, int*, int*, int, int, int, int, int, unsigned int const*)",
+            "total_ms": 28.067079,
+            "max_us": 39.008
+          },
+          {
+            "calls": 288,
+            "total_ns": "22044024",
+            "max_ns": "77439",
+            "kernel": "void pie::attn::ssm_gdn_chunk_wu<128, 128>(float const*, float const*, float const*, float const*, float const*, int const*, unsigned int const*, int const*, int const*, float*, pie::bf16*, pie::bf16*, pie::bf16*, pie::bf16*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 22.044024,
+            "max_us": 77.439
+          },
+          {
+            "calls": 768,
+            "total_ns": "17716480",
+            "max_ns": "24096",
+            "kernel": "void cutlass::Kernel2<cutlass_80_wmma_tensorop_bf16_s161616gemm_bf16_32x32_128x2_tn_align2>(cutlass_80_wmma_tensorop_bf16_s161616gemm_bf16_32x32_128x2_tn_align2::Params)",
+            "total_ms": 17.71648,
+            "max_us": 24.096
+          },
+          {
+            "calls": 288,
+            "total_ns": "15502631",
+            "max_ns": "54656",
+            "kernel": "void pie::attn::ssm_gdn_chunk_o<128, 128, 16>(float const*, pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, int const*, unsigned int const*, int const*, int const*, float*, int, int, int, unsigned int const*)",
+            "total_ms": 15.502631,
+            "max_us": 54.656
+          },
+          {
+            "calls": 288,
+            "total_ns": "12279278",
+            "max_ns": "43424",
+            "kernel": "void pie::attn::ssm_gdn_chunk_h<pie::bf16, 128, 128, 16>(float const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, pie::bf16*, pie::bf16*, int const*, unsigned int const*, long long, int const*, int const*, bool, unsigned char const*, int, int, int, unsigned int const*)",
+            "total_ms": 12.279278,
+            "max_us": 43.424
+          },
+          {
+            "calls": 296,
+            "total_ns": "6747253",
+            "max_ns": "24064",
+            "kernel": "void pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<pie::bf16, true, false>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, int const*, unsigned int const*, long long, int, int, int, bool, unsigned char const*, int const*, int const*, unsigned int const*, int)",
+            "total_ms": 6.747253,
+            "max_us": 24.064
+          },
+          {
+            "calls": 768,
+            "total_ns": "5560711",
+            "max_ns": "7744",
+            "kernel": "void pie::elemwise::hc_inject<pie::bf16, 256, 4>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 5.560711,
+            "max_us": 7.744
+          },
+          {
+            "calls": 288,
+            "total_ns": "5324410",
+            "max_ns": "21248",
+            "kernel": "nvjet_tst_224x64_64x9_1x2_2cta_h_bz_TNN",
+            "total_ms": 5.32441,
+            "max_us": 21.248
+          },
+          {
+            "calls": 776,
+            "total_ns": "4955626",
+            "max_ns": "7072",
+            "kernel": "nvjet_tst_64x40_64x16_2x4_v_bz_splitK_TNT",
+            "total_ms": 4.955626,
+            "max_us": 7.072
+          },
+          {
+            "calls": 392,
+            "total_ns": "4647542",
+            "max_ns": "12672",
+            "kernel": "nvjet_tst_48x64_64x16_4x2_2cta_v_bz_TNN",
+            "total_ms": 4.647542,
+            "max_us": 12.672
+          },
+          {
+            "calls": 384,
+            "total_ns": "4513048",
+            "max_ns": "12832",
+            "kernel": "void pie::linear::moe_topk_softmax<pie::bf16>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, int*, float*, int, int, int, unsigned int const*)",
+            "total_ms": 4.513048,
+            "max_us": 12.832
+          },
+          {
+            "calls": 800,
+            "total_ns": "3782546",
+            "max_ns": "5344",
+            "kernel": "void pie::elemwise::rmsnorm_grouped_plus_one<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, float, unsigned int const*)",
+            "total_ms": 3.782546,
+            "max_us": 5.344
+          },
+          {
+            "calls": 784,
+            "total_ns": "3781129",
+            "max_ns": "11840",
+            "kernel": "nvjet_tst_144x64_64x12_1x2_2cta_h_bz_TNN",
+            "total_ms": 3.781129,
+            "max_us": 11.84
+          },
+          {
+            "calls": 776,
+            "total_ns": "3761615",
+            "max_ns": "5280",
+            "kernel": "void pie::elemwise::hc_mix<pie::bf16, 256, 4>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 3.761615,
+            "max_us": 5.28
+          },
+          {
+            "calls": 576,
+            "total_ns": "3431962",
+            "max_ns": "6529",
+            "kernel": "nvjet_tst_64x8_64x16_1x4_h_bz_TNT",
+            "total_ms": 3.431962,
+            "max_us": 6.529
+          },
+          {
+            "calls": 288,
+            "total_ns": "3228351",
+            "max_ns": "11712",
+            "kernel": "void pie::elemwise::rmsnorm_gated_f32_in<pie::bf16, 256>(float const*, pie::bf16 const*, float const*, pie::bf16*, int, float, int, int, unsigned int const*)",
+            "total_ms": 3.228351,
+            "max_us": 11.712
+          },
+          {
+            "calls": 384,
+            "total_ns": "3052285",
+            "max_ns": "8289",
+            "kernel": "void pie::linear::moe_weighted_sum<pie::bf16>(pie::bf16*, pie::bf16 const*, float const*, int, int, unsigned int const*)",
+            "total_ms": 3.052285,
+            "max_us": 8.289
+          },
+          {
+            "calls": 768,
+            "total_ns": "2994176",
+            "max_ns": "5184",
+            "kernel": "void pie::linear::fp8_quantize_128<pie::bf16>(pie::bf16 const*, unsigned char*, float*, int, int, int, unsigned int const*)",
+            "total_ms": 2.994176,
+            "max_us": 5.184
+          },
+          {
+            "calls": 768,
+            "total_ns": "2830872",
+            "max_ns": "5920",
+            "kernel": "void pie::linear::mlp_swiglu<pie::bf16>(pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 2.830872,
+            "max_us": 5.92
+          },
+          {
+            "calls": 1160,
+            "total_ns": "2365855",
+            "max_ns": "2624",
+            "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "total_ms": 2.365855,
+            "max_us": 2.624
+          },
+          {
+            "calls": 384,
+            "total_ns": "2364381",
+            "max_ns": "6624",
+            "kernel": "nvjet_tst_24x64_64x16_4x2_v_bz_TNN",
+            "total_ms": 2.364381,
+            "max_us": 6.624
+          },
+          {
+            "calls": 288,
+            "total_ns": "1654301",
+            "max_ns": "6080",
+            "kernel": "nvjet_tst_64x8_64x16_2x4_v_bz_TNT",
+            "total_ms": 1.654301,
+            "max_us": 6.08
+          },
+          {
+            "calls": 384,
+            "total_ns": "1623001",
+            "max_ns": "4737",
+            "kernel": "nvjet_tst_48x64_64x16_4x2_2cta_h_bz_TNN",
+            "total_ms": 1.623001,
+            "max_us": 4.737
+          },
+          {
+            "calls": 776,
+            "total_ns": "1614839",
+            "max_ns": "2369",
+            "kernel": "void pie::elemwise::silu_scaled<pie::bf16>(pie::bf16*, float, unsigned long, int, unsigned int const*)",
+            "total_ms": 1.614839,
+            "max_us": 2.369
+          },
+          {
+            "calls": 288,
+            "total_ns": "1468285",
+            "max_ns": "5440",
+            "kernel": "void pie::attn::ssm_gdn_prep_v_gates<pie::bf16, 128>(pie::bf16 const*, float const*, float*, float*, float*, int, int, int, int, int, unsigned int const*)",
+            "total_ms": 1.468285,
+            "max_us": 5.44
+          },
+          {
+            "calls": 8,
+            "total_ns": "1425405",
+            "max_ns": "178688",
+            "kernel": "void pie::linear::gemv_bf16_kernel<4, 2>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, float)",
+            "total_ms": 1.425405,
+            "max_us": 178.688
+          },
+          {
+            "calls": 384,
+            "total_ns": "1408738",
+            "max_ns": "3968",
+            "kernel": "void pie::linear::moe_sigmoid_gate_add<pie::bf16>(pie::bf16*, pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, int, int, unsigned int const*)",
+            "total_ms": 1.408738,
+            "max_us": 3.968
+          },
+          {
+            "calls": 384,
+            "total_ns": "1394271",
+            "max_ns": "7360",
+            "kernel": "void pie::elemwise::rmsnorm_plus_one<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, int, float, int, unsigned int const*)",
+            "total_ms": 1.394271,
+            "max_us": 7.36
+          },
+          {
+            "calls": 96,
+            "total_ns": "1343326",
+            "max_ns": "14656",
+            "kernel": "nvjet_tst_176x64_64x11_1x2_2cta_h_bz_TNN",
+            "total_ms": 1.343326,
+            "max_us": 14.656
+          },
+          {
+            "calls": 384,
+            "total_ns": "1257911",
+            "max_ns": "3616",
+            "kernel": "nvjet_tst_8x64_64x16_4x1_v_bz_splitK_TNN",
+            "total_ms": 1.257911,
+            "max_us": 3.616
+          },
+          {
+            "calls": 288,
+            "total_ns": "1190181",
+            "max_ns": "4353",
+            "kernel": "void pie::attn::ssm_gdn_prep_qk_norm<pie::bf16, 128>(pie::bf16 const*, float*, float*, int, int, int, float, unsigned int const*)",
+            "total_ms": 1.190181,
+            "max_us": 4.353
+          },
+          {
+            "calls": 384,
+            "total_ns": "968964",
+            "max_ns": "3072",
+            "kernel": "void pie::layout::split_rows_vec8<pie::bf16>(pie::bf16 const*, pie::bf16*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 0.968964,
+            "max_us": 3.072
+          },
+          {
+            "calls": 296,
+            "total_ns": "945018",
+            "max_ns": "4448",
+            "kernel": "void pie::attn::ssm_causal_conv1d_state_commit<pie::bf16>(pie::bf16 const*, pie::bf16*, int const*, unsigned int const*, long long, int, int, int, unsigned char const*, int const*, int const*, unsigned int const*, int)",
+            "total_ms": 0.945018,
+            "max_us": 4.448
+          },
+          {
+            "calls": 288,
+            "total_ns": "928099",
+            "max_ns": "5440",
+            "kernel": "void pie::elemwise::rope_partial<pie::bf16>(pie::bf16*, pie::bf16*, int const*, int, int, int, int, int, int, float, unsigned int const*)",
+            "total_ms": 0.928099,
+            "max_us": 5.44
+          },
+          {
+            "calls": 288,
+            "total_ns": "675072",
+            "max_ns": "2720",
+            "kernel": "void pie::attn::ssm_gdn_prep_ba_gates<pie::bf16>(pie::bf16 const*, float const*, pie::bf16 const*, float*, int, int, unsigned int const*)",
+            "total_ms": 0.675072,
+            "max_us": 2.72
+          },
+          {
+            "calls": 96,
+            "total_ns": "561693",
+            "max_ns": "6176",
+            "kernel": "nvjet_tst_16x64_64x16_4x2_2cta_v_bz_TNN",
+            "total_ms": 0.561693,
+            "max_us": 6.176
+          },
+          {
+            "calls": 96,
+            "total_ns": "416518",
+            "max_ns": "4609",
+            "kernel": "void pie::linear::gate_sigmoid_mul<pie::bf16>(pie::bf16*, pie::bf16 const*, int, int, int, unsigned int const*)",
+            "total_ms": 0.416518,
+            "max_us": 4.609
+          },
+          {
+            "calls": 96,
+            "total_ns": "376600",
+            "max_ns": "4480",
+            "kernel": "void pie::layout::split_q_gate<pie::bf16>(pie::bf16 const*, pie::bf16*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 0.3766,
+            "max_us": 4.48
+          },
+          {
+            "calls": 96,
+            "total_ns": "320321",
+            "max_ns": "3648",
+            "kernel": "void pie::attn::kv_append_explicit<false>(pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, unsigned int const*, unsigned int const*, unsigned char const*, int, int, int, int, unsigned int const*)",
+            "total_ms": 0.320321,
+            "max_us": 3.648
+          },
+          {
+            "calls": 96,
+            "total_ns": "292320",
+            "max_ns": "3328",
+            "kernel": "void pie::attn::index_block_mean_paged<pie::bf16>(pie::bf16 const*, pie::bf16*, int const*, int const*, unsigned int const*, unsigned int const*, int, int, int)",
+            "total_ms": 0.29232,
+            "max_us": 3.328
+          },
+          {
+            "calls": 96,
+            "total_ns": "278401",
+            "max_ns": "3200",
+            "kernel": "pie::attn::mla_kv_append(pie::bf16 const*, pie::bf16 const*, pie::bf16*, pie::bf16*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned char const*, int, int, int, int)",
+            "total_ms": 0.278401,
+            "max_us": 3.2
+          },
+          {
+            "calls": 7,
+            "total_ns": "227873",
+            "max_ns": "32992",
+            "kernel": "ptir_fused_5638a474c8d2a7ed_r0",
+            "total_ms": 0.227873,
+            "max_us": 32.992
+          },
+          {
+            "calls": 96,
+            "total_ns": "202464",
+            "max_ns": "2400",
+            "kernel": "void pie::attn::pool_store_entries<pie::bf16>(pie::bf16 const*, pie::bf16*, int const*, int const*, unsigned int const*, unsigned int const*, int, int)",
+            "total_ms": 0.202464,
+            "max_us": 2.4
+          },
+          {
+            "calls": 96,
+            "total_ns": "199902",
+            "max_ns": "2336",
+            "kernel": "void pie::attn::index_topk_paged<pie::bf16>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, unsigned int const*, unsigned int const*, unsigned int const*, unsigned int const*, float*, int*, int, int, int, int, int, int, int, unsigned int const*)",
+            "total_ms": 0.199902,
+            "max_us": 2.336
+          },
+          {
+            "calls": 96,
+            "total_ns": "152764",
+            "max_ns": "1889",
+            "kernel": "void pie::attn::pool_boundary_prefill<int>(int const*, unsigned int const*, int*, int*, int*, int, int, int, unsigned char const*)",
+            "total_ms": 0.152764,
+            "max_us": 1.889
+          },
+          {
+            "calls": 8,
+            "total_ns": "128735",
+            "max_ns": "17471",
+            "kernel": "pie::channel::pull_validate(pie::channel::Ticket const*, pie::channel::PullLane const*, unsigned int)",
+            "total_ms": 0.128735,
+            "max_us": 17.471
+          },
+          {
+            "calls": 16,
+            "total_ns": "85183",
+            "max_ns": "5504",
+            "kernel": "void pie::elemwise::residual_add<pie::bf16>(pie::bf16*, pie::bf16 const*, unsigned long, int, unsigned int const*)",
+            "total_ms": 0.085183,
+            "max_us": 5.504
+          },
+          {
+            "calls": 8,
+            "total_ns": "64480",
+            "max_ns": "8224",
+            "kernel": "pie::attn::ple_ngram_ids_chunked(int const*, int*, int const*, unsigned int const*, long long, int*, bool, unsigned char const*, int const*, int const*, pie::attn::PleHash, long long const*, unsigned int const*)",
+            "total_ms": 0.06448,
+            "max_us": 8.224
+          },
+          {
+            "calls": 8,
+            "total_ns": "45121",
+            "max_ns": "6304",
+            "kernel": "pie::channel::scatter_publish(pie::channel::Ticket const*, pie::channel::PublishLane const*, unsigned int)",
+            "total_ms": 0.045121,
+            "max_us": 6.304
+          },
+          {
+            "calls": 8,
+            "total_ns": "40736",
+            "max_ns": "5248",
+            "kernel": "void pie::elemwise::ple_gate<pie::bf16, 256>(pie::bf16 const*, pie::bf16 const*, pie::bf16 const*, pie::bf16*, int, int, unsigned int const*)",
+            "total_ms": 0.040736,
+            "max_us": 5.248
+          },
+          {
+            "calls": 8,
+            "total_ns": "38466",
+            "max_ns": "5345",
+            "kernel": "pie::channel::commit_bump(pie::channel::BumpLane const*, unsigned int)",
+            "total_ms": 0.038466,
+            "max_us": 5.345
+          },
+          {
+            "calls": 8,
+            "total_ns": "33824",
+            "max_ns": "4512",
+            "kernel": "pie::channel::settle(pie::channel::Ticket const*, pie::channel::SettleLane const*, unsigned int)",
+            "total_ms": 0.033824,
+            "max_us": 4.512
+          },
+          {
+            "calls": 1,
+            "total_ns": "32864",
+            "max_ns": "32864",
+            "kernel": "ptir_fused_c419e3e31367485f_r0",
+            "total_ms": 0.032864,
+            "max_us": 32.864
+          },
+          {
+            "calls": 8,
+            "total_ns": "32672",
+            "max_ns": "4288",
+            "kernel": "void pie::layout::embed_concat_fp8<pie::bf16>(int const*, unsigned char const*, pie::bf16*, int, int, int, int, unsigned int const*)",
+            "total_ms": 0.032672,
+            "max_us": 4.288
+          },
+          {
+            "calls": 8,
+            "total_ns": "23137",
+            "max_ns": "2976",
+            "kernel": "void pie::elemwise::hc_expand<pie::bf16>(pie::bf16 const*, pie::bf16*, int, int, int, unsigned int const*)",
+            "total_ms": 0.023137,
+            "max_us": 2.976
+          },
+          {
+            "calls": 8,
+            "total_ns": "22304",
+            "max_ns": "2944",
+            "kernel": "void pie::elemwise::scale<pie::bf16>(pie::bf16*, pie::bf16 const*, unsigned long, int, unsigned int const*)",
+            "total_ms": 0.022304,
+            "max_us": 2.944
+          },
+          {
+            "calls": 8,
+            "total_ns": "20351",
+            "max_ns": "2592",
+            "kernel": "void pie::layout::embed<true>(int const*, pie::bf16 const*, pie::bf16*, int, int, int, int, unsigned int const*)",
+            "total_ms": 0.020351,
+            "max_us": 2.592
+          },
+          {
+            "calls": 8,
+            "total_ns": "12706",
+            "max_ns": "1633",
+            "kernel": "void pie::layout::gather_rows<int4>(int4 const*, int4*, int const*, int)",
+            "total_ms": 0.012706,
+            "max_us": 1.633
+          }
+        ]
+      }
+    },
+    "vllm": {
+      "decode": {
+        "phase": "decode",
+        "trace": "/workspace/qwen-benchmark/deep-traces/vllm-decode/vllm-deep.27785.timeline.json",
+        "timeline": {
+          "kernel_records": 817099,
+          "window_ns": 3960170947,
+          "kernel_union_ns": 2432874250,
+          "non_kernel_ns": 1527296697,
+          "gaps_over_5us_ns": 1514562389,
+          "gaps_over_5us_count": 2573,
+          "max_gap_ns": 11653174,
+          "correlation_ids": 17647
+        },
+        "summed_kernel_ms": 3613.175013,
+        "estimated_model_passes": 477.0,
+        "kernels": [
+          {
+            "calls": 63441,
+            "total_ns": "433957817",
+            "max_ns": "17248",
+            "kernel": "nvjet_sm100_tst_128x8_64x12_4x1_v_bz_TNT",
+            "total_ms": 433.957817,
+            "max_us": 17.248
+          },
+          {
+            "calls": 22896,
+            "total_ns": "245022203",
+            "max_ns": "13664",
+            "kernel": "bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f",
+            "total_ms": 245.022203,
+            "max_us": 13.664
+          },
+          {
+            "calls": 75366,
+            "total_ns": "242762693",
+            "max_ns": "4896",
+            "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "total_ms": 242.762693,
+            "max_us": 4.896
+          },
+          {
+            "calls": 22896,
+            "total_ns": "240288510",
+            "max_ns": "12832",
+            "kernel": "bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f",
+            "total_ms": 240.28851,
+            "max_us": 12.832
+          },
+          {
+            "calls": 45792,
+            "total_ns": "210888015",
+            "max_ns": "6495",
+            "kernel": "nvjet_sm100_tst_32x64_64x16_4x1_v_bz_splitK_TNN",
+            "total_ms": 210.888015,
+            "max_us": 6.495
+          },
+          {
+            "calls": 23373,
+            "total_ns": "181591783",
+            "max_ns": "8864",
+            "kernel": "nvjet_sm100_tst_64x8_64x16_4x1_v_bz_splitK_TNT",
+            "total_ms": 181.591783,
+            "max_us": 8.864
+          },
+          {
+            "calls": 45315,
+            "total_ns": "148254289",
+            "max_ns": "4512",
+            "kernel": "_hc_combine_norm_kernel",
+            "total_ms": 148.254289,
+            "max_us": 4.512
+          },
+          {
+            "calls": 45792,
+            "total_ns": "148182084",
+            "max_ns": "3936",
+            "kernel": "kernel_cutlass_kernel_vllmmodelsqwen4_expnvidiaopscute_dsl_hc_down_silu_fmaHcDownSiluFma_object_at__tensorptrbf16gmemalign16o110240i64div81_tensorptrbf16gmemalign16o10240i64div81_tensorpt_0",
+            "total_ms": 148.182084,
+            "max_us": 3.936
+          },
+          {
+            "calls": 46269,
+            "total_ns": "138884962",
+            "max_ns": "3808",
+            "kernel": "_hc_gate_mix_kernel",
+            "total_ms": 138.884962,
+            "max_us": 3.808
+          },
+          {
+            "calls": 22896,
+            "total_ns": "137944336",
+            "max_ns": "7488",
+            "kernel": "nvjet_sm100_tst_32x64_64x16_4x1_v_bz_TNN",
+            "total_ms": 137.944336,
+            "max_us": 7.488
+          },
+          {
+            "calls": 22896,
+            "total_ns": "136722730",
+            "max_ns": "13984",
+            "kernel": "nvjet_sm100_tst_24x64_64x16_4x1_v_bz_TNN",
+            "total_ms": 136.72273,
+            "max_us": 13.984
+          },
+          {
+            "calls": 22896,
+            "total_ns": "125607409",
+            "max_ns": "6944",
+            "kernel": "void moe::dev::finalize::finalizeKernel<moe::dev::finalize::KernelParams<cutlass::bfloat16_t, cutlass::bfloat16_t, 2, true> >(moe::dev::finalize::KernelParams<cutlass::bfloat16_t, cutlass::bfloat16_t, 2, true>)",
+            "total_ms": 125.607409,
+            "max_us": 6.944
+          },
+          {
+            "calls": 22896,
+            "total_ns": "119931705",
+            "max_ns": "7744",
+            "kernel": "void moe::dev::activation::activationDeepSeekKernel<moe::dev::activation::KernelParams<cutlass::float_e4m3_t, 1, true> >(moe::dev::activation::KernelParams<cutlass::float_e4m3_t, 1, true>)",
+            "total_ms": 119.931705,
+            "max_us": 7.744
+          },
+          {
+            "calls": 22896,
+            "total_ns": "109979370",
+            "max_ns": "6624",
+            "kernel": "void moe::dev::routing::routingCustom::routingIndicesBlockKernel<moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 16, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::SoftmaxPostprocess> > >(moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 16, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::SoftmaxPostprocess> >)",
+            "total_ms": 109.97937,
+            "max_us": 6.624
+          },
+          {
+            "calls": 17172,
+            "total_ns": "98162485",
+            "max_ns": "6304",
+            "kernel": "fused_recurrent_gated_delta_rule_packed_decode_kernel",
+            "total_ms": 98.162485,
+            "max_us": 6.304
+          },
+          {
+            "calls": 477,
+            "total_ns": "88852153",
+            "max_ns": "189087",
+            "kernel": "nvjet_sm100_tst_192x8_64x8_2x1_v_bz_TNT",
+            "total_ms": 88.852153,
+            "max_us": 189.087
+          },
+          {
+            "calls": 6201,
+            "total_ns": "86161213",
+            "max_ns": "15424",
+            "kernel": "nvjet_sm100_tst_64x8_64x16_2x1_v_bz_splitK_TNT",
+            "total_ms": 86.161213,
+            "max_us": 15.424
+          },
+          {
+            "calls": 23373,
+            "total_ns": "78955275",
+            "max_ns": "6528",
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+            "total_ms": 78.955275,
+            "max_us": 6.528
+          },
+          {
+            "calls": 22896,
+            "total_ns": "70201978",
+            "max_ns": "5472",
+            "kernel": "void dot_kernel<float, 128, 0, cublasDotParams<cublasGemvTensorStridedBatched<__nv_bfloat16 const>, cublasGemvTensorStridedBatched<float> > >(cublasDotParams<cublasGemvTensorStridedBatched<__nv_bfloat16 const>, cublasGemvTensorStridedBatched<float> >)",
+            "total_ms": 70.201978,
+            "max_us": 5.472
+          },
+          {
+            "calls": 22896,
+            "total_ns": "66680807",
+            "max_ns": "3936",
+            "kernel": "void per_token_group_quant_8bit_register_kernel<c10::BFloat16, c10::Float8_e4m3fn, false, true, 128>(c10::BFloat16 const*, void*, float*, long, float, float, float, int, int)",
+            "total_ms": 66.680807,
+            "max_us": 3.936
+          },
+          {
+            "calls": 17172,
+            "total_ns": "54983301",
+            "max_ns": "3808",
+            "kernel": "_causal_conv1d_update_kernel",
+            "total_ms": 54.983301,
+            "max_us": 3.808
+          },
+          {
+            "calls": 22896,
+            "total_ns": "53843374",
+            "max_ns": "5088",
+            "kernel": "void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bfloat162, &(c10::BFloat16 vllm::silu_kernel<c10::BFloat16>(c10::BFloat16 const&, float)), &(__nv_bfloat162 vllm::packed_silu_kernel<__nv_bfloat162>(__nv_bfloat162 const&, float)), true, true, false, false>(c10::BFloat16*, c10::BFloat16 const*, int, float, float, float)",
+            "total_ms": 53.843374,
+            "max_us": 5.088
+          },
+          {
+            "calls": 22896,
+            "total_ns": "45718689",
+            "max_ns": "3424",
+            "kernel": "void reduce_1Block_kernel<float, 128, 7, cublasGemvTensorStridedBatched<float>, cublasGemvTensorStridedBatched<__nv_bfloat16 const>, cublasGemvTensorStridedBatched<__nv_bfloat16> >(float const*, float, cublasGemvTensorStridedBatched<float>, int, float const*, float, cublasGemvTensorStridedBatched<__nv_bfloat16 const>, cublasGemvTensorStridedBatched<__nv_bfloat16>, cublasPointerMode_t, cublasLtEpilogue_t, cublasGemvTensorStridedBatched<biasType<cublasGemvTensorStridedBatched<__nv_bfloat16>::value_type, float>::type const>)",
+            "total_ms": 45.718689,
+            "max_us": 3.424
+          },
+          {
+            "calls": 22896,
+            "total_ns": "39774720",
+            "max_ns": "5153",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::sigmoid_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul> >(int, at::native::sigmoid_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>)",
+            "total_ms": 39.77472,
+            "max_us": 5.153
+          },
+          {
+            "calls": 22896,
+            "total_ns": "38124753",
+            "max_ns": "2336",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)",
+            "total_ms": 38.124753,
+            "max_us": 2.336
+          },
+          {
+            "calls": 17172,
+            "total_ns": "33588418",
+            "max_ns": "2592",
+            "kernel": "layer_norm_fwd_kernel",
+            "total_ms": 33.588418,
+            "max_us": 2.592
+          },
+          {
+            "calls": 5724,
+            "total_ns": "30727122",
+            "max_ns": "6240",
+            "kernel": "_qsa_sparse_paged_gqa_splitk_kernel",
+            "total_ms": 30.727122,
+            "max_us": 6.24
+          },
+          {
+            "calls": 5724,
+            "total_ns": "24193992",
+            "max_ns": "4671",
+            "kernel": "_qsa_merge_splitk_kernel",
+            "total_ms": 24.193992,
+            "max_us": 4.671
+          },
+          {
+            "calls": 22896,
+            "total_ns": "23527678",
+            "max_ns": "1536",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)",
+            "total_ms": 23.527678,
+            "max_us": 1.536
+          },
+          {
+            "calls": 5724,
+            "total_ns": "22514980",
+            "max_ns": "5632",
+            "kernel": "_qsa_pre_indexer_kernel",
+            "total_ms": 22.51498,
+            "max_us": 5.632
+          },
+          {
+            "calls": 5724,
+            "total_ns": "20331467",
+            "max_ns": "4320",
+            "kernel": "_qsa_mqa_paged_uniform_kernel",
+            "total_ms": 20.331467,
+            "max_us": 4.32
+          },
+          {
+            "calls": 5724,
+            "total_ns": "18480942",
+            "max_ns": "4032",
+            "kernel": "_fused_qk_rmsnorm_rope_gate_kernel",
+            "total_ms": 18.480942,
+            "max_us": 4.032
+          },
+          {
+            "calls": 5724,
+            "total_ns": "14270537",
+            "max_ns": "3136",
+            "kernel": "void vllm::reshape_and_cache_flash_kernel<__nv_bfloat16, __nv_bfloat16, (vllm::Fp8KVCacheDataType)0>(__nv_bfloat16 const*, __nv_bfloat16 const*, __nv_bfloat16*, __nv_bfloat16*, long const*, long, long, long, long, long, int, int, int, float const*, float const*, int)",
+            "total_ms": 14.270537,
+            "max_us": 3.136
+          },
+          {
+            "calls": 5724,
+            "total_ns": "10037662",
+            "max_ns": "2208",
+            "kernel": "_expand_qsa_indices_kernel",
+            "total_ms": 10.037662,
+            "max_us": 2.208
+          },
+          {
+            "calls": 5724,
+            "total_ns": "6784554",
+            "max_ns": "1568",
+            "kernel": "void vllm::cooperative::cooperative_topk_cs16<512u>(vllm::cooperative::CooperativeTopKParams<512u>)",
+            "total_ms": 6.784554,
+            "max_us": 1.568
+          },
+          {
+            "calls": 477,
+            "total_ns": "5031640",
+            "max_ns": "14144",
+            "kernel": "_gumbel_sample_kernel",
+            "total_ms": 5.03164,
+            "max_us": 14.144
+          },
+          {
+            "calls": 1431,
+            "total_ns": "4557377",
+            "max_ns": "5056",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 4.557377,
+            "max_us": 5.056
+          },
+          {
+            "calls": 954,
+            "total_ns": "3739542",
+            "max_ns": "6015",
+            "kernel": "_grouped_gemma_rmsnorm_kernel",
+            "total_ms": 3.739542,
+            "max_us": 6.015
+          },
+          {
+            "calls": 477,
+            "total_ns": "3500242",
+            "max_ns": "8096",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 3.500242,
+            "max_us": 8.096
+          },
+          {
+            "calls": 954,
+            "total_ns": "2893315",
+            "max_ns": "6496",
+            "kernel": "memcpy32_post",
+            "total_ms": 2.893315,
+            "max_us": 6.496
+          },
+          {
+            "calls": 477,
+            "total_ns": "2880440",
+            "max_ns": "6624",
+            "kernel": "_ple_conv_kernel",
+            "total_ms": 2.88044,
+            "max_us": 6.624
+          },
+          {
+            "calls": 1908,
+            "total_ns": "2561609",
+            "max_ns": "2048",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)",
+            "total_ms": 2.561609,
+            "max_us": 2.048
+          },
+          {
+            "calls": 477,
+            "total_ns": "2367249",
+            "max_ns": "6271",
+            "kernel": "_gather_block_tables_kernel",
+            "total_ms": 2.367249,
+            "max_us": 6.271
+          },
+          {
+            "calls": 1431,
+            "total_ns": "2364974",
+            "max_ns": "2047",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+            "total_ms": 2.364974,
+            "max_us": 2.047
+          },
+          {
+            "calls": 477,
+            "total_ns": "2322813",
+            "max_ns": "5152",
+            "kernel": "_ple_gate_kernel",
+            "total_ms": 2.322813,
+            "max_us": 5.152
+          },
+          {
+            "calls": 477,
+            "total_ns": "2263771",
+            "max_ns": "5440",
+            "kernel": "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::ArgMaxOps<float>, unsigned int, long, 4, 4> >(at::native::ReduceOp<float, at::native::ArgMaxOps<float>, unsigned int, long, 4, 4>)",
+            "total_ms": 2.263771,
+            "max_us": 5.44
+          },
+          {
+            "calls": 477,
+            "total_ns": "2218274",
+            "max_ns": "5889",
+            "kernel": "_post_update_kernel",
+            "total_ms": 2.218274,
+            "max_us": 5.889
+          },
+          {
+            "calls": 477,
+            "total_ns": "1988697",
+            "max_ns": "5696",
+            "kernel": "_prepare_rope_positions_kernel",
+            "total_ms": 1.988697,
+            "max_us": 5.696
+          },
+          {
+            "calls": 477,
+            "total_ns": "1950361",
+            "max_ns": "4735",
+            "kernel": "_get_num_sampled_and_rejected_kernel",
+            "total_ms": 1.950361,
+            "max_us": 4.735
+          },
+          {
+            "calls": 477,
+            "total_ns": "1925492",
+            "max_ns": "4800",
+            "kernel": "_combine_sampled_and_draft_tokens_kernel",
+            "total_ms": 1.925492,
+            "max_us": 4.8
+          },
+          {
+            "calls": 954,
+            "total_ns": "1679822",
+            "max_ns": "2176",
+            "kernel": "_build_qsa_metadata_kernel",
+            "total_ms": 1.679822,
+            "max_us": 2.176
+          },
+          {
+            "calls": 477,
+            "total_ns": "1627858",
+            "max_ns": "3807",
+            "kernel": "_compute_slot_mappings_kernel",
+            "total_ms": 1.627858,
+            "max_us": 3.807
+          },
+          {
+            "calls": 477,
+            "total_ns": "1584922",
+            "max_ns": "3872",
+            "kernel": "_lookup_ple_embedding_from_pinned_kernel",
+            "total_ms": 1.584922,
+            "max_us": 3.872
+          },
+          {
+            "calls": 477,
+            "total_ns": "1542733",
+            "max_ns": "3872",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 1.542733,
+            "max_us": 3.872
+          },
+          {
+            "calls": 477,
+            "total_ns": "1453688",
+            "max_ns": "3328",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+            "total_ms": 1.453688,
+            "max_us": 3.328
+          },
+          {
+            "calls": 477,
+            "total_ns": "1218009",
+            "max_ns": "3104",
+            "kernel": "void at::native::_scatter_gather_elementwise_kernel<128, 8, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<8>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1}>(int, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<8>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1})",
+            "total_ms": 1.218009,
+            "max_us": 3.104
+          },
+          {
+            "calls": 477,
+            "total_ns": "1213940",
+            "max_ns": "3007",
+            "kernel": "_ple_ngram_ids_kernel",
+            "total_ms": 1.21394,
+            "max_us": 3.007
+          },
+          {
+            "calls": 477,
+            "total_ns": "1184692",
+            "max_ns": "2688",
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})",
+            "total_ms": 1.184692,
+            "max_us": 2.688
+          },
+          {
+            "calls": 477,
+            "total_ns": "1171954",
+            "max_ns": "2943",
+            "kernel": "void at::native::(anonymous namespace)::indexSelectSmallIndex<c10::BFloat16, long, unsigned int, 2, 2, -2>(at::cuda::detail::TensorInfo<c10::BFloat16, unsigned int>, at::cuda::detail::TensorInfo<c10::BFloat16 const, unsigned int>, at::cuda::detail::TensorInfo<long const, unsigned int>, int, int, unsigned int, long)",
+            "total_ms": 1.171954,
+            "max_us": 2.943
+          },
+          {
+            "calls": 477,
+            "total_ns": "1078200",
+            "max_ns": "2304",
+            "kernel": "_hc_silu_kernel",
+            "total_ms": 1.0782,
+            "max_us": 2.304
+          },
+          {
+            "calls": 477,
+            "total_ns": "890338",
+            "max_ns": "2400",
+            "kernel": "_hc_combine_kernel",
+            "total_ms": 0.890338,
+            "max_us": 2.4
+          },
+          {
+            "calls": 477,
+            "total_ns": "836101",
+            "max_ns": "1952",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::compare_scalar_kernel<long>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, long)::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::compare_scalar_kernel<long>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, long)::{lambda(long)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.836101,
+            "max_us": 1.952
+          },
+          {
+            "calls": 477,
+            "total_ns": "831260",
+            "max_ns": "1920",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::compare_scalar_kernel<int>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, int)::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::compare_scalar_kernel<int>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, int)::{lambda(int)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.83126,
+            "max_us": 1.92
+          },
+          {
+            "calls": 477,
+            "total_ns": "808781",
+            "max_ns": "2272",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<long> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<long> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<long> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<long> const&)::{lambda(int)#1})",
+            "total_ms": 0.808781,
+            "max_us": 2.272
+          },
+          {
+            "calls": 477,
+            "total_ns": "803803",
+            "max_ns": "1920",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.803803,
+            "max_us": 1.92
+          },
+          {
+            "calls": 477,
+            "total_ns": "773684",
+            "max_ns": "1729",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>)",
+            "total_ms": 0.773684,
+            "max_us": 1.729
+          },
+          {
+            "calls": 477,
+            "total_ns": "743648",
+            "max_ns": "1793",
+            "kernel": "void at::native::vectorized_elementwise_kernel<2, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.743648,
+            "max_us": 1.793
+          },
+          {
+            "calls": 477,
+            "total_ns": "707647",
+            "max_ns": "1697",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.707647,
+            "max_us": 1.697
+          },
+          {
+            "calls": 477,
+            "total_ns": "706487",
+            "max_ns": "1696",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.706487,
+            "max_us": 1.696
+          },
+          {
+            "calls": 477,
+            "total_ns": "700049",
+            "max_ns": "1696",
+            "kernel": "_prepare_pos_seq_lens_kernel",
+            "total_ms": 0.700049,
+            "max_us": 1.696
+          },
+          {
+            "calls": 477,
+            "total_ns": "679998",
+            "max_ns": "1633",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>, 4, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast)",
+            "total_ms": 0.679998,
+            "max_us": 1.633
+          },
+          {
+            "calls": 477,
+            "total_ns": "640871",
+            "max_ns": "1601",
+            "kernel": "_scatter_num_accepted_kernel",
+            "total_ms": 0.640871,
+            "max_us": 1.601
+          },
+          {
+            "calls": 477,
+            "total_ns": "618218",
+            "max_ns": "1600",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.618218,
+            "max_us": 1.6
+          },
+          {
+            "calls": 476,
+            "total_ns": "602280",
+            "max_ns": "1504",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::FillFunctor<bool>, std::array<char*, 1ul> >(int, at::native::FillFunctor<bool>, std::array<char*, 1ul>)",
+            "total_ms": 0.60228,
+            "max_us": 1.504
+          },
+          {
+            "calls": 476,
+            "total_ns": "576228",
+            "max_ns": "1441",
+            "kernel": "void (anonymous namespace)::elementwise_kernel_with_index<int, at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}>(int, at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}, function_traits<at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}>::result_type*)",
+            "total_ms": 0.576228,
+            "max_us": 1.441
+          }
+        ],
+        "kernels_per_token": 1712.9958071278827,
+        "summed_kernel_ms_per_token": 7.574790383647799,
+        "kernel_union_ms_per_token": 5.100365303983228,
+        "profiled_window_ms_per_token": 8.302245171907757
+      },
+      "prefill": {
+        "phase": "prefill",
+        "trace": "/workspace/qwen-benchmark/deep-traces/vllm-prefill/vllm-deep.27785.timeline.json",
+        "timeline": {
+          "kernel_records": 2230,
+          "window_ns": 228134384,
+          "kernel_union_ns": 38404963,
+          "non_kernel_ns": 189729421,
+          "gaps_over_5us_ns": 189539785,
+          "gaps_over_5us_count": 1881,
+          "max_gap_ns": 2205687,
+          "correlation_ids": 2230
+        },
+        "summed_kernel_ms": 39.043203,
+        "estimated_model_passes": 1.0,
+        "kernels": [
+          {
+            "calls": 48,
+            "total_ns": "9478526",
+            "max_ns": "229408",
+            "kernel": "bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f",
+            "total_ms": 9.478526,
+            "max_us": 229.408
+          },
+          {
+            "calls": 48,
+            "total_ns": "5501613",
+            "max_ns": "129695",
+            "kernel": "bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f",
+            "total_ms": 5.501613,
+            "max_us": 129.695
+          },
+          {
+            "calls": 48,
+            "total_ns": "2231347",
+            "max_ns": "47360",
+            "kernel": "void moe::dev::activation::activationDeepSeekKernel<moe::dev::activation::KernelParams<cutlass::float_e4m3_t, 4, true> >(moe::dev::activation::KernelParams<cutlass::float_e4m3_t, 4, true>)",
+            "total_ms": 2.231347,
+            "max_us": 47.36
+          },
+          {
+            "calls": 36,
+            "total_ns": "2144829",
+            "max_ns": "61504",
+            "kernel": "nvjet_sm100_tst_128x256_64x6_2x2_2cta_h_bz_TNT",
+            "total_ms": 2.144829,
+            "max_us": 61.504
+          },
+          {
+            "calls": 12,
+            "total_ns": "2028632",
+            "max_ns": "172096",
+            "kernel": "_qsa_sparse_paged_gqa_splitk_kernel",
+            "total_ms": 2.028632,
+            "max_us": 172.096
+          },
+          {
+            "calls": 36,
+            "total_ns": "1592441",
+            "max_ns": "44864",
+            "kernel": "kernel_cutlass_kernel_flashinfergdn_kernelsblackwellgated_delta_net_chunkedGatedDeltaNetChunkedKernel_object_at__TiledMMA_ThrLayoutVMNK11110000_PermutationMNK____MMAAtom_ThrID10_ShapeMNK6_0",
+            "total_ms": 1.592441,
+            "max_us": 44.864
+          },
+          {
+            "calls": 96,
+            "total_ns": "1452345",
+            "max_ns": "24479",
+            "kernel": "nvjet_sm100_tst_144x128_64x8_1x2_2cta_h_bz_TNN",
+            "total_ms": 1.452345,
+            "max_us": 24.479
+          },
+          {
+            "calls": 48,
+            "total_ns": "1232412",
+            "max_ns": "27776",
+            "kernel": "void moe::dev::finalize::finalizeKernelVecLoad<moe::dev::finalize::KernelParams<cutlass::bfloat16_t, cutlass::bfloat16_t, 2, true> >(moe::dev::finalize::KernelParams<cutlass::bfloat16_t, cutlass::bfloat16_t, 2, true>)",
+            "total_ms": 1.232412,
+            "max_us": 27.776
+          },
+          {
+            "calls": 95,
+            "total_ns": "1133211",
+            "max_ns": "12448",
+            "kernel": "_hc_combine_norm_kernel",
+            "total_ms": 1.133211,
+            "max_us": 12.448
+          },
+          {
+            "calls": 96,
+            "total_ns": "991129",
+            "max_ns": "10688",
+            "kernel": "nvjet_sm100_tst_112x64_64x14_1x2_2cta_h_bz_splitK_TNN",
+            "total_ms": 0.991129,
+            "max_us": 10.688
+          },
+          {
+            "calls": 97,
+            "total_ns": "955804",
+            "max_ns": "10240",
+            "kernel": "nvjet_sm100_tst_192x128_64x6_2x1_2cta_v_bz_TNT",
+            "total_ms": 0.955804,
+            "max_us": 10.24
+          },
+          {
+            "calls": 109,
+            "total_ns": "859349",
+            "max_ns": "22016",
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.859349,
+            "max_us": 22.016
+          },
+          {
+            "calls": 97,
+            "total_ns": "823450",
+            "max_ns": "8704",
+            "kernel": "_hc_gate_mix_kernel",
+            "total_ms": 0.82345,
+            "max_us": 8.704
+          },
+          {
+            "calls": 36,
+            "total_ns": "722525",
+            "max_ns": "20608",
+            "kernel": "_causal_conv1d_fwd_kernel",
+            "total_ms": 0.722525,
+            "max_us": 20.608
+          },
+          {
+            "calls": 13,
+            "total_ns": "602975",
+            "max_ns": "46816",
+            "kernel": "nvjet_sm100_tst_128x256_64x6_2x1_2cta_v_bz_TNT",
+            "total_ms": 0.602975,
+            "max_us": 46.816
+          },
+          {
+            "calls": 97,
+            "total_ns": "442177",
+            "max_ns": "5024",
+            "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            "total_ms": 0.442177,
+            "max_us": 5.024
+          },
+          {
+            "calls": 48,
+            "total_ns": "440254",
+            "max_ns": "9536",
+            "kernel": "nvjet_sm100_tst_80x128_64x10_2x2_2cta_h_bz_TNN",
+            "total_ms": 0.440254,
+            "max_us": 9.536
+          },
+          {
+            "calls": 39,
+            "total_ns": "423808",
+            "max_ns": "12384",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<4> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 0.423808,
+            "max_us": 12.384
+          },
+          {
+            "calls": 49,
+            "total_ns": "369725",
+            "max_ns": "7680",
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+            "total_ms": 0.369725,
+            "max_us": 7.68
+          },
+          {
+            "calls": 36,
+            "total_ns": "361087",
+            "max_ns": "10847",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_put_kernel_impl<at::native::OpaqueType<4> >(at::TensorIterator&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_put_kernel_impl<at::native::OpaqueType<4> >(at::TensorIterator&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_put_kernel_impl<at::native::OpaqueType<4> >(at::TensorIterator&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_put_kernel_impl<at::native::OpaqueType<4> >(at::TensorIterator&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 0.361087,
+            "max_us": 10.847
+          },
+          {
+            "calls": 48,
+            "total_ns": "341541",
+            "max_ns": "7425",
+            "kernel": "void moe::dev::routing::routingIndicesCoopKernel<moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 8, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::NoOpPostprocess> > >(moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 8, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::NoOpPostprocess> >)",
+            "total_ms": 0.341541,
+            "max_us": 7.425
+          },
+          {
+            "calls": 48,
+            "total_ns": "338970",
+            "max_ns": "7295",
+            "kernel": "nvjet_sm100_tst_64x64_64x16_2x2_2cta_h_bz_TNT",
+            "total_ms": 0.33897,
+            "max_us": 7.295
+          },
+          {
+            "calls": 36,
+            "total_ns": "328543",
+            "max_ns": "9632",
+            "kernel": "layer_norm_fwd_kernel",
+            "total_ms": 0.328543,
+            "max_us": 9.632
+          },
+          {
+            "calls": 12,
+            "total_ns": "294847",
+            "max_ns": "24800",
+            "kernel": "_fused_qk_rmsnorm_rope_gate_kernel",
+            "total_ms": 0.294847,
+            "max_us": 24.8
+          },
+          {
+            "calls": 48,
+            "total_ns": "287359",
+            "max_ns": "6144",
+            "kernel": "void moe::dev::routing::routingCustom::routingIndicesBlockScoresKernel<moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 16, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::SoftmaxPostprocess> > >(moe::dev::routing::routingCustom::KernelParams<__nv_bfloat16, __nv_bfloat16, 512, 16, moe::dev::routing::TopKExpertSelect<moe::dev::routing::NoOpPreprocess, moe::dev::routing::SoftmaxPostprocess> >)",
+            "total_ms": 0.287359,
+            "max_us": 6.144
+          },
+          {
+            "calls": 36,
+            "total_ns": "286751",
+            "max_ns": "9248",
+            "kernel": "nvjet_sm100_tst_64x32_64x16_2x2_2cta_h_bz_TNT",
+            "total_ms": 0.286751,
+            "max_us": 9.248
+          },
+          {
+            "calls": 48,
+            "total_ns": "277950",
+            "max_ns": "6144",
+            "kernel": "nvjet_sm100_tst_32x64_64x16_4x1_v_bz_TNN",
+            "total_ms": 0.27795,
+            "max_us": 6.144
+          },
+          {
+            "calls": 48,
+            "total_ns": "252830",
+            "max_ns": "5408",
+            "kernel": "void per_token_group_quant_8bit_register_kernel<c10::BFloat16, c10::Float8_e4m3fn, false, true, 128>(c10::BFloat16 const*, void*, float*, long, float, float, float, int, int)",
+            "total_ms": 0.25283,
+            "max_us": 5.408
+          },
+          {
+            "calls": 97,
+            "total_ns": "228612",
+            "max_ns": "2528",
+            "kernel": "_hc_silu_kernel",
+            "total_ms": 0.228612,
+            "max_us": 2.528
+          },
+          {
+            "calls": 36,
+            "total_ns": "226975",
+            "max_ns": "6400",
+            "kernel": "_fused_post_conv_kernel",
+            "total_ms": 0.226975,
+            "max_us": 6.4
+          },
+          {
+            "calls": 48,
+            "total_ns": "222273",
+            "max_ns": "4737",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>)",
+            "total_ms": 0.222273,
+            "max_us": 4.737
+          },
+          {
+            "calls": 1,
+            "total_ns": "197823",
+            "max_ns": "197823",
+            "kernel": "nvjet_sm100_tst_192x8_64x8_2x1_v_bz_TNT",
+            "total_ms": 0.197823,
+            "max_us": 197.823
+          },
+          {
+            "calls": 48,
+            "total_ns": "185214",
+            "max_ns": "4160",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>)",
+            "total_ms": 0.185214,
+            "max_us": 4.16
+          },
+          {
+            "calls": 111,
+            "total_ns": "184193",
+            "max_ns": "2336",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+            "total_ms": 0.184193,
+            "max_us": 2.336
+          },
+          {
+            "calls": 48,
+            "total_ns": "165951",
+            "max_ns": "3584",
+            "kernel": "void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bfloat162, &(c10::BFloat16 vllm::silu_kernel<c10::BFloat16>(c10::BFloat16 const&, float)), &(__nv_bfloat162 vllm::packed_silu_kernel<__nv_bfloat162>(__nv_bfloat162 const&, float)), true, true, false, true>(c10::BFloat16*, c10::BFloat16 const*, int, float, float, float)",
+            "total_ms": 0.165951,
+            "max_us": 3.584
+          },
+          {
+            "calls": 36,
+            "total_ns": "135931",
+            "max_ns": "3872",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::masked_fill_kernel(at::TensorIterator&, c10::Scalar const&)::{lambda()#1}::operator()() const::{lambda()#7}::operator()() const::{lambda(float, bool)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.135931,
+            "max_us": 3.872
+          },
+          {
+            "calls": 1,
+            "total_ns": "131199",
+            "max_ns": "131199",
+            "kernel": "_lookup_ple_embedding_from_pinned_kernel",
+            "total_ms": 0.131199,
+            "max_us": 131.199
+          },
+          {
+            "calls": 12,
+            "total_ns": "129632",
+            "max_ns": "10944",
+            "kernel": "_qsa_mqa_paged_prefill_kernel",
+            "total_ms": 0.129632,
+            "max_us": 10.944
+          },
+          {
+            "calls": 48,
+            "total_ns": "117663",
+            "max_ns": "2593",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.117663,
+            "max_us": 2.593
+          },
+          {
+            "calls": 48,
+            "total_ns": "89760",
+            "max_ns": "2049",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::sigmoid_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul> >(int, at::native::sigmoid_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#4}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.08976,
+            "max_us": 2.049
+          },
+          {
+            "calls": 12,
+            "total_ns": "88957",
+            "max_ns": "7552",
+            "kernel": "nvjet_sm100_tst_80x64_64x16_2x2_2cta_h_bz_TNN",
+            "total_ms": 0.088957,
+            "max_us": 7.552
+          },
+          {
+            "calls": 12,
+            "total_ns": "79360",
+            "max_ns": "6848",
+            "kernel": "void vllm::filtered_topk::FilteredTopKUnifiedKernel<float, int, 4, 512u, false>(float const*, int*, int const*, unsigned int, unsigned int, unsigned int)",
+            "total_ms": 0.07936,
+            "max_us": 6.848
+          },
+          {
+            "calls": 12,
+            "total_ns": "78975",
+            "max_ns": "6688",
+            "kernel": "_expand_qsa_indices_kernel",
+            "total_ms": 0.078975,
+            "max_us": 6.688
+          },
+          {
+            "calls": 12,
+            "total_ns": "78367",
+            "max_ns": "6720",
+            "kernel": "_qsa_pre_indexer_kernel",
+            "total_ms": 0.078367,
+            "max_us": 6.72
+          },
+          {
+            "calls": 12,
+            "total_ns": "72610",
+            "max_ns": "6337",
+            "kernel": "void vllm::reshape_and_cache_flash_kernel<__nv_bfloat16, __nv_bfloat16, (vllm::Fp8KVCacheDataType)0>(__nv_bfloat16 const*, __nv_bfloat16 const*, __nv_bfloat16*, __nv_bfloat16*, long const*, long, long, long, long, long, int, int, int, float const*, float const*, int)",
+            "total_ms": 0.07261,
+            "max_us": 6.337
+          },
+          {
+            "calls": 36,
+            "total_ns": "71422",
+            "max_ns": "2048",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::exp_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::exp_kernel_cuda(at::TensorIteratorBase&)::{lambda()#2}::operator()() const::{lambda()#2}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.071422,
+            "max_us": 2.048
+          },
+          {
+            "calls": 36,
+            "total_ns": "60544",
+            "max_ns": "1889",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul> >(int, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase&)::{lambda(bool)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.060544,
+            "max_us": 1.889
+          },
+          {
+            "calls": 1,
+            "total_ns": "52800",
+            "max_ns": "52800",
+            "kernel": "_ple_conv_kernel",
+            "total_ms": 0.0528,
+            "max_us": 52.8
+          },
+          {
+            "calls": 1,
+            "total_ns": "36096",
+            "max_ns": "36096",
+            "kernel": "_gumbel_sample_kernel",
+            "total_ms": 0.036096,
+            "max_us": 36.096
+          },
+          {
+            "calls": 5,
+            "total_ns": "32255",
+            "max_ns": "9791",
+            "kernel": "_apply_write_kernel",
+            "total_ms": 0.032255,
+            "max_us": 9.791
+          },
+          {
+            "calls": 1,
+            "total_ns": "21057",
+            "max_ns": "21057",
+            "kernel": "_ple_gate_kernel",
+            "total_ms": 0.021057,
+            "max_us": 21.057
+          },
+          {
+            "calls": 1,
+            "total_ns": "15872",
+            "max_ns": "15872",
+            "kernel": "_zero_kv_blocks_kernel",
+            "total_ms": 0.015872,
+            "max_us": 15.872
+          },
+          {
+            "calls": 2,
+            "total_ns": "14432",
+            "max_ns": "7232",
+            "kernel": "_grouped_gemma_rmsnorm_kernel",
+            "total_ms": 0.014432,
+            "max_us": 7.232
+          },
+          {
+            "calls": 1,
+            "total_ns": "9440",
+            "max_ns": "9440",
+            "kernel": "nvjet_sm100_tst_80x128_64x10_2x2_2cta_h_bz_splitK_TNN",
+            "total_ms": 0.00944,
+            "max_us": 9.44
+          },
+          {
+            "calls": 1,
+            "total_ns": "9216",
+            "max_ns": "9216",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+            "total_ms": 0.009216,
+            "max_us": 9.216
+          },
+          {
+            "calls": 1,
+            "total_ns": "7552",
+            "max_ns": "7552",
+            "kernel": "_hc_combine_kernel",
+            "total_ms": 0.007552,
+            "max_us": 7.552
+          },
+          {
+            "calls": 6,
+            "total_ns": "7360",
+            "max_ns": "1440",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)",
+            "total_ms": 0.00736,
+            "max_us": 1.44
+          },
+          {
+            "calls": 1,
+            "total_ns": "7264",
+            "max_ns": "7264",
+            "kernel": "_prepare_rope_positions_kernel",
+            "total_ms": 0.007264,
+            "max_us": 7.264
+          },
+          {
+            "calls": 1,
+            "total_ns": "7104",
+            "max_ns": "7104",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<2> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 0.007104,
+            "max_us": 7.104
+          },
+          {
+            "calls": 1,
+            "total_ns": "4992",
+            "max_ns": "4992",
+            "kernel": "_gather_block_tables_kernel",
+            "total_ms": 0.004992,
+            "max_us": 4.992
+          },
+          {
+            "calls": 1,
+            "total_ns": "4512",
+            "max_ns": "4512",
+            "kernel": "_post_update_kernel",
+            "total_ms": 0.004512,
+            "max_us": 4.512
+          },
+          {
+            "calls": 1,
+            "total_ns": "4480",
+            "max_ns": "4480",
+            "kernel": "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::ArgMaxOps<float>, unsigned int, long, 4, 4> >(at::native::ReduceOp<float, at::native::ArgMaxOps<float>, unsigned int, long, 4, 4>)",
+            "total_ms": 0.00448,
+            "max_us": 4.48
+          },
+          {
+            "calls": 1,
+            "total_ns": "4352",
+            "max_ns": "4352",
+            "kernel": "_prepare_prefill_inputs_kernel",
+            "total_ms": 0.004352,
+            "max_us": 4.352
+          },
+          {
+            "calls": 1,
+            "total_ns": "4256",
+            "max_ns": "4256",
+            "kernel": "_ple_conv_writeback_kernel",
+            "total_ms": 0.004256,
+            "max_us": 4.256
+          },
+          {
+            "calls": 1,
+            "total_ns": "4000",
+            "max_ns": "4000",
+            "kernel": "_get_num_sampled_and_rejected_kernel",
+            "total_ms": 0.004,
+            "max_us": 4.0
+          },
+          {
+            "calls": 2,
+            "total_ns": "3776",
+            "max_ns": "1920",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul> >(int, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>)",
+            "total_ms": 0.003776,
+            "max_us": 1.92
+          },
+          {
+            "calls": 1,
+            "total_ns": "3744",
+            "max_ns": "3744",
+            "kernel": "void at::native::vectorized_gather_kernel<16, long>(char*, char*, long*, int, long, long, long, long, bool)",
+            "total_ms": 0.003744,
+            "max_us": 3.744
+          },
+          {
+            "calls": 1,
+            "total_ns": "3520",
+            "max_ns": "3520",
+            "kernel": "_combine_sampled_and_draft_tokens_kernel",
+            "total_ms": 0.00352,
+            "max_us": 3.52
+          },
+          {
+            "calls": 2,
+            "total_ns": "3456",
+            "max_ns": "2016",
+            "kernel": "_build_qsa_metadata_kernel",
+            "total_ms": 0.003456,
+            "max_us": 2.016
+          },
+          {
+            "calls": 2,
+            "total_ns": "3392",
+            "max_ns": "1728",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::compare_scalar_kernel<int>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, int)::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::compare_scalar_kernel<int>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, int)::{lambda(int)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.003392,
+            "max_us": 1.728
+          },
+          {
+            "calls": 1,
+            "total_ns": "3296",
+            "max_ns": "3296",
+            "kernel": "_compute_slot_mappings_kernel",
+            "total_ms": 0.003296,
+            "max_us": 3.296
+          },
+          {
+            "calls": 1,
+            "total_ns": "3264",
+            "max_ns": "3264",
+            "kernel": "_ple_ngram_ids_kernel",
+            "total_ms": 0.003264,
+            "max_us": 3.264
+          },
+          {
+            "calls": 2,
+            "total_ns": "3232",
+            "max_ns": "1632",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>, 4, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, at::native::CUDAFunctor_add<int>, std::array<char*, 3ul>, TrivialOffsetCalculator<2, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast)",
+            "total_ms": 0.003232,
+            "max_us": 1.632
+          },
+          {
+            "calls": 1,
+            "total_ns": "2976",
+            "max_ns": "2976",
+            "kernel": "void at::native::index_elementwise_kernel<128, 4, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1}>(long, at::native::gpu_index_kernel<at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1}>(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>, at::native::index_kernel_impl<at::native::OpaqueType<8> >(at::TensorIteratorBase&, c10::ArrayRef<long>, c10::ArrayRef<long>)::{lambda(char*, char const*, long)#1} const&, bool)::{lambda(int)#1})",
+            "total_ms": 0.002976,
+            "max_us": 2.976
+          },
+          {
+            "calls": 1,
+            "total_ns": "2465",
+            "max_ns": "2465",
+            "kernel": "void at::native::_scatter_gather_elementwise_kernel<128, 8, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<8>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1}>(int, at::native::_cuda_scatter_gather_internal_kernel<false, at::native::OpaqueType<8>, long>::operator()<at::native::TensorAssign>(at::TensorIterator&, long, long, long, at::native::TensorAssign const&)::{lambda(int)#1})",
+            "total_ms": 0.002465,
+            "max_us": 2.465
+          },
+          {
+            "calls": 1,
+            "total_ns": "2016",
+            "max_ns": "2016",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1}>(at::TensorIteratorBase&, at::native::(anonymous namespace)::where_kernel_impl(at::TensorIterator&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(bool, unsigned int, unsigned int)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.002016,
+            "max_us": 2.016
+          },
+          {
+            "calls": 1,
+            "total_ns": "1696",
+            "max_ns": "1696",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.001696,
+            "max_us": 1.696
+          },
+          {
+            "calls": 1,
+            "total_ns": "1695",
+            "max_ns": "1695",
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            "total_ms": 0.001695,
+            "max_us": 1.695
+          },
+          {
+            "calls": 1,
+            "total_ns": "1664",
+            "max_ns": "1664",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1} const&)::{lambda(int)#1})",
+            "total_ms": 0.001664,
+            "max_us": 1.664
+          },
+          {
+            "calls": 1,
+            "total_ns": "1600",
+            "max_ns": "1600",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::FillFunctor<bool>, std::array<char*, 1ul> >(int, at::native::FillFunctor<bool>, std::array<char*, 1ul>)",
+            "total_ms": 0.0016,
+            "max_us": 1.6
+          },
+          {
+            "calls": 1,
+            "total_ns": "1504",
+            "max_ns": "1504",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::compare_scalar_kernel<long>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, long)::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::compare_scalar_kernel<long>(at::TensorIteratorBase&, at::native::(anonymous namespace)::OpType, long)::{lambda(long)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.001504,
+            "max_us": 1.504
+          },
+          {
+            "calls": 1,
+            "total_ns": "1472",
+            "max_ns": "1472",
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+            "total_ms": 0.001472,
+            "max_us": 1.472
+          },
+          {
+            "calls": 1,
+            "total_ns": "1440",
+            "max_ns": "1440",
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<long> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<long> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<long> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<long> const&)::{lambda(int)#1})",
+            "total_ms": 0.00144,
+            "max_us": 1.44
+          },
+          {
+            "calls": 1,
+            "total_ns": "1440",
+            "max_ns": "1440",
+            "kernel": "_prepare_pos_seq_lens_kernel",
+            "total_ms": 0.00144,
+            "max_us": 1.44
+          },
+          {
+            "calls": 1,
+            "total_ns": "1408",
+            "max_ns": "1408",
+            "kernel": "void at::native::vectorized_elementwise_kernel<2, at::native::FillFunctor<int>, std::array<char*, 1ul> >(int, at::native::FillFunctor<int>, std::array<char*, 1ul>)",
+            "total_ms": 0.001408,
+            "max_us": 1.408
+          },
+          {
+            "calls": 1,
+            "total_ns": "1376",
+            "max_ns": "1376",
+            "kernel": "void (anonymous namespace)::elementwise_kernel_with_index<int, at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}>(int, at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}, function_traits<at::native::arange_cuda_out(c10::Scalar const&, c10::Scalar const&, c10::Scalar const&, at::Tensor&)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(long)#1}>::result_type*)",
+            "total_ms": 0.001376,
+            "max_us": 1.376
+          },
+          {
+            "calls": 1,
+            "total_ns": "1344",
+            "max_ns": "1344",
+            "kernel": "void at::native::vectorized_elementwise_kernel<2, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#4}::operator()() const::{lambda(long)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.001344,
+            "max_us": 1.344
+          },
+          {
+            "calls": 1,
+            "total_ns": "1344",
+            "max_ns": "1344",
+            "kernel": "void at::native::vectorized_elementwise_kernel<8, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul>)",
+            "total_ms": 0.001344,
+            "max_us": 1.344
+          },
+          {
+            "calls": 1,
+            "total_ns": "1152",
+            "max_ns": "1152",
+            "kernel": "_scatter_num_accepted_kernel",
+            "total_ms": 0.001152,
+            "max_us": 1.152
+          }
+        ]
+      }
+    }
+  },
+  "dense_probes": [
+    {
+      "n": 4,
+      "k": 10240,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 2.3712667326132455,
+      "pie_other_us": 5.702800055344899,
+      "torch_linear_us": 3.1371332705020905
+    },
+    {
+      "n": 320,
+      "k": 10240,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 4.621000091234843,
+      "pie_other_us": 12.106633186340332,
+      "torch_linear_us": 5.609700083732605
+    },
+    {
+      "n": 10240,
+      "k": 320,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 4.615466793378194,
+      "pie_other_us": 7.171233495076497,
+      "torch_linear_us": 3.076366583506266
+    },
+    {
+      "n": 96,
+      "k": 2560,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 1.922166720032692,
+      "pie_other_us": 2.4973665674527488,
+      "torch_linear_us": 3.9052667717138925
+    },
+    {
+      "n": 512,
+      "k": 2560,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 2.5631998976071677,
+      "pie_other_us": 2.8728999197483063,
+      "torch_linear_us": 4.737499852975209
+    },
+    {
+      "n": 1280,
+      "k": 2560,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 3.61503337820371,
+      "pie_other_us": 4.742266734441121,
+      "torch_linear_us": 5.044266581535339
+    },
+    {
+      "n": 2560,
+      "k": 640,
+      "rotating_weight_banks": 32,
+      "pie_default_us": 3.1115666031837463,
+      "pie_other_us": 2.984633296728134,
+      "torch_linear_us": 3.3974667390187583
+    },
+    {
+      "n": 16384,
+      "k": 2560,
+      "rotating_weight_banks": 3,
+      "pie_default_us": 15.247289339701334,
+      "pie_other_us": 18.003200160132515,
+      "torch_linear_us": 15.08693297704061
+    },
+    {
+      "n": 2560,
+      "k": 6144,
+      "rotating_weight_banks": 8,
+      "pie_default_us": 7.886266708374023,
+      "pie_other_us": 9.741600354512533,
+      "torch_linear_us": 8.742533127466837
+    },
+    {
+      "n": 248320,
+      "k": 2560,
+      "rotating_weight_banks": 1,
+      "pie_default_us": 175.30666987101236,
+      "pie_other_us": 223.20213317871094,
+      "torch_linear_us": 187.18825976053873
+    }
+  ],
+  "prefill_kernel_comparison": [
+    {
+      "operation": "Expert matrix multiplications",
+      "pie_ms": 163.464943,
+      "vllm_ms": 14.980139000000001,
+      "pie_over_vllm": 10.912111229408485
+    },
+    {
+      "operation": "Selected attention",
+      "pie_ms": 153.912835,
+      "vllm_ms": 2.028632,
+      "pie_over_vllm": 75.87025887396038
+    }
+  ],
+  "original_report_sha256": "986adab2a577560f23f068164504fd6a33afbcc5d8f9d6226ecd12e482401787",
+  "evidence_scope": "Per-request scalar metrics and profile aggregates; generated text and individual token-gap arrays are omitted. Hashes identify the unmodified local source files."
+}

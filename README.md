@@ -145,6 +145,12 @@ cargo build --release -p pie --bin pie --features vulkan  # any Vulkan 1.2 devic
 cargo build --release -p pie --bin pie --features wgpu    # WebGPU: Vulkan, Metal or D3D12
 ```
 
+## Qwen FP8 in this fork
+
+[FP8 support and validation](notes/fp8-support.md) documents the experimental
+port. [PIE versus vLLM performance analysis](notes/performance/qwen-fp8-vs-vllm.md)
+separates historical measurements from this branch's current implementation.
+
 ## Getting Help
 
 [GitHub Issues](https://github.com/pie-project/pie/issues) and
