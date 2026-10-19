@@ -59,7 +59,9 @@ def fp8_bank(reads, w, legs):
             if not has(factor):
                 fail("`{}`: `{}` holds FP8 codes whose block factors are stored beside it as `{}`, and the checkpoint holds none".format(w.name, name, factor))
             codes.append(src(name).transmute([1, per, cols], encoding(dtype.e4m3)))
-            factors.append(src(factor).transmute([1, per // 128, cols // 128], encoding(dtype.f32)))
+            # Join factors in their stored dtype, then widen the whole bank.
+            # Qwen's factors are BF16; a transmute to F32 is not a cast.
+            factors.append(src(factor).transmute([1, per // 128, cols // 128], stored(factor)))
     counted = [experts, rows // 128, cols // 128]
     codes = concat(0, codes)
     factors = concat(0, factors)
@@ -67,10 +69,10 @@ def fp8_bank(reads, w, legs):
     # the declared `[E, 2*inter, cols]` rectangle byte for byte.
     if len(legs[0]) > 1:
         codes = codes.transmute(list(w.shape), encoding(dtype.e4m3))
-        factors = factors.transmute(counted, encoding(dtype.f32))
+        factors = factors.transmute(counted, stored(legs[0][0][:-len(".weight")] + ".weight_scale_inv"))
     reads.extend([
         tensor(w.name, codes, encoding(dtype.e4m3)),
-        tensor(scales_name(w.name), factors, encoding(dtype.f32), shape = counted),
+        tensor(scales_name(w.name), factors.cast(raw(dtype.f32)), encoding(dtype.f32), shape = counted),
     ])
 
 # A cast inside a join or a cut has no block factors to read, so an FP8

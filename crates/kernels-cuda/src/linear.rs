@@ -11,6 +11,9 @@ mod gemv;
 pub use gemv::{gemm_narrow_bf16, gemm_rows_bf16};
 pub mod skinny;
 
+#[cfg(feature = "cuda")]
+pub mod silu;
+
 pub mod lora;
 
 pub mod mlp;

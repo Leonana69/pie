@@ -47,7 +47,7 @@ pub const GROUPED: [&str; 1] = ["linear.lora_correct"];
 /// rule it does not list (`linear.mlp_swiglu`, which Metal splits across
 /// engines) leaves its primitives alone here.
 #[cfg(not(feature = "rocm"))]
-pub const FUSED: [&str; 30] = [
+pub const FUSED: [&str; 31] = [
     "custom_cuda.qkv_fused_qknorm_rope_vnorm_write",
     "elementwise.rmsnorm_residual_add",
     "elementwise.embed_scale_add_select",
@@ -58,6 +58,7 @@ pub const FUSED: [&str; 30] = [
     "linear.moe_select_glu",
     "linear.matmul_swiglu",
     "linear.lm_head_softcap",
+    "linear.matmul_silu_scaled",
     "linear.matmul_bias",
     "linear.matmul_split_rows",
     "elementwise.gated_residual_norm_modulate",

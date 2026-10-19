@@ -707,14 +707,15 @@ impl Shell {
         }
         // Committed whole: a fire reading out past one row a lane (a verify
         // reads every row) would otherwise grow it outside the fit.
-        let mut arena = Arena::reserve(&compiled.arena, &pools)?;
-        // The fires that run the side streams carve their own arena
-        // (`CompiledModel::arena_forked`): the larger of the two is held.
-        let forked_bytes = compiled
+        // Reserve and commit the SAME ceiling. A side-stream carve can be
+        // larger than the main carve (Qwen FP8 with 128-token fires is one).
+        let arena_map = compiled
             .arena_forked
             .as_ref()
-            .map_or(0, |forked| forked.bytes);
-        arena.ensure(&mut pools, compiled.arena.bytes.max(forked_bytes))?;
+            .filter(|forked| forked.bytes > compiled.arena.bytes)
+            .unwrap_or(&compiled.arena);
+        let mut arena = Arena::reserve(arena_map, &pools)?;
+        arena.ensure(&mut pools, arena_map.bytes)?;
         let predicate = crate::store::rs::Predicate::reserve(
             boot.budget.max_lanes,
             crate::store::rs::snapshots(&boot.trace) > 0,
@@ -1277,6 +1278,7 @@ fn decoded_weight_planes(
                     poem_ir::Fused::MatmulSwiglu { .. }
                     | poem_ir::Fused::MatmulGeglu { .. }
                     | poem_ir::Fused::MlpSwiglu { .. }
+                    | poem_ir::Fused::MatmulSiluScaled { .. }
                     | poem_ir::Fused::MatmulBias { .. }
                     | poem_ir::Fused::MatmulSplitRows { .. }
                     | poem_ir::Fused::LmHeadSoftcap { .. }

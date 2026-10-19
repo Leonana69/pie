@@ -77,3 +77,5 @@ mod the_wan_2_vae_encodes_the_reference;
 mod the_z_image_vae_answers_the_reference;
 
 mod an_fp8_expert_with_five_scale_columns_serves;
+
+mod a_scaled_silu_projection_serves;

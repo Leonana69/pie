@@ -26,7 +26,8 @@ impl DispatchFused for Run<'_> {
             | Fused::SplitRopeYarnAppend { .. } => return self.primitives(op),
             // CUDA's DeepSeek, hyper-connection and Qwen prologue kernels:
             // never formed here.
-            Fused::NormRopeLast { .. }
+            Fused::MatmulSiluScaled { .. }
+            | Fused::NormRopeLast { .. }
             | Fused::NormRopeLastAppend { .. }
             | Fused::NormRopePair { .. }
             | Fused::IndexTopkRope { .. }

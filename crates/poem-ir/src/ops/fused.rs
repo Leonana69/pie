@@ -262,6 +262,15 @@ pub enum Fused {
         y: ValueId,
         y_out: ValueId,
     },
+    /// BF16 projection rounded to its output dtype, then SiLU(s * y).
+    /// The intermediate does not escape; y_out aliases y as in SiluScaled.
+    MatmulSiluScaled {
+        act: ValueId,
+        w: ValueId,
+        s: f32,
+        y: ValueId,
+        y_out: ValueId,
+    },
     MatmulBias {
         act: ValueId,
         w: ValueId,
@@ -645,6 +654,7 @@ impl Operands for Fused {
             ]),
             Self::MatmulGeglu { act, w, .. }
             | Self::MatmulSwiglu { act, w, .. }
+            | Self::MatmulSiluScaled { act, w, .. }
             | Self::LmHeadSoftcap { act, w, .. } => {
                 sink.extend([*act, *w]);
             }
@@ -918,7 +928,9 @@ impl Operands for Fused {
             }
             Self::MlpSwiglu { packed, h, y, .. } => sink.extend([*packed, *h, *y]),
             Self::LmHeadSoftcap { y, y_out, .. } => sink.extend([*y, *y_out]),
-            Self::MatmulBias { y, y_out, .. } => sink.extend([*y, *y_out]),
+            Self::MatmulBias { y, y_out, .. } | Self::MatmulSiluScaled { y, y_out, .. } => {
+                sink.extend([*y, *y_out])
+            }
             Self::MatmulSplitRows { y, left, right, .. } => sink.extend([*y, *left, *right]),
             Self::MoeSelectGlu { select, glu } => {
                 select.outputs(sink);
@@ -1058,7 +1070,9 @@ impl Operands for Fused {
             | Self::ResBlendRmsnorm { .. }
             | Self::HcPre { .. } => {}
             Self::GatedResidualNormModulate { r_out, r, .. } => sink.push((*r_out, *r)),
-            Self::LmHeadSoftcap { y, y_out, .. } | Self::MatmulBias { y, y_out, .. } => {
+            Self::LmHeadSoftcap { y, y_out, .. }
+            | Self::MatmulBias { y, y_out, .. }
+            | Self::MatmulSiluScaled { y, y_out, .. } => {
                 sink.push((*y_out, *y));
             }
             Self::QGateNormRopeAppend {
@@ -1124,6 +1138,7 @@ impl Operands for Fused {
             Self::MlpSwiglu { .. } => "linear.mlp_swiglu",
             Self::LmHeadSoftcap { .. } => "linear.lm_head_softcap",
             Self::MatmulBias { .. } => "linear.matmul_bias",
+            Self::MatmulSiluScaled { .. } => "linear.matmul_silu_scaled",
             Self::MatmulSplitRows { .. } => "linear.matmul_split_rows",
             Self::MoeSelectGlu { .. } => "linear.moe_select_glu",
             Self::RopeYarnAppend { .. } => "elementwise.rope_yarn_append",

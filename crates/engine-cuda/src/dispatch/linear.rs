@@ -184,6 +184,28 @@ impl Run<'_> {
                     y: *y,
                 })
             }
+            Fused::MatmulSiluScaled { act, w, s, y, .. } => {
+                #[cfg(feature = "cuda")]
+                if self.dense_weight(*w) {
+                    let (a, weight, mut out) =
+                        (self.tensor(*act), self.tensor(*w), self.tensor(*y));
+                    if linear::silu::supported(self.ctx(), a, weight, out) {
+                        return linear::silu::matmul_silu_scaled(
+                            self.ctx(),
+                            a,
+                            weight,
+                            *s,
+                            &mut out,
+                        );
+                    }
+                }
+                self.linear(&Linear::Matmul {
+                    act: *act,
+                    w: *w,
+                    y: *y,
+                })?;
+                kernels_cuda::elemwise::norm::silu_scaled(self.ctx(), *s, &mut self.tensor(*y))
+            }
             Fused::MatmulBias {
                 act,
                 w,

@@ -1020,6 +1020,7 @@ fn expect(op: &Operation) -> &'static [(Port, Expect)] {
             | Fused::MatmulSwiglu { .. }
             | Fused::MlpSwiglu { .. }
             | Fused::LmHeadSoftcap { .. }
+            | Fused::MatmulSiluScaled { .. }
             | Fused::MatmulBias { .. }
             | Fused::MatmulSplitRows { .. } => &[],
             // The select's own: its routes are i32.

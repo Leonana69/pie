@@ -1023,3 +1023,38 @@ fn a_gated_delta_step_whose_conv_is_read_elsewhere_stays_apart() {
         ]
     );
 }
+
+#[test]
+fn a_scaled_silu_folds_only_when_the_projection_does_not_escape() {
+    let t = trace(|p| {
+        elemwise::silu_scaled(0.25, &biased(p));
+    });
+    assert_eq!(
+        ops(&fuse(t.clone(), &[])),
+        ["linear.matmul", "elementwise.silu_scaled"]
+    );
+    let folded = fuse(t, &["linear.matmul_silu_scaled"]);
+    assert_eq!(ops(&folded), ["linear.matmul_silu_scaled"]);
+    let poem_ir::Operation::Fused(poem_ir::Fused::MatmulSiluScaled { s, y, y_out, .. }) =
+        folded.nodes[0].op
+    else {
+        panic!("scaled projection")
+    };
+    assert_eq!(s, 0.25);
+    let mut aliases = Vec::new();
+    folded.nodes[0].op.aliases(&mut aliases);
+    assert!(aliases.contains(&(y_out, y)));
+    let t = trace(|p| {
+        let y = biased(p);
+        elemwise::silu_scaled(0.25, &y);
+        elemwise::silu(&y);
+    });
+    assert_eq!(
+        ops(&fuse(t, &["linear.matmul_silu_scaled"])),
+        [
+            "linear.matmul",
+            "elementwise.silu_scaled",
+            "elementwise.silu"
+        ]
+    );
+}

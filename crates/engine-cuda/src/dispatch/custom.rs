@@ -29,6 +29,7 @@ impl DispatchFused for Run<'_> {
             | Fused::MatmulSwiglu { .. }
             | Fused::MlpSwiglu { .. }
             | Fused::LmHeadSoftcap { .. }
+            | Fused::MatmulSiluScaled { .. }
             | Fused::MatmulBias { .. }
             | Fused::MatmulSplitRows { .. }
             | Fused::MoeSelectGlu { .. }

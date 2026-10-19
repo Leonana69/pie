@@ -1,4 +1,5 @@
 use std::borrow::Cow;
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
@@ -106,6 +107,7 @@ pub(super) fn run(
         plan,
         index: PlanIndex::new(plan),
         files,
+        open_files: RefCell::new(HashMap::new()),
         arena,
         buffers: HashMap::new(),
         sink,
@@ -173,6 +175,7 @@ struct Walk<'a, 'p> {
     plan: &'a LoadPlan,
     index: PlanIndex,
     files: HashMap<u32, PathBuf>,
+    open_files: RefCell<HashMap<u32, File>>,
     arena: &'p mut dyn ArenaBacking,
     buffers: HashMap<BufferId, BufferLoc>,
     sink: &'p mut dyn TensorSink,
@@ -824,11 +827,29 @@ impl Walk<'_, '_> {
             })?;
             return Ok(out);
         }
-        let mut file = File::options()
-            .read(true)
-            .write(self.consume.is_some())
-            .open(path)
-            .map_err(|err| invalid(format!("open {}: {err}", path.display())))?;
+        // A Qwen expert bank reads thousands of small extents from a few
+        // shards. Reopening an NFS shard for each extent dominated boot.
+        // Keep handles for this walk only, bounded so a many-shard import
+        // cannot exhaust the process's descriptors. The walk is serial;
+        // parallel reads below borrow this handle until their workers join.
+        let mut open = self.open_files.borrow_mut();
+        if !open.contains_key(&file_id)
+            && open.len() >= 32
+            && let Some(old) = open.keys().next().copied()
+        {
+            open.remove(&old);
+        }
+        let file = match open.entry(file_id) {
+            std::collections::hash_map::Entry::Occupied(entry) => entry.into_mut(),
+            std::collections::hash_map::Entry::Vacant(entry) => {
+                let file = File::options()
+                    .read(true)
+                    .write(self.consume.is_some())
+                    .open(path)
+                    .map_err(|err| invalid(format!("open {}: {err}", path.display())))?;
+                entry.insert(file)
+            }
+        };
 
         #[cfg(unix)]
         {
@@ -843,7 +864,7 @@ impl Walk<'_, '_> {
                     out.chunks_mut(chunk)
                         .enumerate()
                         .map(|(at, buf)| {
-                            let file = &file;
+                            let file = &*file;
                             scope.spawn(move || {
                                 file.read_exact_at(buf, offset + (at * chunk) as u64)
                             })
@@ -856,7 +877,7 @@ impl Walk<'_, '_> {
                 for failure in failures {
                     failure.map_err(|err| invalid(format!("read {}: {err}", path.display())))?;
                 }
-                self.release_if_spent(&file, path, offset, span);
+                self.release_if_spent(file, path, offset, span);
                 return Ok(out);
             }
         }
@@ -872,7 +893,7 @@ impl Walk<'_, '_> {
             file.read_exact(chunk)
                 .map_err(|err| invalid(format!("read {}: {err}", path.display())))?;
         }
-        self.release_if_spent(&file, path, offset, span);
+        self.release_if_spent(file, path, offset, span);
         Ok(out)
     }
 

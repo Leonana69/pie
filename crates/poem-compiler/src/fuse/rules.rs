@@ -41,6 +41,7 @@ pub(super) fn all() -> Vec<Rule> {
         moe_select_glu(),
         matmul_swiglu(),
         lm_head_softcap(),
+        matmul_silu_scaled(),
         matmul_bias(),
         matmul_split_rows(),
         gated_residual_norm_modulate(),
@@ -1211,6 +1212,24 @@ fn lm_head_softcap() -> Rule {
             act: m.value("act"),
             w: m.value("w"),
             cap: m.f32("cap"),
+            y: m.value("y"),
+            y_out: m.value("y_out"),
+        }
+    })
+}
+
+fn matmul_silu_scaled() -> Rule {
+    let pattern = template(|p| {
+        let y = linear::matmul(&p.rows("act", W), &p.weight("w", [W, W]));
+        p.name("y", &y);
+        let y_out = elemwise::silu_scaled(p.f32("s"), &y);
+        p.export("y_out", &y_out);
+    });
+    Rule::new("linear.matmul_silu_scaled", [pattern], |m| {
+        Fused::MatmulSiluScaled {
+            act: m.value("act"),
+            w: m.value("w"),
+            s: m.f32("s"),
             y: m.value("y"),
             y_out: m.value("y_out"),
         }

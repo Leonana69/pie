@@ -1,7 +1,7 @@
 #[test]
 fn the_fp8_deployment_preserves_expert_banks_and_embedding_codes() {
     use poem::{Dtype, Platform};
-    use poem_ir::{ActQuant, Linear, Operation};
+    use poem_ir::{ActQuant, Linear, Operands, Operation};
     for model in ["qwen38-flash-next", "qwen38-flash-next-mini"] {
         let name = format!("{model}-bf16-e4m3tile128a8-kv-bf16");
         let trace = poem_compiler::catalog::deployment(&name)
@@ -39,6 +39,13 @@ fn the_fp8_deployment_preserves_expert_banks_and_embedding_codes() {
             })
             .count();
         assert!(lowp >= 2, "experts must request A8 in the traced plan");
+        let folded = poem_compiler::fuse::fuse(trace, &["linear.matmul_silu_scaled"]);
+        let count = folded
+            .nodes
+            .iter()
+            .filter(|n| n.op.name() == "linear.matmul_silu_scaled")
+            .count();
+        assert_eq!(count, if model.ends_with("mini") { 9 } else { 97 });
     }
 }
 
@@ -56,6 +63,15 @@ fn the_official_fp8_checkpoint_builds_a_contract() {
     let row =
         poem_compiler::catalog::deployment("qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16").unwrap();
     let contract = row.contract(&source, poem::Platform::Cuda).unwrap();
+    // Constructing the symbolic contract alone does not validate nested
+    // scale reshapes. Compile the real metadata exactly as serving does.
+    let metadata = checkpoint::file::read::parse_metadata(std::path::Path::new(&path)).unwrap();
+    checkpoint::plan::compile(
+        &metadata,
+        &contract,
+        checkpoint::plan::StorageTarget::for_backend(checkpoint::types::BackendKind::Cuda, 0, 1),
+    )
+    .unwrap();
     let find = |name: &str| contract.tensors.iter().find(|t| t.name == name).unwrap();
     assert_eq!(find("layer.0.experts_gate_up").expr.sources().len(), 1024);
     assert_eq!(find("layer.0.experts_down").expr.sources().len(), 512);
