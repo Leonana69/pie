@@ -1,0 +1,375 @@
+pie-pie 0.5.4
+2026-10-19T19:10:41.772710Z  INFO gateway: gateway worker-facing listener up (workers dial in) worker_addr=127.0.0.1:42719
+2026-10-19T19:10:41.773938Z  INFO gateway: gateway registered with controller gateway_id=gateway#0 worker_addr=127.0.0.1:42719
+2026-10-19T19:10:41.777165Z  INFO gateway: pie-gateway client-facing edge up listen_addr=127.0.0.1:8082
+2026-10-19T19:10:55.081279Z  INFO runtime::engine::load: serving deployment="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" identified="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" checkpoint="/workspace/models/Qwen3.8-Flash-Next-FP8"
+engine-cuda: 47.7 GiB of planes the package declares `host` serve from pinned host memory (engine.host_planes)
+2026-10-19T19:16:55.725052Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/flashinfer_fp8" instantiation="::pie::linear::flashinfer_swap_legs" arch="sm_100" compiled=true ms=69.33526900000001
+2026-10-19T19:16:56.358161Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_chunked" arch="sm_100" compiled=true ms=480.881819
+2026-10-19T19:16:56.418334Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/embed_e4m3" instantiation="::pie::layout::embed_concat_e4m3_vec16<::pie::bf16, false>" arch="sm_100" compiled=true ms=57.543639
+2026-10-19T19:16:56.593129Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::embed<::pie::true_type::value>" arch="sm_100" compiled=true ms=96.903788
+2026-10-19T19:16:57.328150Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_expand<::pie::bf16>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T19:16:57.339146Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_expand<::pie::bf16>" arch="sm_100" compiled=true ms=743.0175879999999
+2026-10-19T19:16:57.407095Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_grouped_plus_one<::pie::bf16, 256>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:16:57.416091Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_grouped_plus_one<::pie::bf16, 256>" arch="sm_100" compiled=true ms=74.622862
+2026-10-19T19:16:57.440827Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::silu_scaled<::pie::bf16>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:16:57.449207Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::silu_scaled<::pie::bf16>" arch="sm_100" compiled=true ms=20.522809
+2026-10-19T19:16:58.205265Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_mix_vec8<::pie::bf16, 64>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T19:16:58.214675Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_mix_vec8<::pie::bf16, 64>" arch="sm_100" compiled=true ms=763.607356
+2026-10-19T19:16:58.294944Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_rows_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=74.238117
+2026-10-19T19:16:58.835934Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile_vec4<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:16:58.843817Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile_vec4<::pie::bf16>" arch="sm_100" compiled=true ms=544.145895
+2026-10-19T19:16:59.333399Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_state_commit<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:16:59.342257Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_state_commit<::pie::bf16>" arch="sm_100" compiled=true ms=498.373577
+2026-10-19T19:16:59.812455Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_gdn_prep_ba_gates<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:16:59.822259Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_prep_ba_gates<::pie::bf16>" arch="sm_100" compiled=true ms=479.90318199999996
+2026-10-19T19:17:00.897956Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/gdn_tc5" instantiation="::pie::attn::gdn::gdn_chunked_tc5" arch="sm_100a" log=attn/gdn_tc5(63): warning #177-D: variable "pie::attn::gdn::LDA" was declared but never referenced
+  constexpr int LDA = 68;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:00.907868Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/gdn_tc5" instantiation="::pie::attn::gdn::gdn_chunked_tc5" arch="sm_100a" compiled=true ms=1081.510716
+2026-10-19T19:17:00.959197Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_gated_in_warp<float, ::pie::bf16, 4, 32>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:00.965353Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_gated_in_warp<float, ::pie::bf16, 4, 32>" arch="sm_100" compiled=true ms=57.38111
+2026-10-19T19:17:01.019518Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<4>" arch="sm_100" compiled=true ms=45.496862
+2026-10-19T19:17:01.746067Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_inject_vec8<::pie::bf16, 64>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:01.755290Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_inject_vec8<::pie::bf16, 64>" arch="sm_100" compiled=true ms=735.677611
+2026-10-19T19:17:01.805643Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<1>" arch="sm_100" compiled=true ms=49.930145
+2026-10-19T19:17:01.898227Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/moe" instantiation="::pie::linear::moe_topk_softmax<::pie::bf16>" arch="sm_100" log=linear/moe(22): warning #177-D: variable "pie::linear::kGemvWarps" was declared but never referenced
+  constexpr int kGemvWarps = 4;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:01.904972Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/moe" instantiation="::pie::linear::moe_topk_softmax<::pie::bf16>" arch="sm_100" compiled=true ms=94.531669
+2026-10-19T19:17:01.968344Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::mlp_swiglu_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=58.96451
+2026-10-19T19:17:01.976193Z  INFO kernels_cuda::linear::flashinfer: FlashInfer TRT-LLM FP8 MoE bridge enabled
+2026-10-19T19:17:01.994339Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/flashinfer_fp8" instantiation="::pie::linear::flashinfer_fp8_prepare" arch="sm_100" compiled=true ms=18.114749999999997
+2026-10-19T19:17:02.049880Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/flashinfer_fp8" instantiation="::pie::linear::flashinfer_fp8_finish" arch="sm_100" compiled=true ms=21.748053
+2026-10-19T19:17:02.099279Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::moe_sigmoid_gate_add<::pie::bf16>" arch="sm_100" compiled=true ms=49.344303
+2026-10-19T19:17:02.862449Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::ple_gate<::pie::bf16, 256>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T19:17:02.870719Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::ple_gate<::pie::bf16, 256>" arch="sm_100" compiled=true ms=769.816237
+2026-10-19T19:17:03.403338Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:17:03.411126Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<::pie::bf16>" arch="sm_100" compiled=true ms=540.292054
+2026-10-19T19:17:03.438308Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::residual_add_vec8" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:03.446090Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::residual_add_vec8" arch="sm_100" compiled=true ms=34.873785999999996
+2026-10-19T19:17:03.528419Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_q_gate_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=79.578448
+2026-10-19T19:17:03.566183Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 8, true>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:03.575432Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 8, true>" arch="sm_100" compiled=true ms=46.949694
+2026-10-19T19:17:03.952403Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::rope_partial<::pie::bf16>" arch="sm_100" compiled=true ms=375.41646899999995
+2026-10-19T19:17:04.104380Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/kv" instantiation="::pie::attn::kv_append_explicit<::pie::false_type::value>" arch="sm_100" compiled=true ms=150.41649800000002
+2026-10-19T19:17:04.288150Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/mla" instantiation="::pie::attn::mla_kv_append" arch="sm_100" log=attn/mla(123): warning #177-D: variable "pie::attn::kMaxRopePairs" was declared but never referenced
+  constexpr int kMaxRopePairs = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/mla(395): warning #177-D: variable "pie::attn::mla_naive::kMlaNaiveWarps" was declared but never referenced
+  constexpr int kMlaNaiveWarps = kMlaNaiveBlock / 32;
+                ^
+
+attn/mla(396): warning #177-D: variable "pie::attn::mla_naive::kMlaNaiveMaxPePer" was declared but never referenced
+  constexpr int kMlaNaiveMaxPePer = 4;
+                ^
+
+
+2026-10-19T19:17:04.297233Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/mla" instantiation="::pie::attn::mla_kv_append" arch="sm_100" compiled=true ms=181.36571500000002
+2026-10-19T19:17:04.453844Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_prefill<::pie::i32>" arch="sm_100" compiled=true ms=155.03731000000002
+2026-10-19T19:17:04.628608Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::index_block_mean_paged<::pie::bf16>" arch="sm_100" compiled=true ms=174.67247999999998
+2026-10-19T19:17:04.664913Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 4, true>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T19:17:04.675410Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 4, true>" arch="sm_100" compiled=true ms=46.723046
+2026-10-19T19:17:04.826050Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_store_entries<::pie::bf16>" arch="sm_100" compiled=true ms=150.552657
+2026-10-19T19:17:05.101644Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/index" instantiation="::pie::attn::index_topk_paged_mma<::pie::bf16, 1, true, false>" arch="sm_100" log=attn/index(176): warning #177-D: variable "pie::attn::kMaxRopeDim" was declared but never referenced
+  constexpr int kMaxRopeDim = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/index(930): warning #177-D: variable "pie::attn::kMaxIndexHeads" was declared but never referenced
+  constexpr int kMaxIndexHeads = 8;
+                ^
+
+attn/index(931): warning #177-D: variable "pie::attn::kMaxIndexPer" was declared but never referenced
+  constexpr int kMaxIndexPer = 8;
+                ^
+
+
+2026-10-19T19:17:05.135335Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/index" instantiation="::pie::attn::index_topk_paged_mma<::pie::bf16, 1, true, false>" arch="sm_100" compiled=true ms=307.324035
+2026-10-19T19:17:05.416251Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_tile_kernel<256>" arch="sm_100" log=attn/sdpa_selected(15): warning #177-D: variable "pie::attn::sdpa_selected::kWarps" was declared but never referenced
+  constexpr int kWarps = kBlock / 32;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/sdpa_selected(16): warning #177-D: variable "pie::attn::sdpa_selected::kMaxPer" was declared but never referenced
+  constexpr int kMaxPer = 16;
+                ^
+
+
+2026-10-19T19:17:05.425697Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_tile_kernel<256>" arch="sm_100" compiled=true ms=288.762271
+2026-10-19T19:17:05.468685Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::gate_sigmoid_mul_vec8" arch="sm_100" compiled=true ms=42.897005
+2026-10-19T19:17:05.556767Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::gather_rows<::int4>" arch="sm_100" compiled=true ms=81.05243
+2026-10-19T19:17:06.073804Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/attention" instantiation="::flashinfer::BatchDecodeWithPagedKVCacheKernel<::flashinfer::PosEncodingMode::kNone, 2, 1, 8, 32, 12, 1, ::pie::attn::fa2::VariantFull, ::pie::attn::fa2::DecodeParams>" arch="sm_100" compiled=true ms=402.756242
+2026-10-19T19:17:06.092149Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_update" arch="sm_100" compiled=true ms=18.12279
+2026-10-19T19:17:06.108436Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemv_splitk_bf16_kernel<::pie::i32(8), 1>" arch="sm_100" compiled=true ms=15.972846999999998
+2026-10-19T19:17:06.124491Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/silu" instantiation="::pie::linear::matmul_silu_scaled_bf16_kernel<16, 2>" arch="sm_100" compiled=true ms=14.540545999999999
+2026-10-19T19:17:06.642340Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched_vec8<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:17:06.650922Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=524.951599
+2026-10-19T19:17:07.258141Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_gdn_decode_step<4>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:17:07.266424Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_decode_step<4>" arch="sm_100" compiled=true ms=615.399539
+2026-10-19T19:17:07.785651Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T19:17:07.796090Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched<::pie::bf16>" arch="sm_100" compiled=true ms=507.07119599999993
+2026-10-19T19:17:08.212290Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::qg_qknorm_rope_append<8>" arch="sm_100" compiled=true ms=415.28115199999996
+2026-10-19T19:17:08.365973Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_decode<::pie::i32>" arch="sm_100" compiled=true ms=153.310642
+2026-10-19T19:17:08.529393Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_mma_kernel<256>" arch="sm_100" log=attn/sdpa_selected(15): warning #177-D: variable "pie::attn::sdpa_selected::kWarps" was declared but never referenced
+  constexpr int kWarps = kBlock / 32;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/sdpa_selected(16): warning #177-D: variable "pie::attn::sdpa_selected::kMaxPer" was declared but never referenced
+  constexpr int kMaxPer = 16;
+                ^
+
+
+2026-10-19T19:17:08.539076Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_mma_kernel<256>" arch="sm_100" compiled=true ms=172.941812
+2026-10-19T19:17:08.674601Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<2, 8>" arch="sm_100" compiled=true ms=71.56134999999999
+2026-10-19T19:17:08.795110Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<3, 8>" arch="sm_100" compiled=true ms=82.278315
+2026-10-19T19:17:08.923258Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<4, 8>" arch="sm_100" compiled=true ms=90.131174
+2026-10-19T19:17:09.087162Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<6, 8>" arch="sm_100" compiled=true ms=125.08213
+2026-10-19T19:17:09.257696Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<8, 8>" arch="sm_100" compiled=true ms=128.145791
+engine-cuda: bodies armed 15 of 15 compositions at load (decode 1/1, prefill 14/14, mixed 0/0, tower 0/0, wide 0/0; 0 segmented; 163 MiB of 4096 MiB, 15 of 1024 seats) (pool declared 50572 MiB, high water 364 MiB, committed 364 MiB, spare under the ceiling 3686 MiB) [28 key(s) never fired — this deployment cannot synthesize them, or their present set was already refused admission; e.g. mixed c3+c0 at bucket 1 (2 seat(s) x 2048 context, 1 lane(s))] [sealed: every key attempted]
+2026-10-19T19:17:24.335846Z  INFO runtime::bootstrap: kv tiers: suspended kv goes to the host, then the disk device_pages=119296 host_pages=119296 disk_pages=42671
+2026-10-19T19:17:24.355126Z  INFO RPC{rpc.trace_id=00 rpc.deadline=2026-10-19T19:17:34.350756796Z otel.kind="server" otel.name="GatewayInbound.register"}: gateway::worker: worker dialed in + registered worker=worker#0
+2026-10-19T19:17:24.356659Z  INFO worker::link::gateway: worker registered with gateway (dial-in) worker_id=worker#0 gateway=127.0.0.1:42719
+2026-10-19T19:17:24.356707Z  INFO pie: pie standalone serving listen=127.0.0.1:8082 worker=127.0.0.1:42719
+✓ Server ready at ws://127.0.0.1:8082
+2026-10-19T19:17:45.610908Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:17:45.751534Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::pull_validate" arch="sm_100" compiled=true ms=120.804084
+2026-10-19T19:17:45.774445Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::commit_bump" arch="sm_100" compiled=true ms=20.997293
+2026-10-19T19:17:45.792756Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::scatter_publish" arch="sm_100" compiled=true ms=18.276158000000002
+2026-10-19T19:17:45.811463Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::settle" arch="sm_100" compiled=true ms=18.668293
+2026-10-19T19:17:45.821995Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([0, 1])]
+2026-10-19T19:17:45.915706Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:18:06.017936Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:18:31.412054Z  INFO pie::daemon: received SIGTERM
+2026-10-19T19:18:31.412109Z  INFO pie::daemon: pie: shutdown signal received, draining
+2026-10-19T19:18:31.412208Z  INFO worker::serve: leaving control plane worker=Some(WorkerId(0))
+2026-10-19T19:18:38.420546Z  INFO pie::daemon: pie: stopped cleanly

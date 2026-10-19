@@ -1,0 +1,19 @@
+{
+  "prompt_tokens": 44,
+  "output_tokens": 3,
+  "ttft_ms": 60.40486227720976,
+  "latency_s": 0.1533128758892417,
+  "output_tokens_s": 19.567828094016704,
+  "decode_tokens_s": 86.83570684265369,
+  "guest_ttft_us": 58196,
+  "intertoken_us": [
+    23026,
+    6
+  ],
+  "token_ids": [
+    18,
+    24,
+    16
+  ],
+  "text": "391"
+}

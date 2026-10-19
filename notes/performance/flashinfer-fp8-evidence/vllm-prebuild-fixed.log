@@ -1,0 +1,2 @@
+2026-10-19 19:39:30,384 - INFO - core.py:564 - flashinfer.jit: Building JIT module fused_moe_trtllm_sm100; this can take several minutes on first use.
+VLLM_FLASHINFER_PREBUILD_OK

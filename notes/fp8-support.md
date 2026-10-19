@@ -92,3 +92,6 @@ on B200, with 19/20 measured output sequences matching. This is not a general
 model-quality evaluation. The historical vLLM comparison in the older analysis
 still comes from an older PIE implementation. The checkpoint's requested FP32
 recurrent state is still BF16 in PIE's Qwen model, as detailed in the analysis.
+
+An optional native FlashInfer expert backend and its new A/B comparison are described in
+[the FlashInfer report](performance/qwen-flashinfer-fp8.md).

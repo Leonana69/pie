@@ -1,0 +1,25 @@
+SERVER_READY 1792437900.975065
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+SMOKE 391
+native prompt=128 request=0 TTFT=26.44ms decode=135.18tok/s
+native prompt=128 request=1 TTFT=25.79ms decode=135.18tok/s
+native prompt=128 request=2 TTFT=25.45ms decode=135.17tok/s
+native prompt=128 request=3 TTFT=25.59ms decode=135.17tok/s
+native prompt=128 request=4 TTFT=25.68ms decode=135.17tok/s
+native prompt=128 request=5 TTFT=26.00ms decode=135.17tok/s
+native prompt=128 request=6 TTFT=25.62ms decode=135.19tok/s
+native prompt=128 request=7 TTFT=26.31ms decode=135.20tok/s
+native prompt=128 request=8 TTFT=25.77ms decode=135.17tok/s
+native prompt=128 request=9 TTFT=25.77ms decode=135.31tok/s
+{"prompt_tokens": 128, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 25.76994663104415, "decode_tokens_s_median": 135.17227713899427, "aggregate_output_tokens_s": 133.80701711229088}
+native prompt=1024 request=0 TTFT=193.91ms decode=125.16tok/s
+native prompt=1024 request=1 TTFT=195.82ms decode=125.10tok/s
+native prompt=1024 request=2 TTFT=198.05ms decode=125.13tok/s
+native prompt=1024 request=3 TTFT=199.06ms decode=125.09tok/s
+native prompt=1024 request=4 TTFT=199.75ms decode=125.12tok/s
+native prompt=1024 request=5 TTFT=199.33ms decode=125.08tok/s
+native prompt=1024 request=6 TTFT=200.77ms decode=125.10tok/s
+native prompt=1024 request=7 TTFT=202.17ms decode=125.08tok/s
+native prompt=1024 request=8 TTFT=201.64ms decode=125.11tok/s
+native prompt=1024 request=9 TTFT=199.51ms decode=125.09tok/s
+{"prompt_tokens": 1024, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 199.42371267825365, "decode_tokens_s_median": 125.10391597666137, "aggregate_output_tokens_s": 114.33436360033802}

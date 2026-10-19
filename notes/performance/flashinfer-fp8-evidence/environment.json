@@ -1,0 +1,58 @@
+{
+  "checkpoint": "Qwen/Qwen3.8-Flash-Next-FP8",
+  "revision": "236dfdf285828023ca3bcd3f37366c58a3469b13",
+  "gpu": "NVIDIA B200",
+  "native_base": "93089d88065fef5aad59026357ff50431fe684cd",
+  "binaries": {
+    "/workspace/pie-bin/pie-flashinfer-ab": "dc9ea55371099f64f8d3d0113fd3eca401f7934d625ed852f4b7a1c51e41b6b0",
+    "/workspace/qwen-flashinfer-benchmark/libpie_flashinfer.so": "cb2437514b83739ba780c2b98ba0002d54f18c7c2736719c0890198ac3a3cd5f",
+    "/root/.cache/flashinfer/0.7.0.post1/100a/cached_ops/fused_moe_trtllm_sm100/fused_moe_trtllm_sm100.so": "82b224ec8de6e8199269c5df13c5d4e8101758cea461ca4b88b9dc7f17d62d15",
+    "/tmp/vllm-flashinfer-cache/.cache/flashinfer/0.7.0.post1/100a/cached_ops/fused_moe_trtllm_sm100/fused_moe_trtllm_sm100.so": "db46c83f1823dc668402f5c438a64d8858c53ae82e826e9172abdbbbd57ec2ae"
+  },
+  "pie": {
+    "max_forward_tokens": 128,
+    "max_forward_requests": 1,
+    "max_model_len": 2048,
+    "hc_silu_fusion": true,
+    "ngram_host_gib": 47.7
+  },
+  "flashinfer": {
+    "version": "0.7.0.post1",
+    "tvm_ffi": "0.1.15",
+    "layout": "MajorK, up/gate swapped, unshuffled",
+    "tactics": "default",
+    "cpp_toolkit": "CUDA 12.8",
+    "pie_runtime": "CUDA 13.0.96",
+    "pdl": false
+  },
+  "vllm": {
+    "version": "0.31.0",
+    "torch": "2.13.0+cu130",
+    "flashinfer": "0.7.0.post1",
+    "transformers": "5.17.0",
+    "max_num_batched_tokens": 128,
+    "max_num_seqs": 1,
+    "max_model_len": 2048,
+    "ngram_cpu_offload": true,
+    "selected_moe_backend": "FLASHINFER_TRTLLM",
+    "selected_attention_backend": "FlashAttention 4",
+    "gdn_decode_kernel": "cuda",
+    "moe_preparation": "MoEPrepareAndFinalizeNoDPEPMonolithic",
+    "tvm_ffi": "0.1.11",
+    "nvcc": "13.0.88",
+    "cuda_runtime": "13.0.96",
+    "cuda_crt": "13.0.88",
+    "cuda_cccl": "13.0.85",
+    "nvvm": "13.0.88",
+    "flashinfer_workspace": "/tmp/vllm-flashinfer-cache",
+    "compilation_mode": "NONE (reported default)",
+    "cuda_graph_capture_sizes": [
+      1,
+      2
+    ],
+    "flashinfer_autotune": true
+  },
+  "sanitizer": "Compute Sanitizer 2025.1.0.0",
+  "implementation_commit": "c332726d26dff537a4b27c9705efe51daec24f56",
+  "driver": "595.91.07"
+}

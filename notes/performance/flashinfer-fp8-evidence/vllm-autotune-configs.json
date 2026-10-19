@@ -1,0 +1,68 @@
+{
+  "_metadata": {
+    "flashinfer_version": "0.7.0.post1",
+    "cuda_version": "13.0",
+    "cublas_version": "12.8.4",
+    "cudnn_version": "92000",
+    "cudnn_frontend_version": "1.31.0",
+    "cutlass_dsl_version": "nvidia-cutlass-dsl-libs-base==4.7.1;nvidia-cutlass-dsl-libs-core==4.7.1;nvidia-cutlass-dsl-libs-cu12==4.7.1;nvidia-cutlass-dsl-libs-cu13==4.7.1;nvidia-cutlass-dsl==4.7.1",
+    "gpu": "NVIDIA B200"
+  },
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((1, 2560), (1, 512), (1,), (1,), (1, 2560), (20, 1), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      10
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((128, 2560), (128, 512), (128,), (128,), (128, 2560), (20, 128), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      7
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((16, 2560), (16, 512), (16,), (16,), (16, 2560), (20, 16), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      7
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((2, 2560), (2, 512), (2,), (2,), (2, 2560), (20, 2), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      6
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((32, 2560), (32, 512), (32,), (32,), (32, 2560), (20, 32), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      7
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((4, 2560), (4, 512), (4,), (4,), (4, 2560), (20, 4), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      16,
+      15
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((64, 2560), (64, 512), (64,), (64,), (64, 2560), (20, 64), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      7
+    ]
+  ],
+  "('flashinfer::trtllm_fp8_block_scale_moe', 'MoERunner', ((8, 2560), (8, 512), (8,), (8,), (8, 2560), (20, 8), (0,), (0,)), ('Module', 10, 512, 512, 0, 1050629, 1050629, 1, 2560, 2560, 640, 3, True, 2, False, False))": [
+    "MoERunner",
+    [
+      8,
+      7
+    ]
+  ],
+  "_generation": "1ee40daa55e5a9e4bcaedd4b5c5a22cfe58661b1a6b440808546e53fd020e3c5"
+}

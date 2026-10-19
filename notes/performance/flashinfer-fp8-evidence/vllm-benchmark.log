@@ -1,0 +1,3 @@
+SMOKE 391
+{"prompt_tokens": 128, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 62.79257475398481, "ttft_p95_ms": 64.97000809758902, "decode_tokens_s_median": 193.59680261316936, "aggregate_output_tokens_s": 185.40081999294762}
+{"prompt_tokens": 1024, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 459.6187495626509, "ttft_p95_ms": 795.8518331870437, "decode_tokens_s_median": 193.48962902424444, "aggregate_output_tokens_s": 140.79156200700456}

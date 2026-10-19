@@ -1,0 +1,25 @@
+SERVER_READY 1792437447.4478765
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+SMOKE 391
+flashinfer prompt=128 request=0 TTFT=20.16ms decode=141.23tok/s
+flashinfer prompt=128 request=1 TTFT=19.60ms decode=141.29tok/s
+flashinfer prompt=128 request=2 TTFT=19.80ms decode=141.27tok/s
+flashinfer prompt=128 request=3 TTFT=19.95ms decode=141.31tok/s
+flashinfer prompt=128 request=4 TTFT=20.01ms decode=141.27tok/s
+flashinfer prompt=128 request=5 TTFT=20.66ms decode=141.30tok/s
+flashinfer prompt=128 request=6 TTFT=19.90ms decode=141.24tok/s
+flashinfer prompt=128 request=7 TTFT=20.18ms decode=141.30tok/s
+flashinfer prompt=128 request=8 TTFT=19.96ms decode=141.28tok/s
+flashinfer prompt=128 request=9 TTFT=20.63ms decode=141.31tok/s
+{"prompt_tokens": 128, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 19.985070917755365, "decode_tokens_s_median": 141.28911092652277, "aggregate_output_tokens_s": 140.19565371826587}
+flashinfer prompt=1024 request=0 TTFT=153.70ms decode=130.36tok/s
+flashinfer prompt=1024 request=1 TTFT=154.02ms decode=129.83tok/s
+flashinfer prompt=1024 request=2 TTFT=153.63ms decode=128.70tok/s
+flashinfer prompt=1024 request=3 TTFT=158.26ms decode=124.38tok/s
+flashinfer prompt=1024 request=4 TTFT=160.29ms decode=124.38tok/s
+flashinfer prompt=1024 request=5 TTFT=154.12ms decode=128.67tok/s
+flashinfer prompt=1024 request=6 TTFT=152.33ms decode=129.88tok/s
+flashinfer prompt=1024 request=7 TTFT=152.76ms decode=130.35tok/s
+flashinfer prompt=1024 request=8 TTFT=152.62ms decode=130.35tok/s
+flashinfer prompt=1024 request=9 TTFT=153.36ms decode=130.35tok/s
+{"prompt_tokens": 1024, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 153.6649966146797, "decode_tokens_s_median": 129.8574689250465, "aggregate_output_tokens_s": 119.76883532654028}

@@ -1,0 +1,188 @@
+pie-pie 0.5.4
+2026-10-19T19:18:39.855843Z  INFO gateway: gateway worker-facing listener up (workers dial in) worker_addr=127.0.0.1:34633
+2026-10-19T19:18:39.855894Z  INFO gateway: gateway registered with controller gateway_id=gateway#0 worker_addr=127.0.0.1:34633
+2026-10-19T19:18:39.856008Z  INFO gateway: pie-gateway client-facing edge up listen_addr=127.0.0.1:8082
+2026-10-19T19:18:52.997602Z  INFO runtime::engine::load: serving deployment="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" identified="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" checkpoint="/workspace/models/Qwen3.8-Flash-Next-FP8"
+engine-cuda: 47.7 GiB of planes the package declares `host` serve from pinned host memory (engine.host_planes)
+2026-10-19T19:24:40.744358Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::fp8_tile_requant" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T19:24:40.754217Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::fp8_tile_requant" arch="sm_100" compiled=true ms=623.15179
+2026-10-19T19:24:40.777385Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::scales_to_atoms" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T19:24:40.786543Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::scales_to_atoms" arch="sm_100" compiled=true ms=32.210736
+2026-10-19T19:24:41.074907Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_chunked" arch="sm_100" compiled=false ms=4.301856
+2026-10-19T19:24:41.079923Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/embed_e4m3" instantiation="::pie::layout::embed_concat_e4m3_vec16<::pie::bf16, false>" arch="sm_100" compiled=false ms=3.487436
+2026-10-19T19:24:41.148037Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::embed<::pie::true_type::value>" arch="sm_100" compiled=false ms=4.055559000000001
+2026-10-19T19:24:41.156648Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_expand<::pie::bf16>" arch="sm_100" compiled=false ms=7.026292
+2026-10-19T19:24:41.164018Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_grouped_plus_one<::pie::bf16, 256>" arch="sm_100" compiled=false ms=5.827067
+2026-10-19T19:24:41.181968Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::silu_scaled<::pie::bf16>" arch="sm_100" compiled=false ms=3.782353
+2026-10-19T19:24:41.189796Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_mix_vec8<::pie::bf16, 64>" arch="sm_100" compiled=false ms=5.9236949999999995
+2026-10-19T19:24:41.199462Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_rows_vec8<::pie::bf16>" arch="sm_100" compiled=false ms=3.894391
+2026-10-19T19:24:41.205932Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile_vec4<::pie::bf16>" arch="sm_100" compiled=false ms=4.81304
+2026-10-19T19:24:41.209616Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_state_commit<::pie::bf16>" arch="sm_100" compiled=false ms=3.6694940000000003
+2026-10-19T19:24:41.213635Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_prep_ba_gates<::pie::bf16>" arch="sm_100" compiled=false ms=4.00321
+2026-10-19T19:24:41.220096Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/gdn_tc5" instantiation="::pie::attn::gdn::gdn_chunked_tc5" arch="sm_100a" compiled=false ms=4.940078
+2026-10-19T19:24:41.225921Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_gated_in_warp<float, ::pie::bf16, 4, 32>" arch="sm_100" compiled=false ms=5.793897
+2026-10-19T19:24:41.233261Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<4>" arch="sm_100" compiled=false ms=3.5635250000000003
+2026-10-19T19:24:41.238103Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_inject_vec8<::pie::bf16, 64>" arch="sm_100" compiled=false ms=4.8201789999999995
+2026-10-19T19:24:41.242769Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<1>" arch="sm_100" compiled=false ms=4.437705
+2026-10-19T19:24:41.251290Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/moe" instantiation="::pie::linear::moe_topk_softmax<::pie::bf16>" arch="sm_100" compiled=false ms=3.9776509999999994
+2026-10-19T19:24:41.258984Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::mlp_swiglu_vec8<::pie::bf16>" arch="sm_100" compiled=false ms=3.499276
+2026-10-19T19:24:41.287096Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::route_lay_out_small" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T19:24:41.298450Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::route_lay_out_small" arch="sm_100" compiled=true ms=36.66925
+2026-10-19T19:24:41.931786Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::act_quant_e4m3_v8<0, 128, true>" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T19:24:41.940817Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::act_quant_e4m3_v8<0, 128, true>" arch="sm_100" compiled=true ms=642.0173030000001
+2026-10-19T19:24:42.272423Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 256, 4, 0, 1, 1, 0, 0, 0>" arch="sm_100a" compiled=true ms=327.978384
+2026-10-19T19:24:42.296016Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::route_gather_vec8" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T19:24:42.304762Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::route_gather_vec8" arch="sm_100" compiled=true ms=32.254185
+2026-10-19T19:24:42.350938Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_quantize_128<::pie::bf16>" arch="sm_100" compiled=true ms=44.289105
+2026-10-19T19:24:42.583103Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/quant" instantiation="::pie::linear::moe_route_order" arch="sm_100" log=linear/quant(1803): warning #177-D: variable "pie::linear::kOffPost" was declared but never referenced
+  constexpr int kOffPost = 0;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/quant(1804): warning #177-D: variable "pie::linear::kOffPreInt" was declared but never referenced
+  constexpr int kOffPreInt = 1;
+                ^
+
+linear/quant(1805): warning #177-D: variable "pie::linear::kOffPreReal" was declared but never referenced
+  constexpr int kOffPreReal = 2;
+                ^
+
+linear/quant(1806): warning #177-D: variable "pie::linear::kOffPreConst" was declared but never referenced
+  constexpr int kOffPreConst = 3;
+                ^
+
+
+2026-10-19T19:24:42.591521Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/quant" instantiation="::pie::linear::moe_route_order" arch="sm_100" compiled=true ms=238.670985
+2026-10-19T19:24:42.664043Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_expert_grouped<::pie::bf16>" arch="sm_100" compiled=true ms=72.45658
+2026-10-19T19:24:42.709322Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/moe" instantiation="::pie::linear::moe_weighted_sum_vec8<::pie::bf16>" arch="sm_100" log=linear/moe(22): warning #177-D: variable "pie::linear::kGemvWarps" was declared but never referenced
+  constexpr int kGemvWarps = 4;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/moe(38): warning #177-D: variable "pie::linear::kRouterMaxExperts" was declared but never referenced
+  constexpr int kRouterMaxExperts = 512;
+                ^
+
+
+2026-10-19T19:24:42.718596Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/moe" instantiation="::pie::linear::moe_weighted_sum_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=54.466617
+2026-10-19T19:24:42.722484Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::moe_sigmoid_gate_add<::pie::bf16>" arch="sm_100" compiled=false ms=3.816072
+2026-10-19T19:24:42.731046Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::ple_gate<::pie::bf16, 256>" arch="sm_100" compiled=false ms=6.910923
+2026-10-19T19:24:42.735755Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<::pie::bf16>" arch="sm_100" compiled=false ms=4.676661
+2026-10-19T19:24:42.739319Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::residual_add_vec8" arch="sm_100" compiled=false ms=3.540536
+2026-10-19T19:24:42.745642Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_q_gate_vec8<::pie::bf16>" arch="sm_100" compiled=false ms=3.812532
+2026-10-19T19:24:42.749750Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 8, true>" arch="sm_100" compiled=false ms=4.091099
+2026-10-19T19:24:42.755567Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::rope_partial<::pie::bf16>" arch="sm_100" compiled=false ms=4.297156
+2026-10-19T19:24:42.761069Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/kv" instantiation="::pie::attn::kv_append_explicit<::pie::false_type::value>" arch="sm_100" compiled=false ms=4.00897
+2026-10-19T19:24:42.771728Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/mla" instantiation="::pie::attn::mla_kv_append" arch="sm_100" compiled=false ms=3.7802729999999998
+2026-10-19T19:24:42.776839Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_prefill<::pie::i32>" arch="sm_100" compiled=false ms=3.611215
+2026-10-19T19:24:42.781227Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::index_block_mean_paged<::pie::bf16>" arch="sm_100" compiled=false ms=4.373654999999999
+2026-10-19T19:24:42.784791Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 4, true>" arch="sm_100" compiled=false ms=3.552505
+2026-10-19T19:24:42.788159Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_store_entries<::pie::bf16>" arch="sm_100" compiled=false ms=3.343958
+2026-10-19T19:24:42.793313Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/index" instantiation="::pie::attn::index_topk_paged_mma<::pie::bf16, 1, true, false>" arch="sm_100" compiled=false ms=3.338168
+2026-10-19T19:24:42.798306Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_tile_kernel<256>" arch="sm_100" compiled=false ms=3.476046
+2026-10-19T19:24:42.801986Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::gate_sigmoid_mul_vec8" arch="sm_100" compiled=false ms=3.6642240000000004
+2026-10-19T19:24:42.821039Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::gather_rows<::int4>" arch="sm_100" compiled=false ms=11.358657
+2026-10-19T19:24:42.939782Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/attention" instantiation="::flashinfer::BatchDecodeWithPagedKVCacheKernel<::flashinfer::PosEncodingMode::kNone, 2, 1, 8, 32, 12, 1, ::pie::attn::fa2::VariantFull, ::pie::attn::fa2::DecodeParams>" arch="sm_100" compiled=false ms=4.3122560000000005
+2026-10-19T19:24:42.943941Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_update" arch="sm_100" compiled=false ms=3.99245
+2026-10-19T19:24:42.947533Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemv_splitk_bf16_kernel<::pie::i32(8), 1>" arch="sm_100" compiled=false ms=3.281739
+2026-10-19T19:24:42.952219Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/silu" instantiation="::pie::linear::matmul_silu_scaled_bf16_kernel<16, 2>" arch="sm_100" compiled=false ms=3.18616
+2026-10-19T19:24:42.957550Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched_vec8<::pie::bf16>" arch="sm_100" compiled=false ms=3.770023
+2026-10-19T19:24:42.990803Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_decode_step<4>" arch="sm_100" compiled=false ms=33.226093
+2026-10-19T19:24:43.325583Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 32, 8, 1, 1, 2, 0, 0, 0>" arch="sm_100a" compiled=true ms=322.045159
+2026-10-19T19:24:43.391900Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_expert_stream<::pie::bf16>" arch="sm_100" compiled=true ms=66.179959
+2026-10-19T19:24:43.397017Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched<::pie::bf16>" arch="sm_100" compiled=false ms=4.616061999999999
+2026-10-19T19:24:43.402225Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::qg_qknorm_rope_append<8>" arch="sm_100" compiled=false ms=4.494364
+2026-10-19T19:24:43.406033Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_decode<::pie::i32>" arch="sm_100" compiled=false ms=3.604855
+2026-10-19T19:24:43.409569Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_mma_kernel<256>" arch="sm_100" compiled=false ms=3.458266
+2026-10-19T19:24:43.479421Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<2, 8>" arch="sm_100" compiled=false ms=4.0055000000000005
+2026-10-19T19:24:43.521042Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<3, 8>" arch="sm_100" compiled=false ms=3.9122209999999997
+2026-10-19T19:24:43.563301Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<4, 8>" arch="sm_100" compiled=false ms=3.8059819999999998
+2026-10-19T19:24:43.888451Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 64, 8, 1, 1, 2, 0, 0, 0>" arch="sm_100a" compiled=true ms=324.276581
+2026-10-19T19:24:43.934441Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<6, 8>" arch="sm_100" compiled=false ms=3.956591
+2026-10-19T19:24:43.990394Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<8, 8>" arch="sm_100" compiled=false ms=4.326614999999999
+engine-cuda: bodies armed 15 of 15 compositions at load (decode 1/1, prefill 14/14, mixed 0/0, tower 0/0, wide 0/0; 0 segmented; 104 MiB of 4096 MiB, 15 of 1024 seats) (pool declared 49708 MiB, high water 364 MiB, committed 364 MiB, spare under the ceiling 3778 MiB) [28 key(s) never fired — this deployment cannot synthesize them, or their present set was already refused admission; e.g. mixed c3+c0 at bucket 1 (2 seat(s) x 2048 context, 1 lane(s))] [sealed: every key attempted]
+2026-10-19T19:25:00.832837Z  INFO runtime::bootstrap: kv tiers: suspended kv goes to the host, then the disk device_pages=117248 host_pages=117248 disk_pages=42669
+2026-10-19T19:25:00.834133Z  INFO RPC{rpc.trace_id=00 rpc.deadline=2026-10-19T19:25:10.833805205Z otel.kind="server" otel.name="GatewayInbound.register"}: gateway::worker: worker dialed in + registered worker=worker#0
+2026-10-19T19:25:00.834303Z  INFO worker::link::gateway: worker registered with gateway (dial-in) worker_id=worker#0 gateway=127.0.0.1:34633
+2026-10-19T19:25:00.834408Z  INFO pie: pie standalone serving listen=127.0.0.1:8082 worker=127.0.0.1:34633
+✓ Server ready at ws://127.0.0.1:8082
+2026-10-19T19:25:17.605252Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:25:17.642836Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::pull_validate" arch="sm_100" compiled=false ms=12.363954999999999
+2026-10-19T19:25:17.649244Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::commit_bump" arch="sm_100" compiled=false ms=3.97328
+2026-10-19T19:25:17.653126Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::scatter_publish" arch="sm_100" compiled=false ms=3.8633610000000003
+2026-10-19T19:25:17.656475Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::settle" arch="sm_100" compiled=false ms=3.338498
+2026-10-19T19:25:17.660938Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([0, 1])]
+2026-10-19T19:25:17.759391Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:25:38.818091Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T19:26:03.575217Z  INFO pie::daemon: received SIGTERM
+2026-10-19T19:26:03.575285Z  INFO pie::daemon: pie: shutdown signal received, draining
+2026-10-19T19:26:03.575436Z  INFO worker::serve: leaving control plane worker=Some(WorkerId(0))
+2026-10-19T19:26:12.748144Z  INFO pie::daemon: pie: stopped cleanly

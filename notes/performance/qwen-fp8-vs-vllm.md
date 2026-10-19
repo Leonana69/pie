@@ -8,6 +8,8 @@ about that implementation, **not benchmark results for this branch**. Current
 upstream has changed enough that it needs a fresh end-to-end comparison.
 The separate [scaled-SiLU report](qwen-fused-silu.md) records a fresh PIE-only
 fusion A/B on this branch; vLLM was not rerun for that experiment.
+A subsequent [FlashInfer comparison](qwen-flashinfer-fp8.md) measures native PIE,
+PIE with FlashInfer, and a fresh vLLM run on the current branch.
 
 ## What was ported, and what upstream already supplies
 

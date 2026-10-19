@@ -1,0 +1,5 @@
+api = 1
+[target]
+device = "NVIDIA B200"
+[fuse]
+matmul_silu_scaled = true

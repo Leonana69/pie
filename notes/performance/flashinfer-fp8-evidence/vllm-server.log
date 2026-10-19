@@ -1,0 +1,494 @@
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.31.0
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /workspace/models/Qwen3.8-Flash-Next-FP8
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:347]
+(APIServer pid=79283) INFO 10-19 19:39:47 [api_utils.py:286] non-default args: {'model_tag': '/workspace/models/Qwen3.8-Flash-Next-FP8', 'host': '127.0.0.1', 'model': '/workspace/models/Qwen3.8-Flash-Next-FP8', 'max_model_len': 2048, 'served_model_name': ['qwen-fp8'], 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.9, 'enable_prefix_caching': False, 'limit_mm_per_prompt': {'image': 0, 'video': 0}, 'max_num_batched_tokens': 128, 'max_num_seqs': 1, 'engram_config': EngramConfig(cpu_offload=True, embedding_across_dp=False, dp_shared_memory=None, use_thp=False)}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=79283) INFO 10-19 19:39:47 [model.py:699] Resolved architecture: Qwen4ExpForConditionalGeneration
+(APIServer pid=79283) INFO 10-19 19:39:47 [model.py:2109] Using max model len 2048
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=79283) INFO 10-19 19:39:49 [model.py:917] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(APIServer pid=79283) INFO 10-19 19:39:49 [model.py:974] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=79283) INFO 10-19 19:39:49 [scheduler.py:308] Chunked prefill is enabled with max_num_batched_tokens=128.
+(APIServer pid=79283) INFO 10-19 19:39:49 [vllm.py:1403] Resolved Engram configuration: EngramConfig(cpu_offload=True, embedding_across_dp=False, dp_shared_memory=False, use_thp=False)
+(APIServer pid=79283) INFO 10-19 19:39:49 [vllm.py:843] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=79283) INFO 10-19 19:39:49 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=79283) INFO 10-19 19:39:49 [compilation.py:331] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=79647) INFO 10-19 19:39:56 [core.py:129] Initializing a V1 LLM engine (v0.31.0) with config: model='/workspace/models/Qwen3.8-Flash-Next-FP8', speculative_config=None, tokenizer='/workspace/models/Qwen3.8-Flash-Next-FP8', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=2048, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen-fp8, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+quant_fp8', 'all', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [128], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 2, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=79647) INFO 10-19 19:39:56 [parallel_state.py:1825] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_4d0b46a4ca1e443ea5b7956c5612528c backend=nccl
+(EngineCore pid=79647) INFO 10-19 19:39:56 [parallel_state.py:2269] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=79647) INFO 10-19 19:39:56 [gpu_worker.py:479] Using V2 Model Runner
+(EngineCore pid=79647) INFO 10-19 19:39:57 [model_runner.py:375] Loading model from scratch...
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=79647) INFO 10-19 19:39:57 [cuda.py:585] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(EngineCore pid=79647) INFO 10-19 19:39:57 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(EngineCore pid=79647) INFO 10-19 19:39:57 [qwen_gdn_linear_attn.py:177] Using FlashInfer GDN prefill kernel (requested=auto, head_k_dim=128).
+(EngineCore pid=79647) INFO 10-19 19:39:57 [qwen_gdn_linear_attn.py:533] GDN decode kernel: cuda
+(EngineCore pid=79647) INFO 10-19 19:39:58 [fp8.py:522] Using FLASHINFER_TRTLLM Fp8 MoE backend out of potential backends: ['AITER', 'FLASHINFER_TRTLLM', 'FLASHINFER_CUTLASS', 'DEEPGEMM', 'TRITON', 'MARLIN', 'HUMMING', 'BATCHED_DEEPGEMM', 'BATCHED_TRITON', 'XPU', 'CPU_W8A8', 'CPU', 'HPC'].
+(EngineCore pid=79647) INFO 10-19 19:40:14 [ngram_embedding.py:234] Initialized PLE embedding language_model.model.layers.1.ple.ple_embedding.ngram_embedding: quantization_method=Qwen4ExpPLEFp8EmbeddingMethod, weight_dtype=torch.float8_e4m3fn, weight_device=cpu, pinned=True
+(EngineCore pid=79647) INFO 10-19 19:40:14 [flash_attn.py:1167] Using FlashAttention version 4
+(EngineCore pid=79647) WARNING 10-19 19:40:14 [compilation.py:1350] Op 'quant_fp8' not present in model, enabling with '+quant_fp8' has no effect
+(EngineCore pid=79647) INFO 10-19 19:40:14 [weight_utils.py:1063] Filesystem type for checkpoints: NFS4. Checkpoint size: 172.78 GiB. Available RAM: 17.51 GiB.
+(EngineCore pid=79647) WARNING 10-19 19:40:14 [weight_utils.py:1076] Network filesystem (NFS4) detected but checkpoint total size (172.78 GiB) exceeds 90% of available RAM (17.51 GiB). Skipping auto-prefetch.
+
+Loading safetensors checkpoint shards:   0% Completed | 0/131 [00:00<?, ?it/s]
+
+Loading safetensors checkpoint shards:   2% Completed | 2/131 [00:00<00:47,  2.73it/s]
+
+Loading safetensors checkpoint shards:   2% Completed | 3/131 [00:00<00:39,  3.25it/s]
+
+Loading safetensors checkpoint shards:   3% Completed | 4/131 [00:01<00:36,  3.50it/s]
+
+Loading safetensors checkpoint shards:   4% Completed | 5/131 [00:01<00:33,  3.79it/s]
+
+Loading safetensors checkpoint shards:   6% Completed | 8/131 [00:01<00:17,  7.06it/s]
+
+Loading safetensors checkpoint shards:   8% Completed | 10/131 [00:01<00:14,  8.31it/s]
+
+Loading safetensors checkpoint shards:   9% Completed | 12/131 [00:01<00:12,  9.63it/s]
+
+Loading safetensors checkpoint shards:  11% Completed | 14/131 [00:02<00:10, 10.93it/s]
+
+Loading safetensors checkpoint shards:  12% Completed | 16/131 [00:02<00:09, 11.96it/s]
+
+Loading safetensors checkpoint shards:  14% Completed | 18/131 [00:02<00:09, 12.06it/s]
+
+Loading safetensors checkpoint shards:  15% Completed | 20/131 [00:02<00:08, 12.73it/s]
+
+Loading safetensors checkpoint shards:  17% Completed | 22/131 [00:02<00:08, 13.47it/s]
+
+Loading safetensors checkpoint shards:  18% Completed | 24/131 [00:02<00:07, 14.28it/s]
+
+Loading safetensors checkpoint shards:  20% Completed | 26/131 [00:02<00:06, 15.03it/s]
+
+Loading safetensors checkpoint shards:  21% Completed | 28/131 [00:02<00:06, 15.57it/s]
+
+Loading safetensors checkpoint shards:  23% Completed | 30/131 [00:03<00:06, 15.36it/s]
+
+Loading safetensors checkpoint shards:  24% Completed | 32/131 [00:03<00:06, 14.72it/s]
+
+Loading safetensors checkpoint shards:  26% Completed | 34/131 [00:03<00:06, 14.23it/s]
+
+Loading safetensors checkpoint shards:  27% Completed | 36/131 [00:03<00:06, 14.16it/s]
+
+Loading safetensors checkpoint shards:  29% Completed | 38/131 [00:03<00:09,  9.62it/s]
+
+Loading safetensors checkpoint shards:  31% Completed | 40/131 [00:04<00:12,  7.55it/s]
+
+Loading safetensors checkpoint shards:  31% Completed | 41/131 [00:04<00:13,  6.79it/s]
+
+Loading safetensors checkpoint shards:  32% Completed | 42/131 [00:04<00:15,  5.80it/s]
+
+Loading safetensors checkpoint shards:  33% Completed | 43/131 [00:05<00:16,  5.29it/s]
+
+Loading safetensors checkpoint shards:  34% Completed | 44/131 [00:05<00:18,  4.82it/s]
+
+Loading safetensors checkpoint shards:  34% Completed | 45/131 [00:05<00:17,  4.78it/s]
+
+Loading safetensors checkpoint shards:  35% Completed | 46/131 [00:05<00:19,  4.40it/s]
+
+Loading safetensors checkpoint shards:  36% Completed | 47/131 [00:05<00:18,  4.57it/s]
+
+Loading safetensors checkpoint shards:  37% Completed | 48/131 [00:06<00:18,  4.49it/s]
+
+Loading safetensors checkpoint shards:  37% Completed | 49/131 [00:06<00:17,  4.64it/s]
+
+Loading safetensors checkpoint shards:  38% Completed | 50/131 [00:06<00:17,  4.51it/s]
+
+Loading safetensors checkpoint shards:  39% Completed | 51/131 [00:06<00:16,  4.73it/s]
+
+Loading safetensors checkpoint shards:  40% Completed | 52/131 [00:07<00:17,  4.62it/s]
+
+Loading safetensors checkpoint shards:  40% Completed | 53/131 [00:07<00:15,  4.88it/s]
+
+Loading safetensors checkpoint shards:  41% Completed | 54/131 [00:07<00:16,  4.73it/s]
+
+Loading safetensors checkpoint shards:  42% Completed | 55/131 [00:07<00:14,  5.08it/s]
+
+Loading safetensors checkpoint shards:  43% Completed | 56/131 [00:07<00:15,  4.76it/s]
+
+Loading safetensors checkpoint shards:  44% Completed | 57/131 [00:08<00:15,  4.88it/s]
+
+Loading safetensors checkpoint shards:  44% Completed | 58/131 [00:08<00:15,  4.73it/s]
+
+Loading safetensors checkpoint shards:  45% Completed | 59/131 [00:08<00:14,  5.05it/s]
+
+Loading safetensors checkpoint shards:  47% Completed | 61/131 [00:08<00:11,  5.90it/s]
+
+Loading safetensors checkpoint shards:  47% Completed | 62/131 [00:08<00:12,  5.65it/s]
+
+Loading safetensors checkpoint shards:  48% Completed | 63/131 [00:09<00:13,  5.17it/s]
+
+Loading safetensors checkpoint shards:  49% Completed | 64/131 [00:09<00:12,  5.37it/s]
+
+Loading safetensors checkpoint shards:  50% Completed | 65/131 [00:09<00:13,  5.02it/s]
+
+Loading safetensors checkpoint shards:  50% Completed | 66/131 [00:09<00:12,  5.19it/s]
+
+Loading safetensors checkpoint shards:  51% Completed | 67/131 [00:10<00:13,  4.83it/s]
+
+Loading safetensors checkpoint shards:  52% Completed | 68/131 [00:10<00:13,  4.84it/s]
+
+Loading safetensors checkpoint shards:  53% Completed | 69/131 [00:10<00:13,  4.56it/s]
+
+Loading safetensors checkpoint shards:  53% Completed | 70/131 [00:10<00:13,  4.62it/s]
+
+Loading safetensors checkpoint shards:  54% Completed | 71/131 [00:10<00:13,  4.48it/s]
+
+Loading safetensors checkpoint shards:  55% Completed | 72/131 [00:11<00:12,  4.63it/s]
+
+Loading safetensors checkpoint shards:  56% Completed | 73/131 [00:11<00:12,  4.47it/s]
+
+Loading safetensors checkpoint shards:  56% Completed | 74/131 [00:11<00:12,  4.67it/s]
+
+Loading safetensors checkpoint shards:  57% Completed | 75/131 [00:11<00:12,  4.54it/s]
+
+Loading safetensors checkpoint shards:  58% Completed | 76/131 [00:11<00:11,  4.65it/s]
+
+Loading safetensors checkpoint shards:  59% Completed | 77/131 [00:12<00:11,  4.53it/s]
+
+Loading safetensors checkpoint shards:  60% Completed | 78/131 [00:12<00:11,  4.70it/s]
+
+Loading safetensors checkpoint shards:  60% Completed | 79/131 [00:12<00:11,  4.42it/s]
+
+Loading safetensors checkpoint shards:  61% Completed | 80/131 [00:12<00:10,  4.65it/s]
+
+Loading safetensors checkpoint shards:  62% Completed | 81/131 [00:13<00:11,  4.49it/s]
+
+Loading safetensors checkpoint shards:  63% Completed | 82/131 [00:13<00:10,  4.68it/s]
+
+Loading safetensors checkpoint shards:  63% Completed | 83/131 [00:13<00:10,  4.52it/s]
+
+Loading safetensors checkpoint shards:  64% Completed | 84/131 [00:13<00:09,  4.79it/s]
+
+Loading safetensors checkpoint shards:  65% Completed | 85/131 [00:13<00:10,  4.59it/s]
+
+Loading safetensors checkpoint shards:  66% Completed | 86/131 [00:14<00:09,  4.70it/s]
+
+Loading safetensors checkpoint shards:  66% Completed | 87/131 [00:14<00:09,  4.56it/s]
+
+Loading safetensors checkpoint shards:  67% Completed | 88/131 [00:14<00:09,  4.70it/s]
+
+Loading safetensors checkpoint shards:  68% Completed | 89/131 [00:14<00:09,  4.55it/s]
+
+Loading safetensors checkpoint shards:  69% Completed | 90/131 [00:15<00:08,  4.70it/s]
+
+Loading safetensors checkpoint shards:  69% Completed | 91/131 [00:15<00:08,  4.53it/s]
+
+Loading safetensors checkpoint shards:  70% Completed | 92/131 [00:15<00:08,  4.78it/s]
+
+Loading safetensors checkpoint shards:  71% Completed | 93/131 [00:15<00:08,  4.61it/s]
+
+Loading safetensors checkpoint shards:  72% Completed | 94/131 [00:15<00:07,  4.79it/s]
+
+Loading safetensors checkpoint shards:  73% Completed | 95/131 [00:16<00:08,  4.26it/s]
+
+Loading safetensors checkpoint shards:  73% Completed | 96/131 [00:16<00:08,  4.14it/s]
+
+Loading safetensors checkpoint shards:  74% Completed | 97/131 [00:16<00:08,  3.90it/s]
+
+Loading safetensors checkpoint shards:  75% Completed | 98/131 [00:16<00:08,  3.89it/s]
+
+Loading safetensors checkpoint shards:  76% Completed | 99/131 [00:17<00:08,  3.76it/s]
+
+Loading safetensors checkpoint shards:  76% Completed | 100/131 [00:17<00:07,  3.88it/s]
+
+Loading safetensors checkpoint shards:  77% Completed | 101/131 [00:17<00:07,  3.76it/s]
+
+Loading safetensors checkpoint shards:  78% Completed | 102/131 [00:18<00:07,  3.84it/s]
+
+Loading safetensors checkpoint shards:  79% Completed | 103/131 [00:18<00:07,  3.70it/s]
+
+Loading safetensors checkpoint shards:  79% Completed | 104/131 [00:18<00:07,  3.82it/s]
+
+Loading safetensors checkpoint shards:  80% Completed | 105/131 [00:18<00:06,  3.74it/s]
+
+Loading safetensors checkpoint shards:  81% Completed | 106/131 [00:19<00:06,  4.00it/s]
+
+Loading safetensors checkpoint shards:  82% Completed | 107/131 [00:19<00:06,  3.89it/s]
+
+Loading safetensors checkpoint shards:  82% Completed | 108/131 [00:19<00:05,  4.10it/s]
+
+Loading safetensors checkpoint shards:  83% Completed | 109/131 [00:19<00:05,  3.94it/s]
+
+Loading safetensors checkpoint shards:  84% Completed | 110/131 [00:20<00:04,  4.21it/s]
+
+Loading safetensors checkpoint shards:  85% Completed | 111/131 [00:20<00:05,  3.91it/s]
+
+Loading safetensors checkpoint shards:  85% Completed | 112/131 [00:20<00:04,  3.96it/s]
+
+Loading safetensors checkpoint shards:  86% Completed | 113/131 [00:20<00:04,  3.83it/s]
+
+Loading safetensors checkpoint shards:  87% Completed | 114/131 [00:21<00:04,  4.04it/s]
+
+Loading safetensors checkpoint shards:  88% Completed | 115/131 [00:21<00:04,  3.86it/s]
+
+Loading safetensors checkpoint shards:  89% Completed | 116/131 [00:21<00:03,  4.03it/s]
+
+Loading safetensors checkpoint shards:  89% Completed | 117/131 [00:21<00:03,  3.91it/s]
+
+Loading safetensors checkpoint shards:  90% Completed | 118/131 [00:22<00:03,  4.21it/s]
+
+Loading safetensors checkpoint shards:  91% Completed | 119/131 [00:22<00:02,  4.01it/s]
+
+Loading safetensors checkpoint shards:  92% Completed | 120/131 [00:22<00:02,  4.17it/s]
+
+Loading safetensors checkpoint shards:  92% Completed | 121/131 [00:22<00:02,  4.01it/s]
+
+Loading safetensors checkpoint shards:  93% Completed | 122/131 [00:23<00:02,  4.18it/s]
+
+Loading safetensors checkpoint shards:  94% Completed | 123/131 [00:23<00:01,  4.07it/s]
+
+Loading safetensors checkpoint shards:  95% Completed | 124/131 [00:23<00:01,  4.46it/s]
+
+Loading safetensors checkpoint shards:  95% Completed | 125/131 [00:23<00:01,  4.27it/s]
+
+Loading safetensors checkpoint shards:  96% Completed | 126/131 [00:23<00:01,  4.46it/s]
+
+Loading safetensors checkpoint shards:  97% Completed | 127/131 [00:24<00:00,  4.26it/s]
+
+Loading safetensors checkpoint shards:  98% Completed | 128/131 [00:24<00:00,  4.39it/s]
+
+Loading safetensors checkpoint shards:  98% Completed | 129/131 [00:24<00:00,  4.13it/s]
+
+Loading safetensors checkpoint shards:  99% Completed | 130/131 [00:24<00:00,  3.72it/s]
+
+Loading safetensors checkpoint shards: 100% Completed | 131/131 [00:25<00:00,  4.19it/s]
+
+Loading safetensors checkpoint shards: 100% Completed | 131/131 [00:25<00:00,  5.21it/s]
+
+(EngineCore pid=79647) INFO 10-19 19:40:39 [default_loader.py:484] Loading weights took 25.17 seconds
+(EngineCore pid=79647) INFO 10-19 19:40:39 [fp8.py:838] Using MoEPrepareAndFinalizeNoDPEPMonolithic
+(EngineCore pid=79647) INFO 10-19 19:40:41 [model_runner.py:407] Model loading took 121.97 GiB memory and 44.395711 seconds
+(EngineCore pid=79647) INFO 10-19 19:40:41 [topk_topp_sampler.py:124] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=79647) INFO 10-19 19:40:41 [torch_utils.py:286] Reducing Torch threads from 23 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=79647) INFO 10-19 19:40:41 [interface.py:989] Setting attention block size to 1568 tokens to ensure that attention page size is >= mamba page size.
+(EngineCore pid=79647) INFO 10-19 19:40:41 [interface.py:1013] Padding mamba page size by 0.13% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=79647) INFO 10-19 19:40:41 [utils.py:343] Using BLNHC KV cache layout.
+(EngineCore pid=79647) INFO 10-19 19:40:42 [deep_gemm.py:197] deep_gemm not found in site-packages, trying vendored vllm.third_party.deep_gemm
+(EngineCore pid=79647) INFO 10-19 19:40:42 [deep_gemm.py:224] DeepGEMM PDL enabled on vllm.third_party.deep_gemm.
+(EngineCore pid=79647) INFO 10-19 19:40:42 [deep_gemm.py:136] DeepGEMM E8M0 enabled on current platform.
+2026-10-19 19:40:43,030 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:40:43,031 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:40:43,361 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:40:43,366 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:43,366 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:43,549 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:43,552 - WARNING - core.py:5909 - flashinfer.jit: the single torch.Tensor return type is deprecated and will be replaced with List[torch.Tensor] in the v0.8.0.
+(EngineCore pid=79647) WARNING 10-19 19:40:46 [fa_utils.py:186] FA4's Blackwell head_size=256 kernel does not support a KV cache block size of 1568, defaulting to FA version 2.
+(EngineCore pid=79647) INFO 10-19 19:40:46 [breakable_cudagraph.py:294] Breakable CUDA graph enabled
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):  50%|█████     | 1/2 [00:03<00:03,  3.05s/it]2026-10-19 19:40:51,249 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:40:51,250 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:40:51,576 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128u2_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 2/2 [00:04<00:00,  2.03s/it]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 2/2 [00:04<00:00,  2.18s/it]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/1 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 1/1 [00:00<00:00, 10.26it/s]
+(EngineCore pid=79647) INFO 10-19 19:40:52 [model_runner.py:1087] Graph capturing finished in 6 secs, took 0.10 GiB
+(EngineCore pid=79647) INFO 10-19 19:40:53 [gpu_worker.py:692] Available KV cache memory: 37.95 GiB
+(EngineCore pid=79647) INFO 10-19 19:40:53 [gpu_worker.py:707] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.9000 is equivalent to --gpu-memory-utilization=0.8994 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.9006. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(EngineCore pid=79647) INFO 10-19 19:40:53 [kv_cache_utils.py:2464] GPU KV cache size: 299,885 tokens, Maximum concurrency for 2,048 tokens per request: 146.43x
+(EngineCore pid=79647) INFO 10-19 19:40:53 [kernel_warmup.py:172] JIT kernel warmup starting.
+(EngineCore pid=79647) INFO 10-19 19:40:53 [kernel_warmup.py:185] JIT kernel warmup finished in 0.00s.
+(EngineCore pid=79647) INFO 10-19 19:40:53 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(EngineCore pid=79647) INFO 10-19 19:40:53 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(EngineCore pid=79647) INFO 10-19 19:40:53 [qwen4_exp_qsa_warmup.py:71] Warmed up Qwen4Exp QSA decode kernels: ((1, 1),).
+(EngineCore pid=79647) INFO 10-19 19:40:58 [qwen4_exp_qsa_warmup.py:85] Warmed up Qwen4Exp QSA sparse attention kernels: ((32, 1, 1), (32, 4, 1), (32, 8, 1), (32, 16, 1), (32, 64, 4), (64, 1, 2), (64, 4, 2)).
+(EngineCore pid=79647) INFO 10-19 19:40:58 [kernel_warmup.py:94] Warming up ll_bf16 router GEMM kernels for shapes: ((2560, 512),).
+(EngineCore pid=79647) INFO 10-19 19:40:58 [cutedsl_warmup.py:107] Warming up CuTeDSL compile_units=2 names=('Qwen4Exp HC down+SiLU GEMM',).
+
+Compiling CuTeDSL kernels:   0%|          | 0/2 [00:00<?, ?it/s]
+Compiling CuTeDSL kernels: 100%|██████████| 2/2 [00:00<00:00, 10.15it/s]
+Compiling CuTeDSL kernels: 100%|██████████| 2/2 [00:00<00:00, 10.14it/s]
+(EngineCore pid=79647) INFO 10-19 19:40:59 [kernel_warmup.py:437] Using FlashInfer autotune cache file: /root/.cache/vllm/flashinfer_autotune_cache/0.7.0.post1/100a/5783e37129bec11eb22c15d10cfe471f32e42d19a466790ce3db649f53a216ff/autotune_configs.json
+2026-10-19 19:40:59,178 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=79647) INFO 10-19 19:40:59 [kernel_warmup.py:359] Running FlashInfer autotune with 128 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128).
+
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:   0%|          | 0/8 [00:00<?, ?profile/s]2026-10-19 19:40:59,222 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:59,222 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:59,449 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:40:59,456 - INFO - core.py:564 - flashinfer.jit: Building JIT module trtllm_utils; this can take several minutes on first use.
+2026-10-19 19:41:02,518 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,519 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,738 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,744 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,744 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,968 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x8x128_s8_et64x8_m64x8x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,976 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:02,976 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,202 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,203 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,204 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,428 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,432 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,433 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,684 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:03,687 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,688 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,969 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128u2_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,976 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:03,976 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,172 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,180 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,180 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,599 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x16x128_s6_et64x16_m64x16x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,606 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,606 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,822 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:04,823 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:04,823 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:05,012 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:05,016 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:05,016 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:05,299 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_Bfloat16_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_rgTma_clmp_dynB_sm100f.cubin
+2026-10-19 19:41:05,304 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,304 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,662 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128u2_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,671 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,671 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,841 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schedS_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,847 - INFO - cubin_loader.py:231 - flashinfer.jit: Fetching 1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5//Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin from https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:05,848 - INFO - cubin_loader.py:84 - flashinfer.jit: Acquired lock for /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+2026-10-19 19:41:06,026 - INFO - cubin_loader.py:114 - flashinfer.jit: File downloaded successfully: https://edge.urm.nvidia.com/artifactory/sw-kernelinferencelibrary-public-generic-local/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin -> /root/.cache/flashinfer/cubins/1d145b82ac60add55ea213863523f12d63005651/batched_gemm-09795a1-31ee4e5/Bmm_E4m3_E4m3E4m3_Fp32_t128x32x128_s6_et64x32_m64x32x32_c1x1x1_rM_BN_transOut_dsFp8_schPd4x2x2x3_bN_tma_tmaSf_rgTma_clmp_lbW2_dynB_sm100f.cubin
+
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:  12%|█▎        | 1/8 [00:06<00:47,  6.81s/profile]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:  38%|███▊      | 3/8 [00:06<00:09,  1.82s/profile]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:  62%|██████▎   | 5/8 [00:07<00:02,  1.08profile/s]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:  75%|███████▌  | 6/8 [00:07<00:01,  1.40profile/s]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe:  88%|████████▊ | 7/8 [00:07<00:00,  1.77profile/s]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe: 100%|██████████| 8/8 [00:07<00:00,  2.17profile/s]
+[AutoTuner]: Tuning flashinfer::trtllm_fp8_block_scale_moe: 100%|██████████| 8/8 [00:07<00:00,  1.05profile/s]
+2026-10-19 19:41:06,944 - INFO - autotuner.py:1069 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-10-19 19:41:06,985 - INFO - autotuner.py:3554 - flashinfer.jit: [Autotuner]: Saved 8 configs to /root/.cache/vllm/flashinfer_autotune_cache/0.7.0.post1/100a/5783e37129bec11eb22c15d10cfe471f32e42d19a466790ce3db649f53a216ff/autotune_configs.json (8 new, 0 from previous config)
+2026-10-19 19:41:08,258 - INFO - core.py:564 - flashinfer.jit: Building JIT module sampling; this can take several minutes on first use.
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/2 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):  50%|█████     | 1/2 [00:00<00:00,  7.00it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 2/2 [00:00<00:00,  8.20it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 2/2 [00:00<00:00,  7.99it/s]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/1 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 1/1 [00:00<00:00,  9.35it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 1/1 [00:00<00:00,  9.33it/s]
+(EngineCore pid=79647) INFO 10-19 19:41:55 [model_runner.py:1087] Graph capturing finished in 2 secs, took 0.06 GiB
+(EngineCore pid=79647) INFO 10-19 19:41:55 [gpu_worker.py:892] CUDA graph pool memory: 0.06 GiB (actual), 0.1 GiB (estimated), difference: 0.04 GiB (79.3%).
+(EngineCore pid=79647) INFO 10-19 19:41:55 [gpu_worker.py:955] Free memory on device (177.73/178.34 GiB) on startup. Desired GPU memory utilization is (0.9, 160.51 GiB). Actual usage is 122.42 GiB for consumed memory (weights + non-torch), 0.14 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=40529460634` (37.75 GiB) to fit into requested memory, or `--kv-cache-memory=59022926848` (54.97 GiB) to fully utilize gpu memory. Current kv cache memory in use is 37.95 GiB.
+(EngineCore pid=79647) INFO 10-19 19:41:55 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=79647) INFO 10-19 19:41:56 [core.py:380] init engine (profile, create kv cache, warmup model) took 74.73 s
+(EngineCore pid=79647) INFO 10-19 19:41:56 [kv_cache_utils.py:772] kv cache group sizes [2048, 2048, 2048, 2048, 4, 1568]
+(EngineCore pid=79647) INFO 10-19 19:41:56 [kv_cache_utils.py:773] kv lcm block sizes 100352
+(EngineCore pid=79647) INFO 10-19 19:41:56 [vllm.py:1403] Resolved Engram configuration: EngramConfig(cpu_offload=True, embedding_across_dp=False, dp_shared_memory=False, use_thp=False)
+(EngineCore pid=79647) INFO 10-19 19:41:56 [kernel.py:408] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=79647) INFO 10-19 19:41:56 [compilation.py:331] Enabled custom fusions: norm_quant, act_quant
+(APIServer pid=79283) INFO 10-19 19:41:56 [entry.py:132] Supported tasks: ['generate']
+(APIServer pid=79283) INFO 10-19 19:41:56 [factories.py:76] Scale-out endpoints are disabled. Set --enable-scale-out to enable them.
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=79283) INFO 10-19 19:41:57 [hf.py:646] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=79283) WARNING 10-19 19:41:57 [model.py:1850] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=79283) WARNING 10-19 19:41:57 [serving.py:221] The chat template requires system-first ordering, so inline system messages in /v1/messages requests (e.g. Claude Code's per-turn reminders) are merged into the leading system prompt. Each new one changes the prompt prefix, so the rest of the conversation misses the prefix cache. Pass a --chat-template that accepts non-leading system messages to avoid this.
+(APIServer pid=79283) WARNING 10-19 19:41:57 [serving.py:221] The chat template requires system-first ordering, so inline system messages in /v1/messages requests (e.g. Claude Code's per-turn reminders) are merged into the leading system prompt. Each new one changes the prompt prefix, so the rest of the conversation misses the prefix cache. Pass a --chat-template that accepts non-leading system messages to avoid this.
+(APIServer pid=79283) INFO 10-19 19:41:57 [entry.py:136] Starting vLLM server on http://127.0.0.1:8000
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:60] Available routes are:
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /openapi.json, Methods: GET, HEAD
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /docs, Methods: GET, HEAD
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /redoc, Methods: GET, HEAD
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /load, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /version, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /kv_event_sources, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /health, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /metrics, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /tokenize, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /detokenize, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/models, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /ping, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /ping, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /invocations, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/responses, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/completions, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/messages, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /generative_scoring, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=79283) INFO 10-19 19:41:57 [launcher.py:69] Route: /is_scaling_elastic_ep, Methods: POST
+INFO:     Started server process [79283]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:44398 - "GET /health HTTP/1.1" 200 OK
+(EngineCore pid=79647) WARNING 10-19 19:42:05 [jit_monitor.py:140] CuTeDSL JIT compilation during inference: HcDownSiluMma. This causes a latency spike; consider extending warmup to cover this shape/config.
+(EngineCore pid=79647) WARNING 10-19 19:42:05 [jit_monitor.py:140] Triton kernel JIT compilation during inference: layer_norm_fwd_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+INFO:     127.0.0.1:54380 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54380 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54388 - "POST /v1/completions HTTP/1.1" 200 OK
+(APIServer pid=79283) INFO 10-19 19:42:07 [loggers.py:320] Engine 000: Avg prompt throughput: 26.0 tokens/s, Avg generation throughput: 29.8 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.6%
+INFO:     127.0.0.1:54402 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54402 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54408 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54410 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54424 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54862 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54872 - "POST /v1/completions HTTP/1.1" 200 OK
+(APIServer pid=79283) INFO 10-19 19:42:17 [loggers.py:320] Engine 000: Avg prompt throughput: 89.6 tokens/s, Avg generation throughput: 185.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.6%
+INFO:     127.0.0.1:54874 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54886 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54900 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54900 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54916 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42836 - "POST /v1/completions HTTP/1.1" 200 OK
+(APIServer pid=79283) INFO 10-19 19:42:27 [loggers.py:320] Engine 000: Avg prompt throughput: 345.6 tokens/s, Avg generation throughput: 165.1 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.6%
+INFO:     127.0.0.1:42846 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42860 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42872 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42888 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58922 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58922 - "POST /v1/completions HTTP/1.1" 200 OK
+(APIServer pid=79283) INFO 10-19 19:42:37 [loggers.py:320] Engine 000: Avg prompt throughput: 614.4 tokens/s, Avg generation throughput: 132.3 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.6%
+INFO:     127.0.0.1:58922 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58922 - "POST /v1/completions HTTP/1.1" 200 OK
+(APIServer pid=79283) INFO 10-19 19:42:47 [loggers.py:320] Engine 000: Avg prompt throughput: 204.8 tokens/s, Avg generation throughput: 73.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%
+(APIServer pid=79283) INFO 10-19 19:42:57 [loggers.py:320] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%
+(APIServer pid=79283) INFO 10-19 19:43:17 [launcher.py:128] [shutdown] API server: shutdown triggered
+(APIServer pid=79283) INFO 10-19 19:43:17 [launcher.py:144] [shutdown] API server: stopping engine client mode=abort timeout=0s
+(EngineCore pid=79647) INFO 10-19 19:43:17 [core.py:1409] [shutdown] EngineCore: trigger received signal=SIGTERM
+(APIServer pid=79283) INFO 10-19 19:43:17 [core_client.py:762] [shutdown] MPClient: start timeout=0s
+(EngineCore pid=79647) INFO 10-19 19:43:17 [core.py:1558] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=79647) INFO 10-19 19:43:17 [core.py:1589] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=79647) INFO 10-19 19:43:17 [core.py:1422] [shutdown] EngineCore: exiting busy loop
+(APIServer pid=79283) INFO 10-19 19:43:17 [core_client.py:764] [shutdown] MPClient: stopping engine manager
+(APIServer pid=79283) INFO 10-19 19:43:17 [utils.py:638] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=79283) WARNING 10-19 19:43:17 [utils.py:658] [shutdown] Process manager: force killing remaining processes count=1
+(APIServer pid=79283) WARNING 10-19 19:43:17 [utils.py:663] [shutdown] Process manager: force killing remaining process EngineCore pid 79647
+(APIServer pid=79283) INFO 10-19 19:43:17 [core_client.py:766] [shutdown] MPClient: engine manager stopped
+(APIServer pid=79283) INFO 10-19 19:43:17 [core_client.py:767] [shutdown] MPClient: cleaning up background resources
+(APIServer pid=79283) INFO 10-19 19:43:17 [core_client.py:769] [shutdown] MPClient: complete
+(APIServer pid=79283) INFO 10-19 19:43:17 [launcher.py:153] [shutdown] API server: engine client stopped
+(APIServer pid=79283) INFO 10-19 19:43:17 [launcher.py:156] [shutdown] API server: signalling HTTP server shutdown
+(APIServer pid=79283) INFO 10-19 19:43:17 [launcher.py:178] [shutdown] API server: shutting down FastAPI HTTP server
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

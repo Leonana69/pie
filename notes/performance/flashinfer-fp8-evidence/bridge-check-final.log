@@ -1,0 +1,8 @@
+versions 2.8.0+cu128 0.7.0.post1
+2026-10-19 19:23:47,111 - WARNING - core.py:6155 - flashinfer.jit: the single torch.Tensor return type is deprecated and will be replaced with List[torch.Tensor] in the v0.8.0.
+python done 1
+python done 4
+python done 128
+PASS 1 bridge exact; ref relative L2 0.04620745778083801 cos 0.9989469647407532
+PASS 4 bridge exact; ref relative L2 0.04703529179096222 cos 0.998893678188324
+PASS 128 bridge exact; ref relative L2 0.0457618311047554 cos 0.9989527463912964

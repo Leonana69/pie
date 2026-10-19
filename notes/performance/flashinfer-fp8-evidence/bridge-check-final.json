@@ -1,0 +1,20 @@
+[
+  {
+    "rows": 1,
+    "bridge_exact": true,
+    "reference_relative_l2": 0.04620745778083801,
+    "cosine": 0.9989469647407532
+  },
+  {
+    "rows": 4,
+    "bridge_exact": true,
+    "reference_relative_l2": 0.04703529179096222,
+    "cosine": 0.998893678188324
+  },
+  {
+    "rows": 128,
+    "bridge_exact": true,
+    "reference_relative_l2": 0.0457618311047554,
+    "cosine": 0.9989527463912964
+  }
+]
