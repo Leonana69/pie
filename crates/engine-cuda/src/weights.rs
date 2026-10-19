@@ -941,7 +941,15 @@ impl Weights {
                     repacked: place.dtype == Dtype::U4g64tiled,
                     atoms: false,
                     lanes: false,
-                    codes: packed(experts.as_ref(), &store, &places, at)?,
+                    codes: {
+                        let mut codes = packed(experts.as_ref(), &store, &places, at)?;
+                        // Unlaid FP8 weights keep their tag; their f32 scale
+                        // plane remains byte-addressed, as other banks' do.
+                        if place.dtype == Dtype::E4m3 {
+                            codes.dtype = Dtype::E4m3;
+                        }
+                        codes
+                    },
                     scales: packed(experts.as_ref(), &store, &places, pairing.scales)?,
                     biases: match pairing.biases {
                         Some(biases) => Some(packed(experts.as_ref(), &store, &places, biases)?),

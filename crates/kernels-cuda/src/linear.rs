@@ -34,3 +34,6 @@ pub mod tc5;
 
 #[cfg(feature = "cuda")]
 pub mod act_quant;
+
+#[cfg(feature = "cuda")]
+pub mod fp8_compute;

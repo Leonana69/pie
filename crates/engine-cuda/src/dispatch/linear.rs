@@ -1399,7 +1399,6 @@ impl Run<'_> {
         y: ValueId,
     ) -> Result<(), kernels_cuda::Error> {
         const OP: &str = "linear.moe_matmul_select_act_quant";
-        lowp(OP)?;
         let (codes, scales, biases, seat) = self.planes(bank);
         per_tensor_e4m3_is_a_table(OP, codes)?;
         if seat.streams() || crate::device::alloc::is_host_pointer(codes.ptr) {
@@ -1414,6 +1413,27 @@ impl Run<'_> {
         let x = self.tensor(x);
         let route_t = self.tensor(routes);
         let mut out = self.tensor(y);
+        // Keep the checkpoint's f32 block factors when the load cannot lay
+        // this bank into tcgen05 atoms (Qwen's down projection has K=640).
+        if codes.dtype == Dtype::E4m3
+            && quant == (ActQuant::E4m3 { gran: 128 })
+            && input_scales.is_none()
+            && biases.is_none()
+            && !self.scales_in_atoms(bank)
+        {
+            return linear::fp8_compute::experts(
+                self.ctx(),
+                OP,
+                x,
+                codes,
+                scales,
+                None,
+                route_t,
+                &mut out,
+                seat,
+            );
+        }
+        lowp(OP)?;
         let (experts, n, k) = (codes.rows, out.width, x.width);
         let (fmt, elem, gran, alpha_e, alpha_from) = match (codes.dtype, quant) {
             (Dtype::Nvfp4, ActQuant::Nvfp4) => {

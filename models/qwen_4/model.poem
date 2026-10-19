@@ -305,10 +305,10 @@ MIXED_2BIT = struct(
     table = dtype.u4g32,
 )
 
-# modelopt's NVFP4 export as stored: routed experts NVFP4, against bf16
-# (`dtype.nvfp4`) or NVFP4 activations (`dtype.nvfp4a4`); the n-gram table
-# e4m3 under one scale, widened only at gathered rows; the rest bf16.
-def nvfp4_mix(experts):
+# Released NVFP4 or block-FP8 experts, at the deployment's activation
+# precision; the n-gram table e4m3 under one scale, widened only at
+# gathered rows; the rest bf16.
+def quantized_mix(experts):
     return struct(
         embed = dtype.bf16,
         head = dtype.bf16,
@@ -323,9 +323,9 @@ def layout(id, deploy):
     vision = "vision" in deploy.parts
     mtp = deploy.drafter == "mtp"
     mixed = deploy.weights == [dtype.u4g64, dtype.u2g128]
-    nvfp4 = None
-    if deploy.weights in [[dtype.bf16, dtype.nvfp4], [dtype.bf16, dtype.nvfp4a4]]:
-        nvfp4 = nvfp4_mix(deploy.weights[1])
+    quantized = None
+    if deploy.weights in [[dtype.bf16, dtype.nvfp4], [dtype.bf16, dtype.nvfp4a4], [dtype.bf16, dtype.e4m3tile128a8]]:
+        quantized = quantized_mix(deploy.weights[1])
     refused = "{} does not ship {}".format(id, deploy)
     if id == "qwen38-flash-next-micro":
         if len(deploy.weights) != 1:
@@ -334,8 +334,8 @@ def layout(id, deploy):
     if id == "qwen38-flash-next-mini":
         if mixed:
             return build(MIXED_2BIT, deploy.kv, MINI, HASHES["mini"], False, False)
-        if nvfp4 != None:
-            return build(nvfp4, deploy.kv, MINI, HASHES["mini"], False, False)
+        if quantized != None:
+            return build(quantized, deploy.kv, MINI, HASHES["mini"], False, False)
         if len(deploy.weights) != 1:
             fail(refused)
         return build(mix_of(deploy.weights[0]), deploy.kv, MINI, HASHES["mini"], False, False)
@@ -343,8 +343,8 @@ def layout(id, deploy):
         return build(mix_of(deploy.weights[0]), deploy.kv, FLASH, HASHES["flash"], False, False)
     if mixed and (mtp or deploy.drafter == None):
         return build(MIXED_2BIT, deploy.kv, FLASH, HASHES["flash"], mtp, vision)
-    if nvfp4 != None and not vision and deploy.drafter == None:
-        return build(nvfp4, deploy.kv, FLASH, HASHES["flash"], False, False)
+    if quantized != None and not vision and deploy.drafter == None:
+        return build(quantized, deploy.kv, FLASH, HASHES["flash"], False, False)
     fail(refused)
 
 def build(mix, kv, d, hashes, draft, vision):

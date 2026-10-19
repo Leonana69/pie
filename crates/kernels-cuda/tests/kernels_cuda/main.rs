@@ -60,3 +60,5 @@ static STRICT_KERNELS: extern "C" fn() = {
     }
     on
 };
+
+mod the_fp8_experts_preserve_block_factors;

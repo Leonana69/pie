@@ -4,6 +4,7 @@
 # the n-gram embedding and the draft head beside the trunk.
 
 load("//lib/modelopt/formats.poem", "nvfp4_bank")
+load("//lib/blockfp8/formats.poem", "fp8_bank", "released_fp8")
 
 def product(xs):
     out = 1
@@ -107,6 +108,10 @@ def read_routed(reads, f, n, layout):
         expert = lambda e, leg: n("mlp.experts.{}.{}_proj".format(e, leg))
         nvfp4_bank(reads, f.gate_up, [[expert(e, "gate"), expert(e, "up")] for e in range(f.experts)])
         nvfp4_bank(reads, f.down, [[expert(e, "down")] for e in range(f.experts)])
+    elif released_fp8(f.gate_up):
+        expert = lambda e, leg: n("mlp.experts.{}.{}_proj.weight".format(e, leg))
+        fp8_bank(reads, f.gate_up, [[expert(e, "gate"), expert(e, "up")] for e in range(f.experts)])
+        fp8_bank(reads, f.down, [[expert(e, "down")] for e in range(f.experts)])
     elif layout.mlx:
         reads.read_concat(f.gate_up, [n("mlp.switch_mlp.gate_proj.weight"), n("mlp.switch_mlp.up_proj.weight")])
         reads.read(f.down, n("mlp.switch_mlp.down_proj.weight"))
@@ -185,7 +190,7 @@ def read(m, reads, layout):
     p = m.ple
     n = lambda tail: trunk("layers.{}.ple.{}".format(p.layer, tail))
     shards = [n("ple_embedding.ngram_embedding.shard_{}.weight".format(i)) for i in range(p.shards)]
-    if layout.nvfp4:
+    if layout.nvfp4 or p.table.dtype == dtype.e4m3tensor:
         read_e4m3_table(reads, p.table, shards, n("ple_embedding.ngram_embedding.weight_scale"))
     else:
         reads.read_concat(p.table, shards)

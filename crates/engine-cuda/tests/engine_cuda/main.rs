@@ -75,3 +75,5 @@ mod the_operators_fraction_sizes_the_pool;
 mod the_wan_2_vae_answers_the_reference;
 mod the_wan_2_vae_encodes_the_reference;
 mod the_z_image_vae_answers_the_reference;
+
+mod an_fp8_expert_with_five_scale_columns_serves;
