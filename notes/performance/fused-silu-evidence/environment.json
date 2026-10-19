@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-19",
+  "base_commit": "51c0fb53a31146c3f23fc35079d552d256b93c43",
+  "upstream_base": "5fcc6f616e26a6a35f3502f90b4fc5ef24d44a7d",
+  "checkpoint_revision": "236dfdf285828023ca3bcd3f37366c58a3469b13",
+  "cuda_runtime": "13.0.96",
+  "nvrtc": "13.0.88",
+  "cublas": "CUDA 12.8 system library",
+  "thp": "disabled for server process with prctl(PR_SET_THP_DISABLE,1)",
+  "packages": {
+    "transformers": "5.20.2",
+    "tokenizers": "0.23.3",
+    "websockets": "17.2",
+    "msgpack": "1.2.3",
+    "blake3": "1.0.11"
+  },
+  "sha256": {
+    "/workspace/pie-bin/pie-hc-fusion-ab": "3c3e82f7eb18028c9f418d739559c778d4512f15f25511f5d25b9656b4483c5c",
+    "/workspace/pie-fp8-port/models/lib/blockfp8/formats.poem": "c4c7d8297e39fdf78aa21419377c91f2fa72293881688c19112d3d2ea8ab190a",
+    "/tmp/pie-bench-wasip3/wasm32-wasip3/release/text_completion_bench.wasm": "a0b84502ed54ea1090766e484f0847cc2ed2be41407e5b04b9db9398e5070e08"
+  },
+  "gpu": "name, memory.total [MiB], driver_version\nNVIDIA B200, 183359 MiB, 595.91.07\n",
+  "comparison": "Same binary and config; only fuse.matmul_silu_scaled false -> true in resolved B200 profile",
+  "implementation_commit": "fa4718427347cc1da9c71d5903cc7096b42ac82c"
+}

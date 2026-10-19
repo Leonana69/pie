@@ -6,6 +6,8 @@ were collected on **2026-10-18 with an older PIE base**,
 `6818175f1047c48a0da487ad41b3aceaa2b184e1`, plus local changes. They are evidence
 about that implementation, **not benchmark results for this branch**. Current
 upstream has changed enough that it needs a fresh end-to-end comparison.
+The separate [scaled-SiLU report](qwen-fused-silu.md) records a fresh PIE-only
+fusion A/B on this branch; vLLM was not rerun for that experiment.
 
 ## What was ported, and what upstream already supplies
 
@@ -40,7 +42,7 @@ path. This port supplies a fallback for resident, unlaid E4M3 expert banks:
 - [Rust wrapper](../../crates/kernels-cuda/src/linear/fp8_compute.rs): validation,
   stream-scoped scratch, launch selection, and stage-window handling.
 - [Engine dispatch](../../crates/engine-cuda/src/dispatch/linear.rs): select the
-  fallback when the weight still has its original FP32 block factors.
+  fallback when the weight still has its original block factors widened to FP32.
 - [Weight binding](../../crates/engine-cuda/src/weights.rs): retain the E4M3 tag
   so an unlaid FP8 bank cannot be confused with an MXFP4 byte plane.
 
@@ -50,12 +52,13 @@ uses scalar FP32 FMA after reading FP8 operands, while the grouped prefill arm
 uses FP8 tensor-core MMA. FP8 operand precision alone does not imply that every
 shape uses tensor cores.
 
-The fallback retains the original FP32 weight factors. Aligned banks still use
+The fallback retains the original weight factors widened to FP32. Aligned banks still use
 upstream's Blackwell path, which requantizes factors to power-of-two UE8M0 and
 re-rounds codes at load. Thus this branch is **not numerically identical to the
 older implementation**, which kept the original factors for both expert legs.
 Its Qwen gate/up projection uses the upstream path; its down projection uses the
-ported fallback. Full-model quality and performance must be measured again.
+ported fallback. Full-model quality still needs evaluation; the fresh PIE-only
+fusion A/B is linked above.
 
 The old dense/W4A8 implementations, attention V2 patch, hyperconnection V3 patch,
 CUDA 12.8 batch-copy compatibility workaround, and checkpoint-loading diagnostics

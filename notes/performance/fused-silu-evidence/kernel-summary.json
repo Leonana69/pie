@@ -1,0 +1,6 @@
+{
+  "before": 4.7509999999999994,
+  "after": 3.5602,
+  "latency_reduction_percent": 25.064197011155542,
+  "estimated_saved_us_per_token": 115.50759999999994
+}

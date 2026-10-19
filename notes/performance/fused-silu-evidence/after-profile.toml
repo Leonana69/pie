@@ -1,0 +1,509 @@
+# NVIDIA B200
+# facts: cc = 100, sms = 148
+# layers: user profile /workspace/qwen-fused-benchmark/state/profiles/cuda/user/nvidia-b200.toml over checked-in profile sm100/nvidia-b200.toml over checked-in profile sm100.toml
+# cuda profile, resolved from user profile /workspace/qwen-fused-benchmark/state/profiles/cuda/user/nvidia-b200.toml
+api = 1
+
+fuse = ["embed_scale_add", "embed_scale_add_select", "gated_residual_norm_modulate", "hc_gates_norm", "hc_pre", "hc_prenorm_project", "index_topk_rope", "lm_head_softcap", "lse_sink", "matmul_bias", "matmul_geglu", "matmul_silu_scaled", "matmul_split_rows", "matmul_swiglu", "mla_prefill_expanded", "moe_experts", "moe_select_glu", "norm_modulate", "norm_rope_last", "norm_rope_last_append", "norm_rope_pair", "pool_attention", "pool_compress", "qg_qknorm_rope_append", "qkv_fused_qknorm_rope_vnorm_write", "res_blend_rmsnorm", "residual_add_rmsnorm", "rmsnorm_residual_add", "rmsnorm_rope_partial_q", "rope_yarn_append", "split_rope_yarn_append"]
+
+[target]
+device = "NVIDIA B200"
+tier = "sm_100"
+assumes = { cc = 100 }
+
+[compiler]
+# Whether a join's independent branches (a MoE's shared and routed experts,
+# an attention's q, kv and index chains) are forked onto side streams. Off
+# unless a chip's profile turns it on.
+# flag; no variables
+branches = true
+# A conditional node's fixed cost, in microseconds.
+# number in 0..1000000; no variables; registry default
+cond_fixed_us = 5.0
+# Each arm a conditional node adds, in microseconds.
+# number in 0..1000000; no variables; registry default
+cond_per_arm_us = 0.6
+# An attention op, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.attention_us = 60.0
+# A collective, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.collective_us = 50.0
+# A custom fused op, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.custom_us = 20.0
+# An elementwise op, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.elementwise_us = 4.0
+# A layout op, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.layout_us = 4.0
+# A matmul, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.linear_us = 40.0
+# A spatial op, in microseconds.
+# number in 0..1000000; no variables; registry default
+cost.spatial_us = 40.0
+# Whether every launchable region (one an op) is scheduled onto the streams
+# by its dependencies (`stream::fork_dag`), not only a join's disjoint
+# branches. Off unless a chip's profile turns it on.
+# flag; no variables
+dag_streams = true
+# The widest fire, in rows, that runs `compiler.dag_streams`' schedule on
+# the side streams; wider fires walk every region on the main stream
+# (each launch fills the card alone). 0: every fire.
+# integer in 0..1000000; no variables
+dag_streams_until = 256
+# A region long enough to leave unsplit, in microseconds.
+# number in 0..1000000; no variables; registry default
+fat_region_us = 250.0
+# The least work a side stream is forked for, in microseconds.
+# number in 0..1000000; no variables; registry default
+fork_floor_us = 20.0
+# Whether the ops this engine can launch as one grouped kernel are grouped.
+# flag; no variables; registry default
+grouped = true
+# An empty kernel launch, in microseconds.
+# number in 0..1000000; no variables; registry default
+launch_us = 1.0
+# Side streams the compiler may fork independent regions onto.
+# integer in 0..8; no variables; registry default
+side_streams = 2
+
+[engine]
+# Whether a window that cannot be viewed in place is copied rather than
+# split.
+# flag; no variables; registry default
+copies = true
+# The rows one fire takes when `[engine] max_forward_tokens` is not
+# stated; 0 keeps the fixed 8192. Wider fires batch more prompts' chunks
+# into one pass of the weights, and their activation arena grows with them.
+# integer in 0..65536; no variables
+forward_tokens = 16_384
+# Whether fires are captured as CUDA graphs.
+# one of off | shaped | on; no variables; registry default
+graphs = "on"
+# Whether a plane declared `host` (read only by row gathers) lives in pinned,
+# device-mapped host memory, leaving device bytes to KV pages and state slots.
+# flag; no variables
+host_planes = true
+# Row buckets per doubling of the default lattice: 1 is powers of two, 2
+# adds a bucket between each, which pads less and records more bodies.
+# one of 1, 2; no variables
+lattice_steps = 2
+# Whether a hybrid trunk whose state slots cannot seat every lane at the
+# configured dispatch depth (two frames a lane) asks the runtime to post one
+# frame a lane instead, seating up to twice the lanes. Off keeps the depth.
+# flag; no variables
+one_frame_when_short = true
+# Rows from which the default bucket lattice takes four buckets a doubling
+# whatever `engine.lattice_steps` says (a prefill's GEMMs run its bucket's
+# rows); 0 never.
+# integer in 0..65536; no variables; registry default
+prefill_lattice_from = 0
+# How captured fires are kept.
+# one of off | shaped | bodies; no variables; registry default
+recording = { use = "bodies", mem_mb = 4096 }
+# Whether a decoding lane's next pages come before seating a waiting prompt,
+# and a prompt waits rather than suspending a lane
+# (`PoolFacts::seated_first`). Off keeps arrival order.
+# flag; no variables
+seated_first = true
+# Recurrent-state slots a lane gets when `[engine] max_state_slots` is unset,
+# so a hybrid trunk seats every lane it batches; 0 keeps the fixed 256.
+# integer in 0..8; no variables
+state_slots_per_lane = 2
+# Prompt rows a lane brings to a fire over chunked gated delta layers of `H`
+# value heads when `max_forward_tokens` is unset: a fire takes at most
+# `floor(SMs / H)` such lanes, so the walk runs in one wave. 0: `forward_tokens`.
+# integer in 0..65536; no variables
+walk_fire_rows = 4096
+# The share of the card past the weights a fire's working set (the
+# activation arena, attention workspaces, decoded tiles) may take, in
+# percent; the rest is owed to the cache rows, bodies and guests.
+# integer in 10..90; no variables; registry default
+working_set_percent = 50
+
+[kernel]
+# The fewest rows the fused qkv norm, rotation and KV write takes a block a
+# row (a warp a head below): 64 but where a chip's profile says (B200's,
+# where 64 decode rows' blocks leave most SMs idle).
+# integer in 1..65536; no variables
+attn.qkv_rows_from = 256
+# Whether a prefill's hyper-connection mix projection (the stream norm and
+# the projection in one pass) runs on the tensor cores, the f32 weights as
+# two bf16 halves; off, the f32 tile form.
+# flag; no variables
+elemwise.hc_mma = true
+# Whether the hyper-connection kernels run their tiled and 16-byte forms:
+# the mix projection a block 64 rows of every column over shared-memory
+# tiles, the fold and the gates' pre-mix eight columns a thread, and a
+# scale-free per-head RMS norm a warp a head; off, the forms before them.
+# flag; no variables
+elemwise.hc_tile = true
+# Whether a prefill's hyper-connection pre-mix norm lands its row's e4m3
+# 1x128 operand beside it, for the fp8 GEMMs that read it next, in place of
+# their quantize launch.
+# flag; no variables
+elemwise.norm_emit = true
+# The most rows Qwen3.5's attention prologue (the q/gate cut, the two
+# per-head norms, the partial rotation and the cache write) lands in one
+# launch at; more run the five launches. 0 (never) but where a chip's
+# profile says.
+# integer in 0..65536; no variables
+elemwise.qg_prologue_until = 64
+# Whether the row kernels a prefill streams run their bandwidth-shaped
+# forms: a 128- or 256-wide RMS norm a warp a row (per head or whole), a
+# scale-free per-head norm of whole 256-element runs a warp a head, the
+# q/gate cut and sigmoid gate 16 bytes a lane, the rotation of a head's
+# tail four pairs a thread, and DeepSeek-V4's pool gather in one pass over
+# 16-byte runs; off, the block-a-row and element-a-thread forms serve them
+# as before.
+# flag; no variables
+elemwise.rows_vec = true
+# Whether a dense projection's bias lands from the cuBLASLt epilogue of the
+# algorithm its shape chose, instead of a separate add. Off but where a
+# chip's profile turns it on (B200's).
+# flag; no variables
+gemm.bias_epilogue = true
+# The rows up to which a 128x128-block FP8 projection runs as a GEMV over
+# bf16 activations (`fp8_block_gemv`, the codes streamed once) rather than
+# quantizing them for the tcgen05 GEMM; none (0) but where a chip's profile
+# says (B200's).
+# integer in 0..64; no variables
+gemm.fp8_gemv_until = 4
+# The most rows a grouped projection on an fp8 plane (`kernel.gemm.fp8_o_down`)
+# runs group by group on the tcgen05 GEMM against the plane as it is, past
+# the mma.sync kernel's eight; more widen the plane to bf16 for cuBLAS's
+# strided batch. 0 always widens.
+# integer in 0..1048576; no variables
+gemm.fp8_grouped_tc5_until = 512
+# The most rows a dense fp8b128 projection runs on the mma.sync fp8
+# kernel (`moe::dense_fp8_shape` says where it leads, in which CTA
+# shape), its rows quantized in the same launch. 0: never.
+# integer in 0..8; no variables
+gemm.fp8_mma_gemv_until = 8
+# A grouped bf16 projection on routes that send each group to its own
+# plane (DeepSeek-V4's `wo_a`, dequantized at import from the checkpoint's
+# fp8b128) requantized at load to fp8b128, each value exactly the
+# checkpoint's, and run as vLLM runs it: W8A8 against the rows in e4m3
+# 1x128 blocks (a decode's few rows on mma.sync, wider fires on the
+# grouped tcgen05 GEMM). Off: the bf16 plane on cuBLAS.
+# flag; no variables
+gemm.fp8_o_down = true
+# How many cuBLASLt heuristic candidates a dense GEMM shape is timed over.
+# integer in 1..32; no variables; registry default
+gemm.heuristics = 8
+# The widest dense bf16 product (in columns) the GEMM tuner may also time
+# on the narrow kernel (a block a row, every column's sum in registers);
+# 0 never offers it.
+# integer in 0..8; no variables
+gemm.narrow_n = 8
+# The most rows (2..=8) a dense bf16 product may time the few-rows kernel
+# for, one launch streaming the weight's rows, beside cuBLAS's algorithms
+# (a decode's narrow projections run split along K in two launches there).
+# 0 never tries it.
+# integer in 0..8; no variables
+gemm.rows_m = 8
+# The most rows the fused skinny bf16 GEMM (GEGLU, soft-capped heads)
+# serves; past it cuBLAS does. Its tile holds 64; 0 never takes it.
+# integer in 0..64; no variables
+gemm.skinny_rows = 0
+# The fewest rows a dense bf16 product charges a K-splitting algorithm
+# its reduce launch at (`kernel.gemm.split_launch_ns`); fewer are timed as
+# they run alone. 0 charges every product.
+# integer in 0..65536; no variables; registry default
+gemm.split_launch_from = 0
+# What a K-splitting cuBLASLt algorithm's own reduce launch costs a
+# captured step past its lone timing, in ns, charged to it (and to
+# `cublasGemmEx`, which may split) when a dense bf16 product's tactic is
+# timed; split algorithms reduced in place (one launch) join the timing.
+# 0 (charge nothing) but where a chip's profile says (B200's).
+# integer in 0..100000; no variables
+gemm.split_launch_ns = 2000
+# The fewest rows a projection cut into two row halves (Qwen3.5's qkv|z)
+# lands as two GEMMs off the weight's two slices, where
+# `kernel.elemwise.rows_vec` is on; fewer run the GEMM and the cut.
+# integer in 1..65536; no variables; registry default
+gemm.split_rows_from = 256
+# The P tiles a dense tcgen05 GEMM's raster band walks Q together over:
+# a wave shares both operands' tiles in L2. 8 but where a chip's profile
+# says.
+# integer in 1..64; no variables
+gemm.tc5_raster = 16
+# The most output rows (a launch's tokens) a split tcgen05 GEMM sums in the
+# tile's last split to land (a per-tile count, the same bits as the
+# finalize launch it replaces); wider launches keep the finalize, whose
+# many blocks share the sum one split's CTA would walk alone. 0 never.
+# integer in 0..65536; no variables
+gemm.tc5_split_tickets = 8
+# The cuBLASLt workspace, in MiB: more unlocks split-K and stream-K
+# algorithms.
+# one of 4, 8, 16, 32, 64; no variables; registry default
+gemm.workspace_mb = 8
+# How a bf16 GEMV (one activation row) is laid out: `wide` (an 8-warp
+# split-K block up to `kernel.gemv.splitk_max_n` columns, 4 rows x 4 warps
+# past it), or `narrow` (4 warps x 2 for both), which Blackwell prefers.
+# one of wide | narrow; no variables
+gemv.bf16 = "narrow"
+# The widest bf16 GEMV that splits its contraction across warps.
+# integer in 0..1048576; no variables; registry default
+gemv.splitk_max_n = 4096
+# The prefill rows from which a latent attention's prefill runs expanded
+# (its latent rows through `kv_b` into a key and value head a query head,
+# then a dense prefill at those widths, as vLLM's MLA prefill runs) in
+# place of its absorbed scoring; never (65 536 past any fire) but where a
+# chip's profile says (B200's). Below it the expansion of every cached row
+# costs more than the absorbed scoring saves.
+# integer in 1..65536; no variables
+mla.expanded_from = 256
+# How MLA attention runs: the FA2 kernel at the widest shared-memory arm
+# that fits, or the naive kernel.
+# one of fa2 | naive; no variables; registry default
+mla.path = "fa2"
+# Whether routed matmuls over affine (mlx u4) banks take the grouped
+# kernel once enough routes come, and whether bf16 rows there take tensor
+# cores (WMMA).
+# flag; no variables; registry default
+moe.affine_grouped = true
+# The fewest routes an affine routed matmul groups at.
+# integer in 1..65536; no variables; registry default
+moe.affine_grouped_from = 16
+# flag; no variables; registry default
+moe.affine_wmma = true
+# Routes an expert must average before bf16/f16 routed matmuls group.
+# integer in 1..4096; no variables; registry default
+moe.group_at = 4
+# Whether routed matmuls over bf16 or f16 banks take the grouped GEMM once
+# an expert's routes pay for it; off, every route reads its expert alone.
+# flag; no variables; registry default
+moe.grouped = true
+# The fewest routes a W4A8 select runs on the e2m1-convert
+# register-dequant kernel (up to `kernel.moe.mxfp4_a8_until`); fewer keep
+# the grouped tcgen05 GEMM. Apart from the bf16-activation selects'
+# `kernel.moe.mxfp4_mma_from`.
+# integer in 0..65536; no variables
+moe.mxfp4_a8_from = 1
+# The most routes a W4A8 select (an MXFP4 bank against e4m3
+# activations) reads its activations back to bf16 for and runs on the
+# e2m1-convert register-dequant kernel (`kernel.moe.mxfp4_cvt`), from
+# `kernel.moe.mxfp4_a8_from`; wider ones, and all where 0, keep the
+# grouped tcgen05 GEMM.
+# integer in 0..65536; no variables
+moe.mxfp4_a8_until = 48
+# Whether the register-dequant mxfp4 select turns its codes into f16 with
+# the e2m1 converts of the arch-specific Blackwells (`linear/moe_w4_cvt.cuh`)
+# rather than bf16 by integer ops. Off but where a chip's profile says.
+# flag; no variables
+moe.mxfp4_cvt = true
+# The most routes an e2m1-convert select (`kernel.moe.mxfp4_cvt`) splits
+# each work item's K across a cluster of two CTAs for, their sums met in
+# the cluster's shared memory: a fire that few leaves most SMs idle. 0:
+# never.
+# integer in 0..65536; no variables
+moe.mxfp4_cvt_ksplit_until = 6
+# The same for mxfp4 banks.
+# flag; no variables; registry default
+moe.mxfp4_grouped = true
+# Routes per expert above which mxfp4 routed matmuls group: the grouped
+# kernels read an expert once per batch, the by-route one once per route
+# at the card's streaming rate.
+# integer in 0..64; no variables; registry default
+moe.mxfp4_grouped_reuse = 2
+# The fewest routes a routed mxfp4 select runs on the register-dequant MMA
+# kernel with (up to `kernel.moe.mxfp4_mma_until`).
+# integer in 1..65536; no variables
+moe.mxfp4_mma_from = 28
+# The most routes a routed mxfp4 select (bf16 activations) runs on the
+# register-dequant MMA kernel with; 0 (never) but where a chip's profile
+# says (B200's).
+# integer in 0..65536; no variables
+moe.mxfp4_mma_until = 1024
+# Whether the grouped mxfp4 kernel multiplies bf16 rows with tensor cores
+# (WMMA) rather than the scalar grouped kernel.
+# flag; no variables; registry default
+moe.mxfp4_wmma = true
+# The fewest routes of [`MoeNvfp4MmaUntil`]'s span.
+# integer in 1..65536; no variables
+moe.nvfp4_mma_from = 32
+# The routes a routed NVFP4 select of bf16 activations (W4A16) runs on the
+# register-dequant MMA kernel from and up to (each expert's rows
+# dequantized in registers on mma.sync); never (until 0) but where a
+# chip's profile says (B200's).
+# integer in 0..65536; no variables
+moe.nvfp4_mma_until = 8192
+# Whether routed matmuls (bf16 banks, and 4-bit ones against bf16
+# activations) run on the grouped tcgen05 GEMM where the device has it.
+# Off but where a chip's profile turns it on (B200's): its plans assume
+# B200's shared memory and SM count.
+# flag; no variables
+moe.tc5 = true
+# The fewest tokens a fire routes on the tcgen05 GEMM; narrower fires keep
+# their GEMV or grouped kernel (unless their routes pass the GEMV's grid).
+# integer in 1..65536; no variables; registry default
+moe.tc5_from = 16
+# The fewest tokens a W4A4 routed MLP keeps its rows by expert from the
+# gate-up select to the weighted sum with (its GLU landing the down leg's
+# NVFP4 operand from the gate-up epilogue); never (65 536 past any fire)
+# but where a chip's profile says (B200's).
+# integer in 1..65536; no variables
+moe.w4a4_fused_from = 1
+# The fewest tokens a W4A8 routed MLP (MXFP4 banks against e4m3
+# activations) keeps its rows by expert from the gate-up select to the
+# weighted sum with (its GLU landing the down leg's e4m3 operand from the
+# gate-up epilogue); never (65 536 past any fire) but where a chip's
+# profile says (B200's).
+# integer in 1..65536; no variables
+moe.w4a8_fused_from = 512
+# Programmatic dependent launch: a kernel that opts in (it waits on its
+# predecessor in-kernel before reading what that one wrote) launches while
+# the stream's previous kernel finishes, its launch latency hidden. Off but
+# where a chip's profile turns it on (sm_90 and later only).
+# flag; no variables
+pdl = true
+# The fewest rows a quantised projection takes the tiled GEMM for (and,
+# for a held bank, the bf16 decode into cuBLAS); fewer take the GEMV.
+# integer in 1..4096; no variables; registry default
+qmm.gemm_from = 16
+# The fewest rows the tiled quantised GEMM takes its long tile (64 x 128,
+# 2 stages) for; fewer take the short one (32 x 128, 4 stages).
+# integer in 1..65536; no variables; registry default
+qmm.long_rows = 512
+# The deepest split-K for 8 rows or fewer, and for more.
+# one of 8, 16, 32; no variables; registry default
+qmm.split_thin_max = 32
+# Warps a split-K tiled GEMM aims to put on each SM.
+# integer in 1..1024; no variables; registry default
+qmm.split_warps_per_sm = 58
+# one of 8, 16, 32; no variables; registry default
+qmm.split_wide_max = 16
+# Whether a split decode chunk holds at least 128 keys, as the scheduler
+# once floored it, rather than one page.
+# flag; no variables; registry default
+sdpa.decode.chunk_floor_128 = false
+# The fewest query heads to a KV head at which a single-token row reads
+# the cache through the prefill kernel (tensor cores over the group's
+# rows) instead of the decode kernel; 0 never does.
+# integer in 0..64; no variables
+sdpa.decode.grouped_prefill_from = 4
+# Whether a wide group's single-token rows that also land their
+# log-sum-exp (gpt-oss's, for its sinks) take the prefill kernel too,
+# where their plan has no sliding window.
+# flag; no variables
+sdpa.decode.grouped_prefill_lse = true
+# Whether a small decode batch still splits its keys across blocks.
+# flag; no variables; registry default
+sdpa.decode.split_small = false
+# Whether a sliding-window decode splits its keys across blocks.
+# flag; no variables; registry default
+sdpa.decode.split_window = false
+# The most requests an eager decode serves with the static, unsplit
+# schedule (which skips planning).
+# integer in 0..65536; no variables; registry default
+sdpa.decode.static_max_requests = 512
+# Whether a paged decode of a group of at most eight query heads reads its
+# cache on tensor cores (`attn/xqa.cuh`, the group's rows one MMA tile)
+# rather than the FA2 decode kernel.
+# flag; no variables
+sdpa.decode.xqa = true
+# The most blocks a cluster splits an unwindowed tensor-core decode row's
+# keys across, folding them through distributed shared memory in place of
+# the plan's split and its fold launch; 0 leaves the split to the plan.
+# one of 0, 1, 2, 4, 8; no variables
+sdpa.decode.xqa_cluster = 8
+# The fewest requests a 64-wide decode takes the tensor-core kernel at;
+# narrower, the FA2 decode reads it.
+# integer in 0..65536; no variables
+sdpa.decode.xqa_from_64 = 16
+# The widest sliding window (keys a query row sees) the tensor-core decode
+# reads whole, a block a (request, kv head) landing its rows and sinks
+# itself, with no split to fold; 0 splits every window as the plan sizes.
+# integer in 0..65536; no variables
+sdpa.decode.xqa_whole_window = 128
+# The most rows DeepSeek-V4's attention (the window, the compressed rows,
+# their fold and the sinks) lands in one launch at; more run the four
+# launches. 0 (never) but where a chip's profile says.
+# integer in 0..65536; no variables
+sdpa.dsv4_decode_until = 64
+# The fewest rows DeepSeek-V4.1's attention over its FP4 cache (an MXFP8
+# window over NVFP4 entries) takes the tcgen05 pass a block a row, which
+# widens each row's keys once for all 64 heads as its tiles land, rather
+# than the decode launch, whose four blocks a row widen them each. 0 never
+# does below `kernel.sdpa.dsv4_prefill_from`.
+# integer in 0..1048576; no variables
+sdpa.dsv4_fp4_pass_from = 32
+# The fewest rows DeepSeek-V4's attention (`attention.pool_attention`: the
+# window, the pool, their merge and the sinks) runs as one tcgen05 pass,
+# a block a row (`attn/dsv4_sparse.cuh`, sm_100a: Q in TMEM, whole 64-key
+# tiles, V the tile K brought) rather than its four ops. 0 never does.
+# integer in 0..1048576; no variables
+sdpa.dsv4_prefill_from = 512
+# Whether DeepSeek-V4.1's Causal Encoder-Decoder prefills by bounded
+# replay, as its release describes: a long prompt's leading rows run the
+# encoder alone (and the decoder's sources, its pool and index keys), the
+# decoder replaying only the prompt's last window, its windows held above
+# each sequence's replay floor (`attention.pool_attention` always on the
+# fused kernels, which read the floor). Off runs every row through every
+# layer, as vLLM does. It changes what the model computes, so no search
+# turns it.
+# flag; no variables
+sdpa.dsv4_replay = true
+# Whether a pooled index (`attention.index_topk`) scores its blocks on the
+# tensor cores rather than a thread a block. Off scores the scalar way.
+# flag; no variables
+sdpa.index_mma = true
+# Whether a pooled index (`attention.index_topk`) finds its best blocks by
+# a radix select (four histogram passes, then a block scan) rather than
+# forty bisection passes and a one-thread walk. Off bisects.
+# flag; no variables
+sdpa.index_radix = true
+# Whether a prefill's pooled index (512 rows and up, 64 heads of 128)
+# scores on tcgen05 (`attn/index_tc5.cuh`: two rows' heads an MMA's 128
+# lanes against tiles of 128 blocks), then ranks in a launch of its own;
+# off, the mma.sync scorer.
+# flag; no variables
+sdpa.index_tc5 = true
+# Whether a split attention's partial states fold a warp a (row, head)
+# rather than through the staged persistent merge.
+# flag; no variables
+sdpa.merge_warp = true
+# Whether the tcgen05 sparse MLA pass reads a row that sees no more keys
+# than its selection holds (a decode at a short context, a prefill's rows
+# before the top-k) as dense: every key it sees in order, its selection
+# unread, as its index (which ranks all of them) selected. Off reads every
+# row's selection.
+# flag; no variables
+sdpa.mla_dense_short = true
+# Whether a sparse MLA's selected attention (64 absorbed heads over a
+# 512-wide bf16 latent and a 64-wide rotated part or none: GLM-5.3's and
+# GLM-5.3-Flash's DSA) runs a block a row on tcgen05
+# (`attn/mla_sparse.cuh`, sm_100a); off, the warp-a-key form serves it as
+# before.
+# flag; no variables
+sdpa.mla_sparse = true
+# Whether a compressed-pool attention (`attention.pool_lse`, and its
+# selected form) runs on the tensor cores, a block a row's 16 heads, rather
+# than the scalar walk a block a row and head. Off reads the pool the
+# scalar way.
+# flag; no variables
+sdpa.pool_mma = true
+# Prefill attention CTAs per SM: the grid a split prefill fills, and the
+# floor a recorded prefill pads its tiles to.
+# integer in 1..8; no variables; registry default
+sdpa.prefill.ctas_per_sm = 2
+# Whether a prefill the tcgen05 FMHA (`attn/tc5_fmha.cuh`, sm_100a) can
+# serve runs on it; off, FA2 serves every prefill, as before it.
+# flag; no variables
+sdpa.prefill.tc5 = true
+# Whether a sliding 256-wide prefill (Gemma-4's) on the tcgen05 FMHA runs
+# the 128-key-tile kernel (`tc5_fmha_prefill_wide`) rather than the 64-key
+# one; a 256-wide prefill without a window runs it either way.
+# flag; no variables
+sdpa.prefill.wide_sliding = true
+# Whether a selected (sparse) attention runs on the tensor cores, a block a
+# row and kv head, rather than the scalar walk. Off reads every key the
+# scalar way.
+# flag; no variables
+sdpa.selected_mma = true
+attn_res = ["fused_norm"]
+ssm = ["conv_vec4", "gdn_fused_scan", "gdn_out_bf16", "gdn_tc5", "kda_chunked", "kda_step_fused"]

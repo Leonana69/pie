@@ -1,0 +1,17 @@
+[server]
+host="127.0.0.1"
+port=8082
+telemetry=false
+[model]
+name="default"
+model="/workspace/models/Qwen3.8-Flash-Next-FP8"
+device_memory_share=0.99
+[engine]
+type="cuda_native"
+device=["cuda:0"]
+tensor_parallel_size=1
+activation_dtype="bfloat16"
+max_forward_tokens=128
+max_forward_requests=1
+max_state_slots=2
+max_model_len=2048

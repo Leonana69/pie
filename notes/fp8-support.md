@@ -9,6 +9,8 @@ option is not used on this branch.
 
 See [the implementation and performance analysis](performance/qwen-fp8-vs-vllm.md)
 for benchmark provenance, remaining bottlenecks, and numerical limitations.
+The [scaled-SiLU fusion report](performance/qwen-fused-silu.md) covers the new
+fused hyperconnection projection and the fresh before/after experiment.
 
 ## Build and import
 
@@ -38,7 +40,7 @@ does not imply a separate FP16 full-model deployment.
 The fallback does not introduce expert offload or support arbitrary quantization
 formats. It accepts whole 128-element weight blocks and resident expert banks
 without affine biases. Aligned banks continue through upstream's backend;
-Qwen's K=640 down projection keeps its original FP32 block factors and uses the
+Qwen's K=640 down projection keeps its original block factors widened to FP32 and uses the
 fallback. The two paths have different weight-scale rounding, so this port
 requires a fresh model-quality comparison.
 
@@ -57,7 +59,9 @@ cargo test -p pie-poem-compiler --test poem_compiler \
 
 The optional official-checkpoint test reads metadata from the safetensors
 shards, constructs the full import contract, and checks expert/embedding source
-mapping. It does not load all model tensors onto the GPU:
+mapping, and compiles the load plan against the real metadata. This checks
+that BF16 expert factors are numerically widened before use as FP32 scales.
+It does not load all model tensors onto the GPU:
 
 ```sh
 PIE_QWEN_FP8_CHECKPOINT=/path/to/Qwen3.8-Flash-Next-FP8 \
@@ -82,7 +86,9 @@ Validation recorded on 2026-10-19:
 - Formatting, affected-crate Clippy with warnings denied, and CUDA engine build
   checking.
 
-No full-model throughput or model-quality rerun is claimed for this port.
-The historical throughput/profile evidence in the analysis came from an older
-PIE implementation. The checkpoint's requested FP32 recurrent state is still
-BF16 in PIE's Qwen model, as detailed in the analysis.
+A fresh full-model fusion A/B is recorded in the
+[scaled-SiLU report](performance/qwen-fused-silu.md): 1.67–1.85% faster decode
+on B200, with 19/20 measured output sequences matching. This is not a general
+model-quality evaluation. The historical vLLM comparison in the older analysis
+still comes from an older PIE implementation. The checkpoint's requested FP32
+recurrent state is still BF16 in PIE's Qwen model, as detailed in the analysis.
