@@ -1,0 +1,8 @@
+========= COMPUTE-SANITIZER
+
+running 1 test
+test the_scaled_silu_projection_preserves_rounding::the_scaled_silu_projection_preserves_rounding_and_staged_rows ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 84 filtered out; finished in 0.83s
+
+========= ERROR SUMMARY: 0 errors

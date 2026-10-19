@@ -1,0 +1,7 @@
+    Checking checkpoint v0.5.4 (/workspace/pie-fp8-port/crates/checkpoint)
+   Compiling kernels-cuda v0.5.4 (/workspace/pie-fp8-port/crates/kernels-cuda)
+    Checking pie-poem v0.5.4 (/workspace/pie-fp8-port/crates/poem)
+    Checking pie-poem-compiler v0.5.4 (/workspace/pie-fp8-port/crates/poem-compiler)
+    Checking pie-poem-exec v0.5.4 (/workspace/pie-fp8-port/crates/poem-exec)
+    Checking engine-cuda v0.5.4 (/workspace/pie-fp8-port/crates/engine-cuda)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.78s

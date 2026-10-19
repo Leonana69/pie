@@ -1,0 +1,15 @@
+   Compiling pie-poem-ir v0.5.4 (/workspace/pie-fp8-port/crates/poem-ir)
+   Compiling kernels-cuda v0.5.4 (/workspace/pie-fp8-port/crates/kernels-cuda)
+   Compiling pie-poem v0.5.4 (/workspace/pie-fp8-port/crates/poem)
+   Compiling engine v0.5.4 (/workspace/pie-fp8-port/crates/engine)
+   Compiling pie-poem-compiler v0.5.4 (/workspace/pie-fp8-port/crates/poem-compiler)
+   Compiling pie-poem-exec v0.5.4 (/workspace/pie-fp8-port/crates/poem-exec)
+   Compiling engine-cuda v0.5.4 (/workspace/pie-fp8-port/crates/engine-cuda)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.30s
+     Running tests/engine_cuda/main.rs (/tmp/pie-port-build/debug/deps/engine_cuda-3124036bb5aeb1ec)
+
+running 1 test
+test a_scaled_silu_projection_serves::a_scaled_silu_projection_serves_with_prefill_fallback ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 50 filtered out; finished in 0.75s
+

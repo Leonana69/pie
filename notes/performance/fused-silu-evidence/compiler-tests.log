@@ -1,0 +1,40 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.67s
+     Running tests/poem_compiler/main.rs (/tmp/pie-port-build/debug/deps/poem_compiler-793057d8080fe1c4)
+
+running 33 tests
+test a_fused_kernel_replaces_what_its_pattern_matches::a_backend_forms_only_the_kernels_it_lists ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_dense_mlp_folds_into_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_dense_mlp_whose_intermediate_is_read_elsewhere_stays_apart ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_gated_delta_step_folds_into_one_launch ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_gated_delta_step_whose_conv_is_read_elsewhere_stays_apart ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_hyper_connection_pre_mix_lands_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_matmul_and_its_bias_fold_into_one_epilogue ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_matmul_and_the_split_of_its_row_fold_into_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_projection_cut_into_two_halves_lands_as_one_fused_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_scaled_silu_folds_only_when_the_projection_does_not_escape ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_sink_folds_onto_the_attention_whose_log_sum_exp_it_reads ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_split_past_its_row_is_refused - should panic ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_split_rotation_and_its_cache_write_fold_into_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_value_read_past_the_match_keeps_the_pair_apart ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::a_yarn_rotation_and_its_cache_write_fold_into_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::an_index_ranking_lands_its_queries_turn ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::an_mhc_norm_read_elsewhere_stays_written ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::an_mhc_norm_read_only_by_its_projection_folds_into_it ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::an_op_between_the_pair_stays_ahead_of_the_fused_one ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::an_op_that_overwrites_what_the_match_reads_keeps_it_in_place ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_attention_lands_its_output_turned_back ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_compressor_lands_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_compressor_lands_its_state_write_too ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_kv_plane_norm_rotation_and_write_land_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_norm_and_tail_rotation_land_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_q_and_kv_plane_land_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::deepseeks_window_pool_merge_and_sinks_land_as_one_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::every_rule_states_its_pattern_with_widths_it_can_hold ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::qwens_attention_prologue_lands_as_one_fused_op ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::the_qkv_write_folds_when_its_norms_share_an_epsilon ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::the_qkv_write_stays_apart_when_its_norms_do_not ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::the_scaleless_unturned_qkv_write_folds ... ok
+test a_fused_kernel_replaces_what_its_pattern_matches::the_unnormed_partly_turned_qkv_write_folds ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 56 filtered out; finished in 0.01s
+

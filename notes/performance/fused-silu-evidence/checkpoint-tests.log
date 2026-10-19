@@ -1,0 +1,47 @@
+   Compiling log v0.4.34
+   Compiling serde v1.0.229
+   Compiling syn v3.0.6
+   Compiling syn v2.0.119
+   Compiling indexmap v2.14.2
+   Compiling getrandom v0.4.3
+   Compiling serde_json v1.0.151
+   Compiling once_cell v1.21.4
+   Compiling zopfli v0.8.3
+   Compiling zip v7.2.0
+   Compiling ztensor-compat v3.0.0 (/workspace/pie-fp8-port/crates/ztensor-compat)
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling tempfile v3.27.0
+   Compiling zerocopy-derive v0.8.56
+   Compiling zerocopy v0.8.56
+   Compiling thiserror v2.0.21
+   Compiling pie-dtype v0.5.4 (/workspace/pie-fp8-port/crates/dtype)
+   Compiling half v2.7.1
+   Compiling checkpoint v0.5.4 (/workspace/pie-fp8-port/crates/checkpoint)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.87s
+     Running tests/checkpoint/main.rs (/tmp/pie-port-build/debug/deps/checkpoint-8a6dd0b3518dc66a)
+
+running 20 tests
+test a_replicated_shard_lands_on_every_rank_of_its_group::each_group_of_two_ranks_reads_its_own_head ... ok
+test quant_terms::quant_terms_every_case ... ok
+test groups::streamability::groups_1_every_case ... ok
+test an_fp32_pipeline_component_lands_as_bf16_planes::an_fp32_pipeline_component_lands_as_bf16_planes ... ok
+test groups::groups_every_case ... ok
+test a_component_that_keeps_its_weights_a_folder_down_is_still_read::a_component_that_keeps_its_weights_a_folder_down_is_still_read ... ok
+test a_diffusers_pipeline_reads_as_one_prefixed_name_space::a_diffusers_pipeline_reads_as_one_prefixed_name_space ... ok
+test a_constant_lands_as_the_bytes_it_carries::a_constant_short_of_its_shape_is_refused ... ok
+test a_constant_lands_as_the_bytes_it_carries::a_constant_lands_as_the_bytes_it_carries ... ok
+test a_block_scaled_fp8_plane_lands_as_bf16::a_block_scaled_fp8_plane_lands_as_bf16 ... ok
+test ztensor_roundtrip::ztensor_roundtrip_every_case ... ok
+test an_fp8_plane_beside_e8m0_exponents_reads_under_them::an_fp8_plane_beside_e8m0_exponents_reads_out_to_bf16 ... ok
+test ztensor_convert::ztensor_convert_every_case ... ok
+test memory_mount::memory_mount_every_case ... ok
+test an_fp8_plane_beside_e8m0_exponents_reads_under_them::fused_fp8_planes_each_read_under_their_own_exponents ... ok
+test a_pre_sharded_fp8_weight_reads_each_chunk_under_its_own_factors::a_pre_sharded_fp8_weight_reads_each_chunk_under_its_own_factors ... ok
+test an_fp8_plane_beside_e8m0_exponents_reads_under_them::an_fp8_plane_beside_e8m0_exponents_encodes_as_its_bf16_values_do ... ok
+test an_fp8_plane_beside_e8m0_exponents_reads_under_them::fused_fp8_planes_encode_as_their_bf16_values_do ... ok
+test storage_compiler::storage_compiler_every_case ... ok
+test serving_artifact::serving_artifact_every_case ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.58s
+

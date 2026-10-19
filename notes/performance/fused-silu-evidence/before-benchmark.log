@@ -1,0 +1,25 @@
+SERVER_READY 1792434808.8322446
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+SMOKE 391
+before prompt=128 request=0 TTFT=29.21ms decode=132.72tok/s
+before prompt=128 request=1 TTFT=27.42ms decode=132.73tok/s
+before prompt=128 request=2 TTFT=29.66ms decode=132.71tok/s
+before prompt=128 request=3 TTFT=27.90ms decode=132.77tok/s
+before prompt=128 request=4 TTFT=29.78ms decode=132.73tok/s
+before prompt=128 request=5 TTFT=27.42ms decode=132.76tok/s
+before prompt=128 request=6 TTFT=28.17ms decode=132.76tok/s
+before prompt=128 request=7 TTFT=27.23ms decode=132.81tok/s
+before prompt=128 request=8 TTFT=26.71ms decode=132.76tok/s
+before prompt=128 request=9 TTFT=27.88ms decode=132.87tok/s
+{"prompt_tokens": 128, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 27.89122611284256, "decode_tokens_s_median": 132.75877419062545, "aggregate_output_tokens_s": 131.24880179001582}
+before prompt=1024 request=0 TTFT=197.07ms decode=123.12tok/s
+before prompt=1024 request=1 TTFT=195.13ms decode=123.09tok/s
+before prompt=1024 request=2 TTFT=195.07ms decode=123.11tok/s
+before prompt=1024 request=3 TTFT=195.57ms decode=123.07tok/s
+before prompt=1024 request=4 TTFT=194.76ms decode=123.12tok/s
+before prompt=1024 request=5 TTFT=193.31ms decode=123.09tok/s
+before prompt=1024 request=6 TTFT=195.04ms decode=123.11tok/s
+before prompt=1024 request=7 TTFT=194.12ms decode=123.09tok/s
+before prompt=1024 request=8 TTFT=194.00ms decode=123.13tok/s
+before prompt=1024 request=9 TTFT=194.12ms decode=123.09tok/s
+{"prompt_tokens": 1024, "output_tokens": 256, "concurrency": 1, "requests": 10, "ttft_median_ms": 194.90241399034858, "decode_tokens_s_median": 123.10074882462126, "aggregate_output_tokens_s": 112.89986389626785}

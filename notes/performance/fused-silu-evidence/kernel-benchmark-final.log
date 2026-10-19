@@ -1,0 +1,18 @@
+
+running 1 test
+test the_scaled_silu_projection_preserves_rounding::benchmark_qwen_scaled_silu_projection ... HC_PROJECTION before repeat=0 us_per_projection=4.7497
+HC_PROJECTION after repeat=0 us_per_projection=3.5598
+HC_PROJECTION after repeat=1 us_per_projection=3.5606
+HC_PROJECTION before repeat=1 us_per_projection=4.7501
+HC_PROJECTION before repeat=2 us_per_projection=4.7513
+HC_PROJECTION after repeat=2 us_per_projection=3.5607
+HC_PROJECTION after repeat=3 us_per_projection=3.5586
+HC_PROJECTION before repeat=3 us_per_projection=4.7513
+HC_PROJECTION before repeat=4 us_per_projection=4.7507
+HC_PROJECTION after repeat=4 us_per_projection=3.5595
+HC_PROJECTION after repeat=5 us_per_projection=3.5608
+HC_PROJECTION before repeat=5 us_per_projection=4.7516
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 84 filtered out; finished in 3.36s
+

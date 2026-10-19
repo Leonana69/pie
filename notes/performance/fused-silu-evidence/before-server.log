@@ -1,0 +1,682 @@
+pie-pie 0.5.4
+2026-10-19T18:26:32.210759Z  INFO gateway: gateway worker-facing listener up (workers dial in) worker_addr=127.0.0.1:36885
+2026-10-19T18:26:32.210824Z  INFO gateway: gateway registered with controller gateway_id=gateway#0 worker_addr=127.0.0.1:36885
+2026-10-19T18:26:32.218389Z  INFO gateway: pie-gateway client-facing edge up listen_addr=127.0.0.1:8082
+2026-10-19T18:26:45.216089Z  INFO runtime::engine::load: serving deployment="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" identified="qwen38-flash-next-bf16-e4m3tile128a8-kv-bf16" checkpoint="/workspace/models/Qwen3.8-Flash-Next-FP8"
+engine-cuda: 47.7 GiB of planes the package declares `host` serve from pinned host memory (engine.host_planes)
+2026-10-19T18:32:37.951843Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::fp8_tile_requant" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T18:32:37.969068Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::fp8_tile_requant" arch="sm_100" compiled=true ms=57.007065000000004
+2026-10-19T18:32:37.991543Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::scales_to_atoms" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T18:32:38.004039Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::scales_to_atoms" arch="sm_100" compiled=true ms=34.90899
+2026-10-19T18:32:38.780824Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_chunked" arch="sm_100" compiled=true ms=490.372751
+2026-10-19T18:32:38.850284Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/embed_e4m3" instantiation="::pie::layout::embed_concat_e4m3_vec16<::pie::bf16, false>" arch="sm_100" compiled=true ms=66.38759399999999
+2026-10-19T18:32:38.980922Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:32:39.067547Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::embed<::pie::true_type::value>" arch="sm_100" compiled=true ms=82.314179
+2026-10-19T18:32:39.809084Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_expand<::pie::bf16>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T18:32:39.819038Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_expand<::pie::bf16>" arch="sm_100" compiled=true ms=746.030047
+2026-10-19T18:32:39.887222Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_grouped_plus_one<::pie::bf16, 256>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:39.896084Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_grouped_plus_one<::pie::bf16, 256>" arch="sm_100" compiled=true ms=75.451518
+2026-10-19T18:32:39.971688Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=320 k=10240 tactic=Lt(41)
+2026-10-19T18:32:40.007198Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::silu_scaled<::pie::bf16>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:40.021029Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::silu_scaled<::pie::bf16>" arch="sm_100" compiled=true ms=49.061828
+2026-10-19T18:32:40.045027Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:32:40.808178Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_mix_vec8<::pie::bf16, 64>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T18:32:40.819227Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_mix_vec8<::pie::bf16, 64>" arch="sm_100" compiled=true ms=774.159616
+2026-10-19T18:32:40.845030Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:32:40.905438Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:32:40.987384Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_rows_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=81.894355
+2026-10-19T18:32:41.538097Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile_vec4<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:41.546448Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile_vec4<::pie::bf16>" arch="sm_100" compiled=true ms=555.089938
+2026-10-19T18:32:42.030749Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_state_commit<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:42.128991Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_state_commit<::pie::bf16>" arch="sm_100" compiled=true ms=582.478475
+2026-10-19T18:32:42.597130Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_gdn_prep_ba_gates<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:42.606256Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_prep_ba_gates<::pie::bf16>" arch="sm_100" compiled=true ms=477.173622
+2026-10-19T18:32:43.696427Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/gdn_tc5" instantiation="::pie::attn::gdn::gdn_chunked_tc5" arch="sm_100a" log=attn/gdn_tc5(63): warning #177-D: variable "pie::attn::gdn::LDA" was declared but never referenced
+  constexpr int LDA = 68;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:43.708995Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/gdn_tc5" instantiation="::pie::attn::gdn::gdn_chunked_tc5" arch="sm_100a" compiled=true ms=1098.762913
+2026-10-19T18:32:43.760917Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_gated_in_warp<float, ::pie::bf16, 4, 32>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:43.771667Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_gated_in_warp<float, ::pie::bf16, 4, 32>" arch="sm_100" compiled=true ms=62.57133400000001
+2026-10-19T18:32:43.819422Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:32:43.953898Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<4>" arch="sm_100" compiled=true ms=51.587084999999995
+2026-10-19T18:32:43.961225Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=4 k=10240 tactic=Narrow
+2026-10-19T18:32:44.689834Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::hc_inject_vec8<::pie::bf16, 64>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:44.699298Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::hc_inject_vec8<::pie::bf16, 64>" arch="sm_100" compiled=true ms=738.025691
+2026-10-19T18:32:44.808614Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_narrow_bf16_kernel<1>" arch="sm_100" compiled=true ms=50.394380000000005
+2026-10-19T18:32:44.814596Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=1 k=2560 tactic=Narrow
+2026-10-19T18:32:44.875953Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=512 k=2560 tactic=Lt(2)
+2026-10-19T18:32:44.966284Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/moe" instantiation="::pie::linear::moe_topk_softmax<::pie::bf16>" arch="sm_100" log=linear/moe(22): warning #177-D: variable "pie::linear::kGemvWarps" was declared but never referenced
+  constexpr int kGemvWarps = 4;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:44.976396Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/moe" instantiation="::pie::linear::moe_topk_softmax<::pie::bf16>" arch="sm_100" compiled=true ms=98.864706
+2026-10-19T18:32:45.042286Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:32:45.102338Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::mlp_swiglu_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=58.529356
+2026-10-19T18:32:45.146515Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:32:45.168729Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::route_lay_out_small" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T18:32:45.176294Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::route_lay_out_small" arch="sm_100" compiled=true ms=29.231493
+2026-10-19T18:32:45.805733Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::act_quant_e4m3_v8<0, 128, true>" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T18:32:45.816992Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::act_quant_e4m3_v8<0, 128, true>" arch="sm_100" compiled=true ms=640.33446
+2026-10-19T18:32:46.142768Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 256, 4, 0, 1, 1, 0, 0, 0>" arch="sm_100a" compiled=true ms=323.794978
+2026-10-19T18:32:46.165777Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/act_quant" instantiation="::pie::linear::route_gather_vec8" arch="sm_100" log=linear/act_quant(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/act_quant(30): warning #177-D: variable "pie::linear::kQuantCodes" was declared but never referenced
+  constexpr int kQuantCodes = 0;
+                ^
+
+linear/act_quant(31): warning #177-D: variable "pie::linear::kQuantValues" was declared but never referenced
+  constexpr int kQuantValues = 1;
+                ^
+
+
+2026-10-19T18:32:46.174293Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/act_quant" instantiation="::pie::linear::route_gather_vec8" arch="sm_100" compiled=true ms=31.444655
+2026-10-19T18:32:46.219601Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_quantize_128<::pie::bf16>" arch="sm_100" compiled=true ms=43.424980000000005
+2026-10-19T18:32:46.450104Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/quant" instantiation="::pie::linear::moe_route_order" arch="sm_100" log=linear/quant(1803): warning #177-D: variable "pie::linear::kOffPost" was declared but never referenced
+  constexpr int kOffPost = 0;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/quant(1804): warning #177-D: variable "pie::linear::kOffPreInt" was declared but never referenced
+  constexpr int kOffPreInt = 1;
+                ^
+
+linear/quant(1805): warning #177-D: variable "pie::linear::kOffPreReal" was declared but never referenced
+  constexpr int kOffPreReal = 2;
+                ^
+
+linear/quant(1806): warning #177-D: variable "pie::linear::kOffPreConst" was declared but never referenced
+  constexpr int kOffPreConst = 3;
+                ^
+
+
+2026-10-19T18:32:46.459780Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/quant" instantiation="::pie::linear::moe_route_order" arch="sm_100" compiled=true ms=238.27325
+2026-10-19T18:32:46.529472Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_expert_grouped<::pie::bf16>" arch="sm_100" compiled=true ms=69.630193
+2026-10-19T18:32:46.573248Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="linear/moe" instantiation="::pie::linear::moe_weighted_sum_vec8<::pie::bf16>" arch="sm_100" log=linear/moe(22): warning #177-D: variable "pie::linear::kGemvWarps" was declared but never referenced
+  constexpr int kGemvWarps = 4;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+linear/moe(38): warning #177-D: variable "pie::linear::kRouterMaxExperts" was declared but never referenced
+  constexpr int kRouterMaxExperts = 512;
+                ^
+
+
+2026-10-19T18:32:46.580666Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/moe" instantiation="::pie::linear::moe_weighted_sum_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=51.117491
+2026-10-19T18:32:46.629860Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::moe_sigmoid_gate_add<::pie::bf16>" arch="sm_100" compiled=true ms=49.122717
+2026-10-19T18:32:46.647624Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:32:47.406850Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/hc" instantiation="::pie::elemwise::ple_gate<::pie::bf16, 256>" arch="sm_100" log=linear/act_quant.cuh(895): warning #177-D: variable "lane" was declared but never referenced
+      const int lane = static_cast<int>(threadIdx.x % 32);
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+elemwise/hc(9): warning #177-D: variable "pie::elemwise::MAX_HC_MULT" was declared but never referenced
+  constexpr int MAX_HC_MULT = 8;
+                ^
+
+
+2026-10-19T18:32:47.415994Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/hc" instantiation="::pie::elemwise::ple_gate<::pie::bf16, 256>" arch="sm_100" compiled=true ms=768.31913
+2026-10-19T18:32:47.949400Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:47.958924Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_chunked_batched_row_tile<::pie::bf16>" arch="sm_100" compiled=true ms=542.830606
+2026-10-19T18:32:47.990862Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::residual_add_vec8" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:48.000306Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::residual_add_vec8" arch="sm_100" compiled=true ms=41.279808
+2026-10-19T18:32:48.022664Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:32:48.116411Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::split_q_gate_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=93.67241299999999
+2026-10-19T18:32:48.159371Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 8, true>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:48.169343Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 8, true>" arch="sm_100" compiled=true ms=52.855188999999996
+2026-10-19T18:32:48.652624Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::rope_partial<::pie::bf16>" arch="sm_100" compiled=true ms=481.587605
+2026-10-19T18:32:48.885395Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/kv" instantiation="::pie::attn::kv_append_explicit<::pie::false_type::value>" arch="sm_100" compiled=true ms=230.40101099999998
+2026-10-19T18:32:48.955897Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=128 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:32:49.216034Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/mla" instantiation="::pie::attn::mla_kv_append" arch="sm_100" log=attn/mla(123): warning #177-D: variable "pie::attn::kMaxRopePairs" was declared but never referenced
+  constexpr int kMaxRopePairs = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/mla(395): warning #177-D: variable "pie::attn::mla_naive::kMlaNaiveWarps" was declared but never referenced
+  constexpr int kMlaNaiveWarps = kMlaNaiveBlock / 32;
+                ^
+
+attn/mla(396): warning #177-D: variable "pie::attn::mla_naive::kMlaNaiveMaxPePer" was declared but never referenced
+  constexpr int kMlaNaiveMaxPePer = 4;
+                ^
+
+
+2026-10-19T18:32:49.228828Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/mla" instantiation="::pie::attn::mla_kv_append" arch="sm_100" compiled=true ms=264.19540600000005
+2026-10-19T18:32:49.414443Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_prefill<::pie::i32>" arch="sm_100" compiled=true ms=183.367938
+2026-10-19T18:32:49.615893Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::index_block_mean_paged<::pie::bf16>" arch="sm_100" compiled=true ms=201.340776
+2026-10-19T18:32:49.661224Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 4, true>" arch="sm_100" log=elemwise/norm(1215): warning #177-D: variable "pie::elemwise::kThreads" was declared but never referenced
+  constexpr int kThreads = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+
+2026-10-19T18:32:49.670594Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/norm" instantiation="::pie::elemwise::rmsnorm_in_warp<::pie::bf16, 4, true>" arch="sm_100" compiled=true ms=54.601826
+2026-10-19T18:32:49.854965Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_store_entries<::pie::bf16>" arch="sm_100" compiled=true ms=184.229677
+2026-10-19T18:32:50.197054Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/index" instantiation="::pie::attn::index_topk_paged_mma<::pie::bf16, 1, true, false>" arch="sm_100" log=attn/index(176): warning #177-D: variable "pie::attn::kMaxRopeDim" was declared but never referenced
+  constexpr int kMaxRopeDim = 256;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/index(930): warning #177-D: variable "pie::attn::kMaxIndexHeads" was declared but never referenced
+  constexpr int kMaxIndexHeads = 8;
+                ^
+
+attn/index(931): warning #177-D: variable "pie::attn::kMaxIndexPer" was declared but never referenced
+  constexpr int kMaxIndexPer = 8;
+                ^
+
+
+2026-10-19T18:32:50.205737Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/index" instantiation="::pie::attn::index_topk_paged_mma<::pie::bf16, 1, true, false>" arch="sm_100" compiled=true ms=348.657508
+2026-10-19T18:32:50.594386Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_tile_kernel<256>" arch="sm_100" log=attn/sdpa_selected(15): warning #177-D: variable "pie::attn::sdpa_selected::kWarps" was declared but never referenced
+  constexpr int kWarps = kBlock / 32;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/sdpa_selected(16): warning #177-D: variable "pie::attn::sdpa_selected::kMaxPer" was declared but never referenced
+  constexpr int kMaxPer = 16;
+                ^
+
+
+2026-10-19T18:32:50.604847Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_tile_kernel<256>" arch="sm_100" compiled=true ms=396.83793699999995
+2026-10-19T18:32:50.665980Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/glu" instantiation="::pie::linear::gate_sigmoid_mul_vec8" arch="sm_100" compiled=true ms=60.955603999999994
+2026-10-19T18:32:50.790621Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="layout/layout" instantiation="::pie::layout::gather_rows<::int4>" arch="sm_100" compiled=true ms=114.145609
+2026-10-19T18:32:50.871279Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemv_bf16_kernel<::pie::i32(4), 4>" arch="sm_100" compiled=true ms=79.590135
+2026-10-19T18:32:51.085072Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=248320 k=2560 tactic=Lt(0)
+2026-10-19T18:32:51.801692Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/attention" instantiation="::flashinfer::BatchDecodeWithPagedKVCacheKernel<::flashinfer::PosEncodingMode::kNone, 2, 1, 8, 32, 12, 1, ::pie::attn::fa2::VariantFull, ::pie::attn::fa2::DecodeParams>" arch="sm_100" compiled=true ms=570.5732380000001
+2026-10-19T18:32:51.825580Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ple" instantiation="::pie::attn::ple_ngram_ids_update" arch="sm_100" compiled=true ms=23.175932
+2026-10-19T18:32:51.917828Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemv_splitk_bf16_kernel<::pie::i32(8), 1>" arch="sm_100" compiled=true ms=91.288934
+2026-10-19T18:32:51.986284Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=2560 k=2560 tactic=Gemv
+2026-10-19T18:32:52.053448Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=320 k=10240 tactic=Gemv
+2026-10-19T18:32:52.127911Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:32:52.202251Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:32:52.261021Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=96 k=2560 tactic=Gemv
+2026-10-19T18:32:52.899944Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched_vec8<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:52.910448Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched_vec8<::pie::bf16>" arch="sm_100" compiled=true ms=649.350833
+2026-10-19T18:32:53.666866Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_gdn_decode_step<4>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:53.676609Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_gdn_decode_step<4>" arch="sm_100" compiled=true ms=766.06107
+2026-10-19T18:32:53.738460Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=2560 k=6144 tactic=Gemv
+2026-10-19T18:32:53.789063Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=4 k=10240 tactic=Gemv
+2026-10-19T18:32:53.826512Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=1 k=2560 tactic=Gemv
+2026-10-19T18:32:53.882669Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=512 k=2560 tactic=Gemv
+2026-10-19T18:32:53.944710Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=1280 k=2560 tactic=Gemv
+2026-10-19T18:32:54.000086Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=2560 k=640 tactic=Gemv
+2026-10-19T18:32:54.416643Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 32, 8, 1, 1, 2, 0, 0, 0>" arch="sm_100a" compiled=true ms=416.47385399999996
+2026-10-19T18:32:54.500567Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/fp8_compute" instantiation="::pie::linear::fp8_expert_stream<::pie::bf16>" arch="sm_100" compiled=true ms=83.706852
+2026-10-19T18:32:54.564167Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:32:55.238170Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched<::pie::bf16>" arch="sm_100" log=attn/ssm(13): warning #177-D: variable "pie::attn::gqa_smem_bv" was declared but never referenced
+  constexpr int gqa_smem_bv = 128;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/ssm(302): warning #177-D: variable "pie::attn::CONV_TT" was declared but never referenced
+  constexpr int CONV_TT = 32;
+                ^
+
+attn/ssm(2283): warning #177-D: variable "pie::attn::GDN_STREAM_STAGE" was declared but never referenced
+  constexpr int GDN_STREAM_STAGE = 4096 + 512 + 32 + 32;
+                ^
+
+attn/ssm(4042): warning #177-D: variable "pie::attn::KDA_PREP_SMEM" was declared but never referenced
+  constexpr int KDA_PREP_SMEM =
+                ^
+
+attn/ssm(4422): warning #177-D: variable "pie::attn::GDN_WARPS" was declared but never referenced
+  constexpr int GDN_WARPS = 8;
+                ^
+
+
+2026-10-19T18:32:55.249003Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/ssm" instantiation="::pie::attn::ssm_causal_conv1d_update_batched<::pie::bf16>" arch="sm_100" compiled=true ms=684.767797
+2026-10-19T18:32:55.320627Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:32:55.879527Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="elemwise/rope" instantiation="::pie::elemwise::qg_qknorm_rope_append<8>" arch="sm_100" compiled=true ms=558.828589
+2026-10-19T18:32:55.935992Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=1 n=640 k=2560 tactic=Gemv
+2026-10-19T18:32:56.137623Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/pool" instantiation="::pie::attn::pool_boundary_decode<::pie::i32>" arch="sm_100" compiled=true ms=201.563113
+2026-10-19T18:32:56.382694Z  WARN kernels_cuda::jit::cache: a device instantiation compiled with something to say root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_mma_kernel<256>" arch="sm_100" log=attn/sdpa_selected(15): warning #177-D: variable "pie::attn::sdpa_selected::kWarps" was declared but never referenced
+  constexpr int kWarps = kBlock / 32;
+                ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+attn/sdpa_selected(16): warning #177-D: variable "pie::attn::sdpa_selected::kMaxPer" was declared but never referenced
+  constexpr int kMaxPer = 16;
+                ^
+
+
+2026-10-19T18:32:56.392734Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="attn/sdpa_selected" instantiation="::pie::attn::sdpa_selected::mma::sdpa_paged_selected_mma_kernel<256>" arch="sm_100" compiled=true ms=254.931865
+2026-10-19T18:32:56.633305Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<2, 8>" arch="sm_100" compiled=true ms=99.44997799999999
+2026-10-19T18:32:56.640115Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:32:56.700299Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=320 k=10240 tactic=Rows
+2026-10-19T18:32:56.757801Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:32:56.825439Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:32:56.881394Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=96 k=2560 tactic=Rows
+2026-10-19T18:32:56.942127Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:32:57.036345Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=4 k=10240 tactic=Narrow
+2026-10-19T18:32:57.075737Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=1 k=2560 tactic=Narrow
+2026-10-19T18:32:57.132204Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=512 k=2560 tactic=Rows
+2026-10-19T18:32:57.190863Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=1280 k=2560 tactic=Lt(1)
+2026-10-19T18:32:57.249652Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:32:57.313478Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:32:57.378718Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:32:57.438958Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=2 n=640 k=2560 tactic=Rows
+2026-10-19T18:32:57.668731Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<3, 8>" arch="sm_100" compiled=true ms=130.680366
+2026-10-19T18:32:57.675651Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:32:57.737620Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=320 k=10240 tactic=Rows
+2026-10-19T18:32:57.795483Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:32:57.863708Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:32:57.922549Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=96 k=2560 tactic=Rows
+2026-10-19T18:32:57.984611Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:32:58.057212Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=4 k=10240 tactic=Narrow
+2026-10-19T18:32:58.097967Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=1 k=2560 tactic=Narrow
+2026-10-19T18:32:58.155106Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=512 k=2560 tactic=Rows
+2026-10-19T18:32:58.212729Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:32:58.271016Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:32:58.334129Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:32:58.398943Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:32:58.455907Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=3 n=640 k=2560 tactic=Rows
+2026-10-19T18:32:58.671206Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<4, 8>" arch="sm_100" compiled=true ms=121.09307
+2026-10-19T18:32:58.678603Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:32:58.738363Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=320 k=10240 tactic=Lt(25)
+2026-10-19T18:32:58.798507Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:32:58.868425Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:32:58.925313Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=96 k=2560 tactic=Rows
+2026-10-19T18:32:58.986865Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:32:59.061447Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=4 k=10240 tactic=Narrow
+2026-10-19T18:32:59.100782Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=1 k=2560 tactic=Narrow
+2026-10-19T18:32:59.159834Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=512 k=2560 tactic=Rows
+2026-10-19T18:32:59.218978Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:32:59.279362Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:32:59.872448Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/tc5" instantiation="::pie::linear::tc5_gemm<2, 0, 0, 128, 128, 64, 8, 1, 1, 2, 0, 0, 0>" arch="sm_100a" compiled=true ms=592.9601
+2026-10-19T18:32:59.946149Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.014220Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.072592Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=4 n=640 k=2560 tactic=Rows
+2026-10-19T18:33:00.370398Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<6, 8>" arch="sm_100" compiled=true ms=181.844397
+2026-10-19T18:33:00.376644Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.438191Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=320 k=10240 tactic=Lt(25)
+2026-10-19T18:33:00.497197Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:00.567189Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.623730Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=96 k=2560 tactic=Rows
+2026-10-19T18:33:00.685197Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:33:00.762262Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:00.802836Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=1 k=2560 tactic=Lt(3)
+2026-10-19T18:33:00.860331Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.917733Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:00.975157Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:01.039168Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:01.105024Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:01.163078Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=6 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:01.432658Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="linear/gemv" instantiation="::pie::linear::gemm_rows_bf16_kernel<8, 8>" arch="sm_100" compiled=true ms=169.888911
+2026-10-19T18:33:01.440331Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:01.501888Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=320 k=10240 tactic=Lt(25)
+2026-10-19T18:33:01.560358Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:01.635516Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:01.692829Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=96 k=2560 tactic=Rows
+2026-10-19T18:33:01.754554Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:33:01.832894Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:01.909381Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:01.966322Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.023433Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.079892Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:02.150057Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.217083Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.273187Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=8 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.382769Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.446233Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=320 k=10240 tactic=Lt(23)
+2026-10-19T18:33:02.516684Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=10240 k=320 tactic=Lt(1)
+2026-10-19T18:33:02.594504Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:02.654499Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=96 k=2560 tactic=Lt(13)
+2026-10-19T18:33:02.802489Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:33:02.878746Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:02.917419Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:02.977441Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.040608Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.101101Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:03.168250Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.238230Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.296357Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=12 n=640 k=2560 tactic=Lt(2)
+2026-10-19T18:33:03.412877Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.479067Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=320 k=10240 tactic=Lt(23)
+2026-10-19T18:33:03.536943Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:03.586524Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=16384 k=2560 tactic=Lt(3)
+2026-10-19T18:33:03.643336Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.705581Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:33:03.777835Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:03.840992Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:03.900472Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:03.959366Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.017441Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:04.080816Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.145047Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.209803Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=16 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.321176Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.382679Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=320 k=10240 tactic=Lt(17)
+2026-10-19T18:33:04.445240Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:04.501550Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.556681Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.616672Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=2560 k=6144 tactic=Lt(2)
+2026-10-19T18:33:04.689094Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:04.722995Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:04.778717Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.835454Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:04.891362Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=2560 k=640 tactic=Lt(1)
+2026-10-19T18:33:04.955295Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.002693Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.057936Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=23 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.171485Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.230812Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=320 k=10240 tactic=Lt(17)
+2026-10-19T18:33:05.276016Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:05.314894Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.372460Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.434686Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:33:05.503500Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:05.559854Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:05.619733Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=512 k=2560 tactic=Lt(2)
+2026-10-19T18:33:05.681379Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.741331Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:05.790288Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.839792Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:05.895760Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=32 n=640 k=2560 tactic=Lt(1)
+2026-10-19T18:33:06.016203Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.076622Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=320 k=10240 tactic=Lt(35)
+2026-10-19T18:33:06.122202Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=10240 k=320 tactic=Lt(1)
+2026-10-19T18:33:06.166803Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.236998Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.297312Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=2560 k=6144 tactic=Lt(1)
+2026-10-19T18:33:06.365806Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:06.403463Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:06.458567Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.519698Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.577694Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:06.651612Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=10240 k=2560 tactic=Lt(1)
+2026-10-19T18:33:06.684553Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.740545Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=46 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.867000Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:06.932475Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=320 k=10240 tactic=Lt(23)
+2026-10-19T18:33:06.962431Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:06.980091Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=16384 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.034689Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=96 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.095977Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:33:07.165797Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:07.225592Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:07.283015Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.342665Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.399152Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=2560 k=640 tactic=Lt(0)
+2026-10-19T18:33:07.434927Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.474633Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=12288 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.532541Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=64 n=640 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.690313Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=2560 k=2560 tactic=Lt(0)
+2026-10-19T18:33:07.758409Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=320 k=10240 tactic=Lt(29)
+2026-10-19T18:33:07.794849Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=10240 k=320 tactic=Lt(0)
+2026-10-19T18:33:07.815243Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=16384 k=2560 tactic=Lt(1)
+2026-10-19T18:33:07.890378Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=96 k=2560 tactic=Lt(35)
+2026-10-19T18:33:07.951525Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=2560 k=6144 tactic=Lt(0)
+2026-10-19T18:33:08.020264Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=4 k=10240 tactic=Narrow
+2026-10-19T18:33:08.061219Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=1 k=2560 tactic=Narrow
+2026-10-19T18:33:08.117084Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=512 k=2560 tactic=Lt(0)
+2026-10-19T18:33:08.176556Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=1280 k=2560 tactic=Lt(0)
+2026-10-19T18:33:08.232049Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=2560 k=640 tactic=Lt(5)
+2026-10-19T18:33:08.266231Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=10240 k=2560 tactic=Lt(0)
+2026-10-19T18:33:08.283427Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=12288 k=2560 tactic=Lt(1)
+2026-10-19T18:33:08.341389Z  INFO kernels_cuda::linear::dense: dense gemm shape tuned m=91 n=640 k=2560 tactic=Lt(0)
+engine-cuda: bodies armed 15 of 15 compositions at load (decode 1/1, prefill 14/14, mixed 0/0, tower 0/0, wide 0/0; 0 segmented; 103 MiB of 4096 MiB, 15 of 1024 seats) (pool declared 49708 MiB, high water 364 MiB, committed 364 MiB, spare under the ceiling 3742 MiB) [28 key(s) never fired — this deployment cannot synthesize them, or their present set was already refused admission; e.g. mixed c3+c0 at bucket 1 (2 seat(s) x 2048 context, 1 lane(s))] [sealed: every key attempted]
+2026-10-19T18:33:23.813229Z  INFO runtime::bootstrap: kv tiers: suspended kv goes to the host, then the disk device_pages=117248 host_pages=117248 disk_pages=42910
+2026-10-19T18:33:23.830197Z  INFO RPC{rpc.trace_id=00 rpc.deadline=2026-10-19T18:33:33.827123597Z otel.kind="server" otel.name="GatewayInbound.register"}: gateway::worker: worker dialed in + registered worker=worker#0
+2026-10-19T18:33:23.831982Z  INFO worker::link::gateway: worker registered with gateway (dial-in) worker_id=worker#0 gateway=127.0.0.1:36885
+2026-10-19T18:33:23.832041Z  INFO pie: pie standalone serving listen=127.0.0.1:8082 worker=127.0.0.1:36885
+✓ Server ready at ws://127.0.0.1:8082
+2026-10-19T18:33:51.907585Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T18:33:52.255128Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::pull_validate" arch="sm_100" compiled=true ms=313.967554
+2026-10-19T18:33:52.295965Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::commit_bump" arch="sm_100" compiled=true ms=36.518899
+2026-10-19T18:33:52.331032Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::scatter_publish" arch="sm_100" compiled=true ms=34.958159
+2026-10-19T18:33:52.364446Z  INFO kernels_cuda::jit::cache: resolved a device instantiation root="channel/channels" instantiation="::pie::channel::settle" arch="sm_100" compiled=true ms=33.340121
+2026-10-19T18:33:52.796722Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([0, 1])]
+2026-10-19T18:33:52.911543Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T18:34:14.384116Z  INFO runtime::pipeline::fire::shadow: shadow plan: 1 phase(s) of 98 stage kinds: [Unknown([2, 3])]
+2026-10-19T18:35:37.727904Z  INFO pie::daemon: received SIGTERM
+2026-10-19T18:35:37.727937Z  INFO pie::daemon: pie: shutdown signal received, draining
+2026-10-19T18:35:37.728028Z  INFO worker::serve: leaving control plane worker=Some(WorkerId(0))
+2026-10-19T18:35:44.570089Z  INFO pie::daemon: pie: stopped cleanly
